@@ -1,75 +1,60 @@
 -- Creating Database
-CREATE DATABASE G0Rent;
-
--- users table
-CREATE TABLE GoRent.users (
-                              user_id INT PRIMARY KEY AUTO_INCREMENT,
-                              name VARCHAR(100) NOT NULL,
-                              email VARCHAR(100) NOT NULL UNIQUE,
-                              password VARCHAR(255) NOT NULL,
-                              role VARCHAR(20) NOT NULL,
-                              phone VARCHAR(15) NOT NULL
+CREATE DATABASE IF NOT EXISTS GoRent;
+CREATE TABLE users (
+                       user_id INT AUTO_INCREMENT PRIMARY KEY,
+                       fname VARCHAR(50) NOT NULL,
+                       lname VARCHAR(50) NOT NULL,
+                       email VARCHAR(100) NOT NULL UNIQUE,
+                       password VARCHAR(255) NOT NULL,
+                       role INT DEFAULT 0, -- 0 = user, 1 = admin
+                       phone VARCHAR(20),
+                       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+CREATE TABLE category (
+                          categoryId INT PRIMARY KEY AUTO_INCREMENT,
+                          category_name VARCHAR(100) NOT NULL,
+                          category_image VARCHAR(255),
+                          category_description TEXT
+);
+CREATE TABLE vehicle (
+                         vehicleId INT PRIMARY KEY AUTO_INCREMENT,
+                         vehicle_brand VARCHAR(100) NOT NULL,
+                         vehicle_model VARCHAR(100) NOT NULL,
+                         vehicle_price_per_day DECIMAL(10,2) NOT NULL,
+                         vehicle_status VARCHAR(50) NOT NULL
 );
 
--- Booking Table
-CREATE TABLE GoRent.booking (
-                           bookingId INT PRIMARY KEY AUTO_INCREMENT,
-                           booking_status VARCHAR(50),
-                           booking_start_date DATE,
-                           booking_end_date DATE,
-                           booking_total_amount DECIMAL(10, 2)
+CREATE TABLE booking (
+                         bookingId INT PRIMARY KEY AUTO_INCREMENT,
+                         booking_status VARCHAR(50),
+                         booking_start_date DATE,
+                         booking_end_date DATE,
+                         booking_total_amount DECIMAL(10,2)
 );
-
--- Rental Table
-CREATE TABLE GoRent.Rental (
-                          rentalId INT PRIMARY KEY AUTO_INCREMENT,
-                          rental_date DATE,
-                          rental_return_date DATE,
-                          rental_status VARCHAR(50),
-                          rental_late_fee DECIMAL(10, 2)
+CREATE TABLE booking_vehicle (
+                                 bookingId INT,
+                                 vehicleId INT,
+                                 categoryId INT,
+                                 user_id INT,
+                                 PRIMARY KEY (bookingId, vehicleId),
+                                 FOREIGN KEY (bookingId) REFERENCES booking(bookingId),
+                                 FOREIGN KEY (vehicleId) REFERENCES vehicle(vehicleId),
+                                 FOREIGN KEY (categoryId) REFERENCES category(categoryId),
+                                 FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
-
---  Vehicle Table
-CREATE TABLE GoRent.Vehicle (
-                           vehicleId INT PRIMARY KEY AUTO_INCREMENT,
-                           vehicle_brand VARCHAR(100),
-                           vehicle_model VARCHAR(100),
-                           vehicle_price_per_day DECIMAL(10, 2),
-                           vehicle_status VARCHAR(50)
+CREATE TABLE user_booking (
+                              bookingId INT PRIMARY KEY,
+                              vehicleId INT,
+                              user_id INT,
+                              paymentId INT,
+                              FOREIGN KEY (vehicleId) REFERENCES vehicle(vehicleId),
+                              FOREIGN KEY (user_id) REFERENCES users(user_id),
+                              FOREIGN KEY (paymentId) REFERENCES payment(paymentId)
 );
-
---  Category Table
-CREATE TABLE GoRent.Category (
-                            categoryId INT PRIMARY KEY AUTO_INCREMENT,
-                            category_name VARCHAR(100),
-                            category_image VARCHAR(255),
-                            category_description TEXT
+CREATE TABLE payment (
+                         paymentId INT PRIMARY KEY AUTO_INCREMENT,
+                         payment_date DATE,
+                         payment_amount DECIMAL(10,2),
+                         payment_method VARCHAR(50),
+                         payment_status VARCHAR(50)
 );
-
---  User_Booking Table
-CREATE TABLE GoRent.User_Booking (
-                                     bookingId INT,
-                                     userId INT,
-                                     vehicleId INT,
-                                     rentalId INT,
-                                     PRIMARY KEY (bookingId, userId, vehicleId),
-                                     FOREIGN KEY (bookingId) REFERENCES GoRent.booking(bookingId) ON DELETE CASCADE,
-                                     FOREIGN KEY (userId) REFERENCES GoRent.users(user_id) ON DELETE CASCADE,
-                                     FOREIGN KEY (vehicleId) REFERENCES GoRent.Vehicle(vehicleId) ON DELETE CASCADE,
-                                     FOREIGN KEY (rentalId) REFERENCES GoRent.Rental(rentalId) ON DELETE CASCADE
-);
-
---  Booking_Vehicle Table
-CREATE TABLE GoRent.Booking_Vehicle (
-                                        vehicleId INT,
-                                        bookingId INT,
-                                        user_id INT,
-                                        categoryId INT,
-                                        PRIMARY KEY (vehicleId, bookingId, user_id),
-                                        FOREIGN KEY (vehicleId) REFERENCES GoRent.Vehicle(vehicleId) ON DELETE CASCADE,
-                                        FOREIGN KEY (bookingId) REFERENCES GoRent.booking(bookingId) ON DELETE CASCADE,
-                                        FOREIGN KEY (user_id) REFERENCES GoRent.users(user_id) ON DELETE CASCADE,
-                                        FOREIGN KEY (categoryId) REFERENCES GoRent.Category(categoryId) ON DELETE CASCADE
-);
-
-

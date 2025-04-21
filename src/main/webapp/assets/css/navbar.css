@@ -1,0 +1,334 @@
+/* File: /css/navbar.css */
+
+/* Google Fonts Import */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+/* Base Styles */
+:root {
+    --primary-color: #3b82f6;
+    --primary-dark: #2563eb;
+    --secondary-color: #1e293b;
+    --text-color: #334155;
+    --light-color: #f8fafc;
+    --hover-color: #dbeafe;
+    --transition-speed: 0.3s;
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+/* Navbar Base */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: var(--light-color);
+    box-shadow: var(--shadow);
+    z-index: 1000;
+    font-family: 'Poppins', sans-serif;
+    transition: all var(--transition-speed) ease;
+    opacity: 0;
+    transform: translateY(-10px);
+}
+
+/* Entrance animation */
+.navbar.loaded {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.navbar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 5%;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* Logo Styles */
+.logo-container {
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: var(--primary-color);
+    font-weight: 700;
+    font-size: 1.5rem;
+    transition: transform var(--transition-speed) ease;
+}
+
+.logo:hover {
+    transform: scale(1.05);
+}
+
+.logo i {
+    font-size: 1.8rem;
+    margin-right: 0.5rem;
+    color: var(--primary-color);
+}
+
+.logo-text {
+    background: linear-gradient(45deg, var(--primary-color), var(--primary-dark));
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    transition: all var(--transition-speed) ease;
+}
+
+.logo:hover .logo-text {
+    text-shadow: 0 0 8px rgba(59, 130, 246, 0.3);
+}
+
+/* Navigation Menu */
+.nav-menu {
+    display: flex;
+    align-items: center;
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-link {
+    color: var(--text-color);
+    text-decoration: none;
+    padding: 0.5rem 1.2rem;
+    font-weight: 500;
+    position: relative;
+    transition: color var(--transition-speed) ease;
+    display: block;
+}
+
+.nav-link span {
+    position: relative;
+    z-index: 1;
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background-color: var(--primary-color);
+    transition: all var(--transition-speed) ease;
+    transform: translateX(-50%);
+}
+
+.nav-link:hover {
+    color: var(--primary-color);
+}
+
+.nav-link:hover::after,
+.nav-link.active::after {
+    width: 70%;
+}
+
+.nav-link.active {
+    color: var(--primary-color);
+}
+
+/* Auth Buttons */
+.auth-buttons {
+    display: flex;
+    margin-left: 2rem;
+}
+
+.login-btn, .register-btn {
+    padding: 0.6rem 1.5rem;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all var(--transition-speed) ease;
+}
+
+.login-btn {
+    color: var(--primary-color);
+    margin-right: 1rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.login-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: rgba(219, 234, 254, 0.3);
+    transition: all var(--transition-speed) ease;
+    z-index: -1;
+}
+
+.login-btn:hover::before {
+    left: 0;
+}
+
+.login-btn:hover {
+    color: var(--primary-dark);
+}
+
+.register-btn {
+    background-color: var(--secondary-color);
+    color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.register-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
+    background-color: var(--primary-color);
+    transition: all var(--transition-speed) ease;
+    z-index: -1;
+}
+
+.register-btn:hover::before {
+    width: 100%;
+}
+
+.register-btn:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px);
+}
+
+/* Scroll Effect */
+.navbar.scrolled {
+    background-color: rgba(248, 250, 252, 0.95);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    padding: 0.5rem 0;
+}
+
+/* Menu Toggle (Mobile) */
+.menu-toggle {
+    display: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--text-color);
+    transition: color var(--transition-speed) ease;
+}
+
+.menu-toggle:hover {
+    color: var(--primary-color);
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+    .menu-toggle {
+        display: block;
+    }
+
+    .nav-menu {
+        position: fixed;
+        top: 70px;
+        right: -100%;
+        flex-direction: column;
+        background-color: var(--light-color);
+        width: 80%;
+        max-width: 300px;
+        height: calc(100vh - 70px);
+        padding: 2rem;
+        box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+        transition: right var(--transition-speed) ease;
+        align-items: flex-start;
+    }
+
+    .nav-menu.active {
+        right: 0;
+    }
+
+    .nav-links {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .nav-links li {
+        margin: 0.8rem 0;
+        width: 100%;
+    }
+
+    .nav-link {
+        padding: 0.8rem 0;
+        width: 100%;
+        display: block;
+    }
+
+    .nav-link::after {
+        bottom: 0;
+        left: 0;
+        transform: none;
+    }
+
+    .nav-link:hover::after,
+    .nav-link.active::after {
+        width: 30%;
+    }
+
+    .auth-buttons {
+        margin: 1.5rem 0 0 0;
+        width: 100%;
+        flex-direction: column;
+    }
+
+    .login-btn, .register-btn {
+        text-align: center;
+        padding: 0.8rem 0;
+        width: 100%;
+    }
+
+    .login-btn {
+        margin-right: 0;
+        margin-bottom: 1rem;
+    }
+}
+
+/* Animation for menu toggle */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.nav-menu.active .nav-links li {
+    animation: fadeIn 0.3s ease forwards;
+    opacity: 0;
+}
+
+.nav-menu.active .nav-links li:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.nav-menu.active .nav-links li:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.nav-menu.active .nav-links li:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+.nav-menu.active .auth-buttons {
+    animation: fadeIn 0.3s ease forwards;
+    animation-delay: 0.4s;
+    opacity: 0;
+}

@@ -19,6 +19,8 @@ public class DbConnectionUtil {
             url = prop.getProperty("db.url");
             user = prop.getProperty("db.username");
             password = prop.getProperty("db.password");
+            System.out.println("DB URL: " + url);
+            System.out.println("DB User: " + user);
         }
         catch (Exception e) {
             System.err.println(e.getMessage());
@@ -27,4 +29,6 @@ public class DbConnectionUtil {
     public static Connection getConnection() throws SQLException {
         return DriverManager.getConnection(url, user, password);
     }
+
+
 }
