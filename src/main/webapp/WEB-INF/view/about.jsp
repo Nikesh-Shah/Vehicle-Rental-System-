@@ -25,7 +25,7 @@
                 <a href="#" class="btn outline">Contact Us</a>
             </div>
             <div class="about-image">
-                <img src="${pageContext.request.contextPath}/assets/images/vasu.jpg" alt="car">
+                <img src="${pageContext.request.contextPath}/assets/images/1.jpg" alt="car">
             </div>
         </section>
 
@@ -157,7 +157,7 @@
             <!-- Team Member 5 -->
             <div class="team-card" data-aos="fade-up" data-aos-delay="400">
                 <div class="team-image">
-                    <img src="${pageContext.request.contextPath}/assets/images/.jpg" alt="BashuDev">
+                    <img src="${pageContext.request.contextPath}/assets/images/vasu.jpg" alt="BashuDev">
                 </div>
                 <div class="team-info">
                     <h3 class="team-name">BashuDev Baidya</h3>

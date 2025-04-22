@@ -5,8 +5,6 @@
     <title>GoRent</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/navbar.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/home.css" />
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/home.css" />
-
 
 </head>
 <body>
