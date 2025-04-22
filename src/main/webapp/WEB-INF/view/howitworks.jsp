@@ -1,5 +1,5 @@
 <!-- How It Works Section -->
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/howitworks.css" />
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/home.css" />
 
 
 <section class="how-it-works-section">

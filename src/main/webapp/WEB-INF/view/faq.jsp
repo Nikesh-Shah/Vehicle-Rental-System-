@@ -1,4 +1,4 @@
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/faq.css" />
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/home.css" />
 
 
 <section class="faq-section">

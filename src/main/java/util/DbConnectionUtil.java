@@ -7,28 +7,40 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 public class DbConnectionUtil {
-    private static  String url;
-    private static  String user;
-    private static  String password;
+
+    private static String url;
+    private static String user;
+    private static String password;
 
     static {
-        try(InputStream is = DbConnectionUtil.class.getClassLoader().getResourceAsStream("db.properties")){
+        try (InputStream is = DbConnectionUtil.class.getClassLoader().getResourceAsStream("db.properties")) {
+            System.out.println("[DEBUG] Loading database properties...");
             Properties prop = new Properties();
             prop.load(is);
-            Class.forName(prop.getProperty("db.driver"));
+
+            String driver = prop.getProperty("db.driver");
+            System.out.println("[DEBUG] Database Driver: " + driver);
+            Class.forName(driver);
+            System.out.println("[DEBUG] Database driver loaded successfully");
+
             url = prop.getProperty("db.url");
             user = prop.getProperty("db.username");
             password = prop.getProperty("db.password");
-            System.out.println("DB URL: " + url);
-            System.out.println("DB User: " + user);
-        }
-        catch (Exception e) {
-            System.err.println(e.getMessage());
+
+            System.out.println("[DEBUG] DB URL: " + url);
+            System.out.println("[DEBUG] DB User: " + user);
+            // ⚠️ Never print password, even in debug.
+
+        } catch (Exception e) {
+            System.err.println("[ERROR] Failed to load DB properties or initialize driver:");
+            e.printStackTrace();
         }
     }
+
     public static Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(url, user, password);
+        System.out.println("[DEBUG] Attempting to establish DB connection...");
+        Connection conn = DriverManager.getConnection(url, user, password);
+        System.out.println("[DEBUG] Connection established successfully");
+        return conn;
     }
-
-
 }

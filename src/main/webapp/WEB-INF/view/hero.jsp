@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Premium Car Rental</title>
-  <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/hero.css" />
+  <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/home.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,11 +18,11 @@
     <h1>Premium Car Rental Service</h1>
     <p>Rent your dream car today. We offer a wide range of vehicles for all your needs.</p>
     <div class="hero-buttons">
-      <a href="vehicles.jsp" class="btn btn-primary">
+      <a href= ${pageContext.request.contextPath}/vehicles"  class="btn btn-primary">
         <span>Browse Vehicles</span>
         <i class="fas fa-arrow-right"></i>
       </a>
-      <a href="register.jsp" class="btn btn-secondary">
+      <a href= ${pageContext.request.contextPath}/register"  class="btn btn-secondary">
         <span>Register</span>
       </a>
     </div>
@@ -43,7 +43,7 @@
   </div>
   <div class="hero-image animate-slide-in">
     <div class="image-container">
-      <img src="${pageContext.request.contextPath}/assets/images/hero.png" alt="Premium Car" class="main-image">
+      <img src="${pageContext.request.contextPath}/assets/images/hero2.png" alt="Premium Car" class="main-image">
       <div class="floating-badge top">
         <i class="fas fa-star"></i>
         <span>Top Rated</span>

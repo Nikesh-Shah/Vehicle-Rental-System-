@@ -15,9 +15,21 @@ public class AuthFilter implements Filter {
         HttpServletResponse res = (HttpServletResponse) response;
         HttpSession session = req.getSession(false);
 
-        if (session == null || session.getAttribute("user") == null) {
-            res.sendRedirect(req.getContextPath() + "/login");
+        // Debugging: check if the session exists and whether the user is logged in
+        if (session == null) {
+            System.out.println("[DEBUG] No session found for the request.");
         } else {
+            System.out.println("[DEBUG] Session found. Checking for user attribute.");
+        }
+
+        if (session == null || session.getAttribute("user") == null) {
+            System.out.println("[DEBUG] User not logged in or session expired. Forwarding to login.jsp.");
+            RequestDispatcher dispatcher = req.getRequestDispatcher("/login.jsp");
+            dispatcher.forward(req, res);
+            return; // to prevent further processing
+        }
+else {
+            System.out.println("[DEBUG] User logged in. Proceeding with the request.");
             chain.doFilter(request, response);
         }
     }

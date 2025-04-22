@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -20,10 +21,15 @@
         <h1>Create an account</h1>
         <p class="subtitle">Enter your information to create an account</p>
 
+        <!-- Show error message if present -->
+        <c:if test="${not empty errorMessage}">
+            <div class="error-message">${errorMessage}</div>
+        </c:if>
+
         <form action="${pageContext.request.contextPath}/register" method="post">
             <div class="name-fields">
                 <div class="form-group half-width">
-                    <label >First name</label>
+                    <label>First name</label>
                     <input type="text" id="fname" name="fname" placeholder="Siya" required>
                 </div>
 
@@ -52,7 +58,6 @@
                 <input type="text" id="phone" name="phone" placeholder="98XXXXXXXX" required>
             </div>
 
-
             <button type="submit" class="btn-primary">Create Account</button>
         </form>
 
@@ -66,8 +71,7 @@
         </div>
 
         <p class="alternate-action">
-            Already have an account?   <a href="${pageContext.request.contextPath}/login" class="login-btn">Login</a>
-
+            Already have an account? <a href="${pageContext.request.contextPath}/login" class="login-btn">Login</a>
         </p>
     </div>
 </div>

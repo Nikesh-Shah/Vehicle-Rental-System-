@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -20,10 +21,17 @@
         <h1>Welcome back</h1>
         <p class="subtitle">Enter your credentials to sign in to your account</p>
 
+        <!-- Display error message if exists -->
+        <c:if test="${not empty error}">
+            <div style="color: red; font-weight: bold; margin-bottom: 10px; text-align: center;">
+                    ${error}
+            </div>
+        </c:if>
+
         <form action="${pageContext.request.contextPath}/login" method="post">
             <div class="form-group">
                 <label>Email</label>
-                <input type="email" name="email" value="${email}" placeholder="name@example.com"required>
+                <input type="email" name="email" value="${email}" placeholder="name@example.com" required>
             </div>
 
             <div class="form-group password-group">
@@ -51,7 +59,6 @@
 
         <p class="alternate-action">
             Don't have an account? <a href="${pageContext.request.contextPath}/register" class="login-btn">Register</a>
-
         </p>
     </div>
 </div>

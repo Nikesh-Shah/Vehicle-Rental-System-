@@ -1,21 +1,21 @@
 package model;
-
 public class Category {
     private int categoryId;
-    private String categoryName;
-    private byte[] image;
+    private String name;
+    private String image;
+    private String description;
 
-    public Category(String categoryName, byte[] image) {
-        this.categoryName = categoryName;
-        this.image = image;
-    }
+    // Constructors
+    public Category() {}
 
-    public Category(int categoryId, byte[] image, String categoryName) {
+    public Category(int categoryId, String name, String image, String description) {
         this.categoryId = categoryId;
+        this.name = name;
         this.image = image;
-        this.categoryName = categoryName;
+        this.description = description;
     }
 
+    // Getters and Setters
     public int getCategoryId() {
         return categoryId;
     }
@@ -24,19 +24,27 @@ public class Category {
         this.categoryId = categoryId;
     }
 
-    public String getCategoryName() {
-        return categoryName;
+    public String getName() {
+        return name;
     }
 
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public byte[] getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(byte[] image) {
+    public void setImage(String image) {
         this.image = image;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

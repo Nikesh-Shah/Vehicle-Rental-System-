@@ -32,7 +32,7 @@ public class AuthService {
 
     // Register a new user
     public static AuthResult registerUser(String fname, String lname, String email,
-                                          String password, String confirmPassword ,String phone) {
+                                          String password, String confirmPassword, String phone) {
         try {
             // Validate inputs
             if (fname == null || fname.trim().isEmpty()) {
@@ -56,13 +56,9 @@ public class AuthService {
             }
             System.out.println("Registering user: " + fname + " " + lname);
 
-            // ✅ Confirm password check
+            // Confirm password check
             if (!password.equals(confirmPassword)) {
                 return new AuthResult(false, "Passwords do not match", null);
-            }
-
-            if (UserDAO.emailExists(email)) {
-                return new AuthResult(false, "Email already registered", null);
             }
 
             // Hash password and create user
@@ -83,6 +79,7 @@ public class AuthService {
             return new AuthResult(false, "Registration failed. Please try again.", null);
         }
     }
+
 
     // Authenticate user
     public static AuthResult authenticate(String email, String password) {
