@@ -35,7 +35,7 @@
                             <img src="${pageContext.request.contextPath}/assets/images/testimonial1.jpg" alt="Sarah Johnson" onerror="this.src='https://ui-avatars.com/api/?name=Sarah+Johnson&background=4361ee&color=fff'">
                         </div>
                         <div class="author-info">
-                            <h4>Sarah Johnson</h4>
+                            <h4>Madan Bhandari</h4>
                             <p>Business Traveler</p>
                         </div>
                     </div>
@@ -61,7 +61,7 @@
                             <img src="${pageContext.request.contextPath}/assets/images/testimonial2.jpg" alt="Michael Chen" onerror="this.src='https://ui-avatars.com/api/?name=Michael+Chen&background=4361ee&color=fff'">
                         </div>
                         <div class="author-info">
-                            <h4>Michael Chen</h4>
+                            <h4>Rohan Rai</h4>
                             <p>Frequent Customer</p>
                         </div>
                     </div>
@@ -87,7 +87,7 @@
                             <img src="${pageContext.request.contextPath}/assets/images/testimonial3.jpg" alt="Emily Rodriguez" onerror="this.src='https://ui-avatars.com/api/?name=Emily+Rodriguez&background=4361ee&color=fff'">
                         </div>
                         <div class="author-info">
-                            <h4>Emily Rodriguez</h4>
+                            <h4>Munal Limbu</h4>
                             <p>Corporate Client</p>
                         </div>
                     </div>

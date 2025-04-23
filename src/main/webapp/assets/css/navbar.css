@@ -291,7 +291,7 @@
     font-size: 0.85rem;
 }
 
-/* Profile Dropdown */
+
 .profile-dropdown {
     position: relative;
     display: inline-block;
@@ -339,6 +339,8 @@
 }
 
 .dropdown-menu.active {
+    position: absolute;
+    left: 10%;
     opacity: 1;
     visibility: visible;
     transform: translateY(0);
@@ -784,14 +786,14 @@
     opacity: 0;
 }
 
-/* Touch-friendly adjustments */
+
 @media (hover: none) and (pointer: coarse) {
     .dropdown-menu a {
-        padding: 14px 16px; /* Larger touch targets */
+        padding: 14px 16px;
     }
 
     .profile-icon {
-        width: 40px; /* Larger touch target */
+        width: 40px;
         height: 40px;
     }
 
@@ -809,7 +811,7 @@
     }
 }
 
-/* For very small screens */
+
 @media screen and (max-width: 320px) {
     .dropdown-menu {
         width: 160px;

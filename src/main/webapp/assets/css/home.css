@@ -1176,6 +1176,8 @@ section h1::after {
     color: #1a202c;
 }
 
+
+
 /* Responsive styles for new sections */
 @media (max-width: 992px) {
     .benefits-grid {
