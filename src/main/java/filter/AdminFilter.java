@@ -16,14 +16,12 @@ public class AdminFilter implements Filter {
         HttpServletResponse res = (HttpServletResponse) response;
         HttpSession session = req.getSession(false);
 
-        // Debugging: log session status
         if (session == null) {
             System.out.println("[DEBUG] No session found for the request.");
         } else {
             System.out.println("[DEBUG] Session exists. Checking user attributes...");
         }
 
-        // Check if the session exists and contains a user
         if (session == null || session.getAttribute("user") == null) {
             System.out.println("[DEBUG] User not logged in or session expired. Redirecting to login...");
             res.sendRedirect(req.getContextPath() + "/login");
@@ -31,7 +29,6 @@ public class AdminFilter implements Filter {
             User user = (User) session.getAttribute("user");
             System.out.println("[DEBUG] Session contains user: " + user.getEmail());
 
-            // Check if the user is an admin
             if (!user.isAdmin()) {
                 System.out.println("[DEBUG] User is not an admin. Forbidden access attempt.");
                 res.sendError(HttpServletResponse.SC_FORBIDDEN);  // 403 Forbidden

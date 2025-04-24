@@ -29,7 +29,7 @@
             <div class="vehicle-details">
                 <div class="vehicle-name">
                     <h3>Tesla Model S</h3>
-                    <div class="vehicle-price">$199<span>/day</span></div>
+                    <div class="vehicle-price">Rs 5000<span>/day</span></div>
                 </div>
                 <div class="vehicle-specs">
                     <div class="spec"><i class="fas fa-user"></i> 5 Seats</div>
@@ -52,7 +52,7 @@
             <div class="vehicle-details">
                 <div class="vehicle-name">
                     <h3>Mercedes S-Class</h3>
-                    <div class="vehicle-price">$249<span>/day</span></div>
+                    <div class="vehicle-price">Rs 5000<span>/day</span></div>
                 </div>
                 <div class="vehicle-specs">
                     <div class="spec"><i class="fas fa-user"></i> 5 Seats</div>
@@ -75,7 +75,7 @@
             <div class="vehicle-details">
                 <div class="vehicle-name">
                     <h3>Range Rover Sport</h3>
-                    <div class="vehicle-price">$279<span>/day</span></div>
+                    <div class="vehicle-price">Rs 5000<span>/day</span></div>
                 </div>
                 <div class="vehicle-specs">
                     <div class="spec"><i class="fas fa-user"></i> 7 Seats</div>
@@ -98,7 +98,7 @@
             <div class="vehicle-details">
                 <div class="vehicle-name">
                     <h3>Porsche 911</h3>
-                    <div class="vehicle-price">$349<span>/day</span></div>
+                    <div class="vehicle-price">Rs 5000<span>/day</span></div>
                 </div>
                 <div class="vehicle-specs">
                     <div class="spec"><i class="fas fa-user"></i> 2 Seats</div>
@@ -144,7 +144,7 @@
             <div class="vehicle-details">
                 <div class="vehicle-name">
                     <h3>BMW i4</h3>
-                    <div class="vehicle-price">$189<span>/day</span></div>
+                    <div class="vehicle-price">Rs 5000<span>/day</span></div>
                 </div>
                 <div class="vehicle-specs">
                     <div class="spec"><i class="fas fa-user"></i> 5 Seats</div>
@@ -190,7 +190,7 @@
             <div class="vehicle-details">
                 <div class="vehicle-name">
                     <h3>Volkswagen Golf</h3>
-                    <div class="vehicle-price">$79<span>/day</span></div>
+                    <div class="vehicle-price">Rs 5000<span>/day</span></div>
                 </div>
                 <div class="vehicle-specs">
                     <div class="spec"><i class="fas fa-user"></i> 5 Seats</div>

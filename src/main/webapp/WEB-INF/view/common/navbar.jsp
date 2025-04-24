@@ -56,10 +56,13 @@
                     <i class="fas fa-cog dropdown-icon"></i>
                     <span>Settings</span>
                   </a>
-                  <a href="${pageContext.request.contextPath}/logout">
-                    <i class="fas fa-sign-out-alt dropdown-icon"></i>
-                    <span>Logout</span>
-                  </a>
+
+                  <form action="${pageContext.request.contextPath}/logout" method="post">
+                    <button class="btn-log" type="submit" style="background: none; border: none; padding: 0; cursor: pointer; left: 20px;">
+                      <i class="fas fa-sign-out-alt dropdown-icon"></i>
+                      <span>Logout</span>
+                    </button>
+                  </form>
                 </div>
               </div>
             </div>

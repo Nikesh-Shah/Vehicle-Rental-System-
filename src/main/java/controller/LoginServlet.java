@@ -21,6 +21,7 @@ public class LoginServlet extends HttpServlet {
             throws ServletException, IOException {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
+        String remember = request.getParameter("rememberMe");
 
         // Debug: log the email received in the request
         System.out.println("[DEBUG] Login attempt received with email: " + email);
@@ -34,8 +35,17 @@ public class LoginServlet extends HttpServlet {
             HttpSession session = request.getSession();
             session.setAttribute("user", user);
 
-            // Set session timeout to 30 minutes
-            session.setMaxInactiveInterval(30 * 60);
+
+            if ("true".equals(remember)) {
+                Cookie cookie = new Cookie("rememberEmail", email);
+                cookie.setMaxAge(60*60*24*7);
+                response.addCookie(cookie);
+
+            } else {
+                Cookie cookie = new Cookie("rememberEmail", "");
+                cookie.setMaxAge(0); // delete cookie
+                response.addCookie(cookie);
+            }
 
             // Debug: Check if the user is an admin
             if (user.isAdmin()) {

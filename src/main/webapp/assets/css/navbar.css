@@ -340,7 +340,8 @@
 
 .dropdown-menu.active {
     position: absolute;
-    left: 10%;
+    /*left: 10%;*/
+    right: 0;
     opacity: 1;
     visibility: visible;
     transform: translateY(0);
@@ -631,6 +632,10 @@
     font-size: 1.125rem;
 }
 
+.btn-log{
+    left: 50px;
+}
+
 /* Animations */
 @keyframes fadeIn {
     from {
@@ -749,6 +754,9 @@
         max-width: 90%;
         margin: 0 1rem;
     }
+    .dropdown-menu.active {
+        left: 10%;
+    }
 }
 
 /* Animation for menu toggle */
@@ -826,4 +834,8 @@
         max-width: 95%;
         margin: 0 0.5rem;
     }
-}
+    .dropdown-menu.active {
+        left: 10%;
+    }
+
+    }

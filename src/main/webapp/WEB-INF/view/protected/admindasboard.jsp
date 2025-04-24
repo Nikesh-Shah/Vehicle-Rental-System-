@@ -60,7 +60,7 @@
                 </a>
             </li>
             <li>
-                <a href="login.jsp">
+                <a href="${pageContext.request.contextPath}/logout">
                     <i class="fas fa-sign-out-alt"></i>
                     <span>Logout</span>
                 </a>

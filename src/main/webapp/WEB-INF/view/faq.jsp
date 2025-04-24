@@ -111,7 +111,7 @@
                 <h3>Premium Sedan 1</h3>
                 <p>Comfortable ride with premium features</p>
                 <div class="vehicle-footer">
-                    <span class="price">$89/day</span>
+                    <span class="price">Rs 2000/day</span>
                     <a href="#" class="view-details">View Details</a>
                 </div>
             </div>
@@ -125,7 +125,7 @@
                 <h3>Premium Sedan 2</h3>
                 <p>Comfortable ride with premium features</p>
                 <div class="vehicle-footer">
-                    <span class="price">$89/day</span>
+                    <span class="price">Rs 2000/day</span>
                     <a href="#" class="view-details">View Details</a>
                 </div>
             </div>
@@ -139,7 +139,7 @@
                 <h3>Premium Sedan 3</h3>
                 <p>Comfortable ride with premium features</p>
                 <div class="vehicle-footer">
-                    <span class="price">$89/day</span>
+                    <span class="price">Rs 2000/day</span>
                     <a href="#" class="view-details">View Details</a>
                 </div>
             </div>

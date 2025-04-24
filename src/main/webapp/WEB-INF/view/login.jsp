@@ -27,11 +27,27 @@
                     ${error}
             </div>
         </c:if>
+        <%
+        String rememberedEmail  = "";
+        Cookie[] cookies = request.getCookies();
+        if(cookies != null){
+            for (Cookie c : cookies){
+                if ("rememberEmail".equals(c.getName())){
+                    rememberedEmail  = c.getValue();
+                }
+            }
+        }
+            String email = request.getAttribute("email") != null ? (String) request.getAttribute("email") : rememberedEmail;
+            String error = (String) request.getAttribute("error");
+
+
+
+        %>
 
         <form action="${pageContext.request.contextPath}/login" method="post">
             <div class="form-group">
                 <label>Email</label>
-                <input type="email" name="email" value="${email}" placeholder="name@example.com" required>
+                <input type="email" name="email" value="<%= email  %>"placeholder="name@example.com" required>
             </div>
 
             <div class="form-group password-group">
@@ -41,8 +57,8 @@
             </div>
 
             <div class="remember-me">
-                <input type="checkbox" id="remember" name="remember">
-                <label for="remember">Remember me</label>
+                <input type="checkbox" id="rememberMe" name="rememberMe" value="true" <%= !"".equals(rememberedEmail ) ? "checked" : "" %> >
+                <label for="rememberMe">Remember me</label>
             </div>
 
             <button type="submit" class="btn-primary">Sign In</button>
