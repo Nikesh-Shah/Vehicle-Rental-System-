@@ -56,7 +56,7 @@
     <div class="content-wrapper">
         <section class="contact-form fade-in-delay">
             <h2>Send Us a Message</h2>
-            <form action="processContact.jsp" method="post">
+            <form action="${pageContext.request.contextPath}/sendmessage" method="post">
                 <div class="form-row">
                     <div class="form-group">
                         <label for="firstName">First Name</label>
