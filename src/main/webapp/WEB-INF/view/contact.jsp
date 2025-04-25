@@ -99,7 +99,43 @@
                     <i class="fas fa-paper-plane"></i> Send Message
                 </button>
             </form>
+
+            <!-- Server-side success popup (this will be shown if the server returns a success message) -->
+            <c:if test="${not empty success}">
+                <div id="popupOverlay" class="popup-overlay show"></div>
+                <div id="popupBox" class="popup-box success show">
+                    <span class="close-btn" onclick="closePopup()">&times;</span>
+                    <div class="popup-icon success">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                        </svg>
+                    </div>
+                    <h2>Success</h2>
+                    <p>${success}</p>
+                    <button class="popup-btn" onclick="closePopup()">OK</button>
+                </div>
+            </c:if>
+
+            <!-- Server-side error popup (you can add this if your server returns error messages) -->
+            <c:if test="${not empty error}">
+                <div id="popupOverlay" class="popup-overlay show"></div>
+                <div id="popupBox" class="popup-box error show">
+                    <span class="close-btn" onclick="closePopup()">&times;</span>
+                    <div class="popup-icon error">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="8" x2="12" y2="12"></line>
+                            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                        </svg>
+                    </div>
+                    <h2>Error</h2>
+                    <p>${error}</p>
+                    <button class="popup-btn" onclick="closePopup()">OK</button>
+                </div>
+            </c:if>
         </section>
+
 
         <section class="faq fade-in-delay">
             <h2>Frequently Asked Questions</h2>
@@ -197,7 +233,10 @@
             observer.observe(element);
         });
     });
+
 </script>
+
 <jsp:include page="/WEB-INF/view/common/footer.jsp" />
+<script src="${pageContext.request.contextPath}/assets/js/popup.js"></script>
 </body>
 </html>

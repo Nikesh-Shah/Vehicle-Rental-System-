@@ -9,12 +9,10 @@ import util.EmailUtility;
 
 import java.io.IOException;
 
-
-@WebServlet(name = "/SendMessageServlet", value="/sendmessage")
+@WebServlet(name = "/SendMessageServlet", value = "/sendmessage")
 public class SendMessageServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
-    // Your email credentials (app password recommended)
     private final String fromEmail = "nikeshah0454@gmail.com";
     private final String password = "pxma azjs ljvb iuvf";
     private final String adminEmail = "nikeshah0454@gmail.com";
@@ -29,7 +27,16 @@ public class SendMessageServlet extends HttpServlet {
         String message = request.getParameter("message");
         String fullName = firstName + " " + lastName;
 
-        // Compose messages
+        // Debug print form data
+        System.out.println("Received form submission:");
+        System.out.println("First Name: " + firstName);
+        System.out.println("Last Name: " + lastName);
+        System.out.println("Email: " + userEmail);
+        System.out.println("Phone: " + phone);
+        System.out.println("Inquiry Type: " + inquiryType);
+        System.out.println("Message: " + message);
+
+        // Compose email messages
         String adminSubject = "New Inquiry: " + inquiryType;
         String adminMessage = "You have received a new message:\n\n"
                 + "Name: " + fullName + "\n"
@@ -46,16 +53,23 @@ public class SendMessageServlet extends HttpServlet {
                 + "Best regards,\nBRJ Furniture Stores";
 
         try {
-            // Send emails using a utility class
+            // Debug email sending
+            System.out.println("Sending email to admin...");
             EmailUtility.sendEmail(fromEmail, password, adminEmail, adminSubject, adminMessage);
+            System.out.println("Admin email sent successfully.");
+
+            System.out.println("Sending confirmation email to user...");
             EmailUtility.sendEmail(fromEmail, password, userEmail, confirmationSubject, confirmationMessage);
+            System.out.println("User confirmation email sent successfully.");
 
             request.setAttribute("success", "Your message has been sent successfully!");
         } catch (Exception e) {
+            System.err.println("Error while sending emails:");
             e.printStackTrace();
             request.setAttribute("error", "Something went wrong while sending the message.");
         }
 
-        request.getRequestDispatcher("contact.jsp").forward(request, response);
+        System.out.println("Forwarding to contact.jsp...");
+        request.getRequestDispatcher("/WEB-INF/view/contact.jsp").forward(request, response);
     }
 }

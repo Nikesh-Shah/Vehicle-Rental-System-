@@ -1,6 +1,7 @@
 package dao;
 
 import model.User;
+import org.mindrot.jbcrypt.BCrypt;
 import util.DbConnectionUtil;
 import java.sql.*;
 
@@ -91,6 +92,19 @@ public class UserDAO {
                 System.out.println("[DEBUG] Email exists: " + exists);
                 return exists;
             }
+        }
+    }
+
+    public static boolean updatePassword(String email,String password) throws SQLException {
+        try(Connection conn = DbConnectionUtil.getConnection();){
+            String hashed= BCrypt.hashpw(password, BCrypt.gensalt());
+            PreparedStatement ps = conn.prepareStatement("UPDATE users SET password = ? WHERE email = ?");
+            ps.setString(1, hashed);
+            ps.setString(2, email);
+            return ps.executeUpdate() > 0;
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
         }
     }
 }
