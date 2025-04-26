@@ -36,3 +36,6 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+src/main/resources/email.properties
+src/main/resources/db.properties

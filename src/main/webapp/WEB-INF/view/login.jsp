@@ -52,7 +52,7 @@
 
             <div class="form-group password-group">
                 <label for="password">Password</label>
-                <a href="${pageContext.request.contextPath}/forgot-password.jsp" class="forgot-link">Forgot password?</a>
+                <a href="${pageContext.request.contextPath}/forgot-password" class="forgot-link">Forgot password?</a>
                 <input type="password" id="password" name="password" required>
             </div>
 

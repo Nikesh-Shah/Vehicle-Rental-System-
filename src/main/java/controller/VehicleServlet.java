@@ -14,4 +14,5 @@ public class VehicleServlet extends HttpServlet {
         System.out.println("[DEBUG] Loading vehicles page...");
         request.getRequestDispatcher("/WEB-INF/view/vehicles.jsp").forward(request, response);
     }
+
 }

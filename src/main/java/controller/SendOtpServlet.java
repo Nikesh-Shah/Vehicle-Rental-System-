@@ -5,6 +5,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import util.EmailConfigUtil;
 import util.EmailUtility;
 
 import java.io.IOException;
@@ -13,8 +14,9 @@ import java.util.Map;
 import java.util.Random;
 
 public class SendOtpServlet extends HttpServlet {
-    private final String fromEmail = "nikeshah0454@gmail.com";
-    private final String password = "pxma azjs ljvb iuvf";
+
+    private final String fromEmail = EmailConfigUtil.getFromEmail();
+    private final String password = EmailConfigUtil.getPassword();
     private static final Map<String, String> otpMap = new HashMap<>();
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

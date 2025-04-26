@@ -104,7 +104,6 @@ public class VehicleDAO {
         }
     }
 
-    // Availability checking
     public List<Vehicle> getAvailableVehicles(Date startDate, Date endDate) throws SQLException {
         String sql = "SELECT v.* FROM vehicle v WHERE v.vehicle_status = ? " +
                 "AND v.vehicleId NOT IN (SELECT bv.vehicleId FROM booking_vehicle bv " +
@@ -128,6 +127,18 @@ public class VehicleDAO {
         }
         return vehicles;
     }
+//    public List<Vehicle> getBookedVehicles(Date startDate, Date endDate) throws SQLException {
+//        String sql = "SELECT DISTINCT v.*\n" +
+//                "FROM vehicle v\n" +
+//                "JOIN booking_vehicle bv ON v.vehicleId = bv.vehicleId\n" +
+//                "JOIN booking b ON bv.bookingId = b.bookingId\n" +
+//                "WHERE CURDATE() BETWEEN b.booking_start_date AND b.booking_end_date\n";
+//        try (Connection conn = DbConnectionUtil.getConnection();
+//        ResultSet rs =) {
+//            while (rs.next())
+//        }
+//
+//    }
 
     // Helper method to map ResultSet to Vehicle object
     private Vehicle mapResultSetToVehicle(ResultSet rs) throws SQLException {
