@@ -4,6 +4,7 @@ import dao.PaymentDAO;
 import dao.UserDAO;
 import dao.VehicleDAO;
 import model.Booking;
+import model.Category;
 import model.Payment;
 import model.Vehicle;
 
@@ -149,4 +150,6 @@ public class BookingService {
             }
         }
     }
+
+
 }

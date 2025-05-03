@@ -1,5 +1,7 @@
 package model;
 
+import java.sql.Timestamp;
+
 public class User {
     private int userId;
     private String fname;
@@ -15,7 +17,7 @@ public class User {
 
     public User() {}
 
-    // Constructor without ID (for creation)
+
     public User(String fname, String lname, String email, String password, String phone) {
         this.fname = fname;
         this.lname = lname;
@@ -60,5 +62,11 @@ public class User {
 
     public boolean isUser() {
         return this.role == ROLE_USER;
+    }
+
+    public void setCreatedAt(Timestamp createdAt) {
+    }
+    public Timestamp getCreatedAt() {
+        return new Timestamp(System.currentTimeMillis());
     }
 }

@@ -4,6 +4,8 @@ import model.User;
 import org.mindrot.jbcrypt.BCrypt;
 import util.DbConnectionUtil;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserDAO {
 
@@ -106,5 +108,31 @@ public class UserDAO {
             e.printStackTrace();
             return false;
         }
+    }
+
+    public static List<User> getAllUsers() throws SQLException{
+        String sql = "SELECT * FROM users";
+
+        System.out.println("[DEBUG] Retrieving all users");
+        List<User> users = new ArrayList<>();
+        try (Connection conn = DbConnectionUtil.getConnection();
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ResultSet rs = ps.executeQuery()) {
+            while(rs.next()){
+                User user = new User();
+                user.setUserId(rs.getInt("user_id"));
+                user.setFname(rs.getString("fname"));
+                user.setLname(rs.getString("lname"));
+                user.setEmail(rs.getString("email"));
+                user.setPassword(rs.getString("password"));
+                user.setRole(rs.getInt("role"));
+                user.setPhone(rs.getString("phone"));
+                users.add(user);
+            }
+
+        }catch (SQLException e){
+            System.err.println("error fetching users:"+ e.getMessage());
+        }
+        return users;
     }
 }

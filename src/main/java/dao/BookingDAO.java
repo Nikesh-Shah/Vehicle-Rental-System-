@@ -3,7 +3,6 @@ package dao;
 import model.Booking;
 import model.Vehicle;
 import util.DbConnectionUtil;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +16,7 @@ public class BookingDAO {
     public static final String STATUS_COMPLETED = "Completed";
 
     // Create a new booking
-    public int createBooking(Booking booking) throws SQLException {
+    public static int createBooking(Booking booking) throws SQLException {
         String sql = "INSERT INTO booking (booking_status, booking_start_date, " +
                 "booking_end_date, booking_total_amount) VALUES (?, ?, ?, ?)";
 
@@ -45,7 +44,7 @@ public class BookingDAO {
     }
 
     // Add vehicle to booking
-    public void addVehicleToBooking(int bookingId, int vehicleId) throws SQLException {
+    public static void addVehicleToBooking(int bookingId, int vehicleId) throws SQLException {
         String sql = "INSERT INTO booking_vehicle (bookingId, vehicleId) VALUES (?, ?)";
 
         try (Connection conn = DbConnectionUtil.getConnection();
@@ -58,7 +57,7 @@ public class BookingDAO {
     }
 
     // Get booking by ID
-    public Booking getBookingById(int bookingId) throws SQLException {
+    public static Booking getBookingById(int bookingId) throws SQLException {
         String sql = "SELECT b.*, u.fname, u.lname FROM booking b " +
                 "JOIN user_booking ub ON b.bookingId = ub.bookingId " +
                 "JOIN users u ON ub.user_id = u.user_id " +
@@ -88,7 +87,7 @@ public class BookingDAO {
     }
 
     // Get vehicles for a booking
-    private List<Vehicle> getVehiclesForBooking(int bookingId) throws SQLException {
+    private static List<Vehicle> getVehiclesForBooking(int bookingId) throws SQLException {
         String sql = "SELECT v.* FROM vehicle v " +
                 "JOIN booking_vehicle bv ON v.vehicleId = bv.vehicleId " +
                 "WHERE bv.bookingId = ?";
@@ -113,7 +112,7 @@ public class BookingDAO {
     }
 
     // Get bookings by user ID
-    public List<Booking> getBookingsByUserId(int userId) throws SQLException {
+    public static List<Booking> getBookingsByUserId(int userId) throws SQLException {
         String sql = "SELECT b.* FROM booking b " +
                 "JOIN user_booking ub ON b.bookingId = ub.bookingId " +
                 "WHERE ub.user_id = ? ORDER BY b.booking_start_date DESC";
@@ -142,7 +141,7 @@ public class BookingDAO {
     }
 
     // Update booking status
-    public boolean updateBookingStatus(int bookingId, String status) throws SQLException {
+    public static boolean updateBookingStatus(int bookingId, String status) throws SQLException {
         String sql = "UPDATE booking SET booking_status = ? WHERE bookingId = ?";
 
         try (Connection conn = DbConnectionUtil.getConnection();
@@ -155,7 +154,7 @@ public class BookingDAO {
     }
 
     // Link user to booking
-    public void linkUserToBooking(int bookingId, int userId) throws SQLException {
+    public static void linkUserToBooking(int bookingId, int userId) throws SQLException {
         String sql = "INSERT INTO user_booking (bookingId, user_id) VALUES (?, ?)";
 
         try (Connection conn = DbConnectionUtil.getConnection();
