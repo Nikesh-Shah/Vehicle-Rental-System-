@@ -9,23 +9,58 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/login.css" />
     <script src="https://connect.facebook.net/en_US/sdk.js"></script>
     <script>
-        window.fbAsyncInit = function() {
+        let fbLoaded = false;
+
+        window.fbAsyncInit = function () {
             FB.init({
-                appId      : 'YOUR_APP_ID', // Replace with your Facebook App ID
-                cookie     : true,
-                xfbml      : false,
-                version    : 'v19.0'
+                appId: 1941126890031130,
+                cookie: true,
+                xfbml: false,
+                version: 'v19.0'
             });
+            fbLoaded = true;
+            console.log("Facebook SDK initialized.");
         };
 
-        (function(d, s, id){
+        (function (d, s, id) {
             var js, fjs = d.getElementsByTagName(s)[0];
             if (d.getElementById(id)) return;
             js = d.createElement(s); js.id = id;
             js.src = "https://connect.facebook.net/en_US/sdk.js";
             fjs.parentNode.insertBefore(js, fjs);
         }(document, 'script', 'facebook-jssdk'));
+
+        function handleFacebookLogin() {
+            if (!fbLoaded) {
+                alert("Facebook SDK is not loaded yet. Please wait a moment.");
+                return;
+            }
+
+            console.log("Initiating Facebook login...");
+
+            FB.login(function (response) {
+                console.log("FB.login response:", response);
+
+                if (response.authResponse) {
+                    console.log("Login successful. Fetching user info...");
+
+                    FB.api('/me', {fields: 'id,name,email'}, function (userInfo) {
+                        console.log("User info retrieved from Facebook:", userInfo);
+
+                        document.getElementById("fbId").value = userInfo.id;
+                        document.getElementById("fbName").value = userInfo.name;
+                        document.getElementById("fbEmail").value = userInfo.email;
+
+                        document.forms[1].submit();  // Submits the form with Facebook details
+                    });
+                } else {
+                    console.error("Facebook login failed or was cancelled.", response);
+                    alert("Facebook login failed or was cancelled.");
+                }
+            }, {scope: 'public_profile,email'});
+        }
     </script>
+
 
 </head>
 <body>
@@ -92,11 +127,12 @@
             <button class="btn-social google">Google</button>
             <button class="btn-social facebook" onclick="handleFacebookLogin()">Facebook</button>
         </div>
-        <form  action="${pageContext.request.contextPath}/FacebookLoginServlet" method="POST">
+        <form id="fbForm" action="${pageContext.request.contextPath}/FacebookLoginServlet" method="POST">
             <input type="hidden" name="fbId" id="fbId">
             <input type="hidden" name="fbName" id="fbName">
             <input type="hidden" name="fbEmail" id="fbEmail">
         </form>
+
 
         <p class="alternate-action">
             Don't have an account? <a href="${pageContext.request.contextPath}/register" class="login-btn">Register</a>

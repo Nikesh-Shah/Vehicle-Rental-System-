@@ -96,19 +96,23 @@ public class UserDAO {
             }
         }
     }
-
-    public static boolean updatePassword(String email,String password) throws SQLException {
-        try(Connection conn = DbConnectionUtil.getConnection();){
-            String hashed= BCrypt.hashpw(password, BCrypt.gensalt());
+    public static boolean updatePassword(String email, String password) throws SQLException {
+        try (Connection conn = DbConnectionUtil.getConnection()) {
+            String hashed = BCrypt.hashpw(password, BCrypt.gensalt());
             PreparedStatement ps = conn.prepareStatement("UPDATE users SET password = ? WHERE email = ?");
             ps.setString(1, hashed);
             ps.setString(2, email);
-            return ps.executeUpdate() > 0;
-        }catch (Exception e){
+
+            int rowsAffected = ps.executeUpdate();
+            System.out.println("[DEBUG] updatePassword: Rows affected = " + rowsAffected);
+            return rowsAffected > 0;
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
     }
+
+
 
     public static List<User> getAllUsers() throws SQLException{
         String sql = "SELECT * FROM users";
