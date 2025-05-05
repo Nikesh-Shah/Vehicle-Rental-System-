@@ -55,28 +55,21 @@
                             <td>${user.firstName} ${user.lastName}</td>
                             <td>${user.email}</td>
                             <td>
-                                <form action="admin/update-user" method="post" class="d-inline">
-                                    <input type="hidden" name="userId" value="${user.userId}">
-                                    <select name="role" class="form-select form-select-sm" onchange="this.form.submit()">
-                                        <option value="0" ${user.role == 0 ? 'selected' : ''}>User</option>
-                                        <option value="1" ${user.role == 1 ? 'selected' : ''}>Admin</option>
-                                    </select>
+                                <!-- Delete user form -->
+                                <form action="${pageContext.request.contextPath}/admin-users" method="post" class="d-inline">
+                                    <input type="hidden" name="userId" value="${user.userId}" />
+                                    <input type="hidden" name="action" value="delete" />
+                                    <button type="submit" onclick="return confirm('Are you sure you want to delete this user?')" class="btn btn-danger btn-sm">Delete</button>
                                 </form>
-                            </td>
-                            <td><fmt:formatDate value="${user.createdAt}" pattern="MMM d, yyyy"/></td>
-                            <td>
-                                <button class="btn btn-sm btn-outline-info" data-bs-toggle="modal"
-                                        data-bs-target="#userDetailsModal" data-userid="${user.userId}">
-                                    <i class="bi bi-eye"></i> View
-                                </button>
                             </td>
                         </tr>
                     </c:forEach>
+
+
                     </tbody>
                 </table>
             </div>
 
-            <!-- Pagination -->
             <nav aria-label="Page navigation">
                 <ul class="pagination justify-content-center">
                     <li class="page-item ${currentPage == 1 ? 'disabled' : ''}">
@@ -117,13 +110,11 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    // User details modal
     document.getElementById('userDetailsModal').addEventListener('show.bs.modal', function(event) {
         const button = event.relatedTarget;
         const userId = button.getAttribute('data-userid');
 
-        // Here you would typically fetch user details via AJAX
-        // For now, we'll just show a loading message
+
         document.getElementById('userDetailsContent').innerHTML = `
                 <div class="text-center">
                     <div class="spinner-border" role="status">
@@ -136,11 +127,11 @@
         // Simulate AJAX call
         setTimeout(() => {
             document.getElementById('userDetailsContent').innerHTML = `
-                    <p><strong>User ID:</strong> ${userId}</p>
-                    <p><strong>Name:</strong> User Name Here</p>
-                    <p><strong>Email:</strong> user@example.com</p>
-                    <p><strong>Phone:</strong> (123) 456-7890</p>
-                    <p><strong>Member since:</strong> Jan 1, 2023</p>
+                    <p><strong>User ID:</strong> ${user.userId}</p>
+<p><strong>Name:</strong> ${user.firstName} ${user.lastName}</p>
+                    <p><strong>Email:</strong> ${user.email}email</p>
+                    <p><strong>Phone:</strong> ${user.phone}</p>
+                    <p><strong>Member since:</strong> ${user.createdAt}</p>
                 `;
         }, 1000);
     });

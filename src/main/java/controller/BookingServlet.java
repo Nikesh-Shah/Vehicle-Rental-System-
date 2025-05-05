@@ -13,7 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@WebServlet("/bookings")
+@WebServlet(name = "BookingServlet", value = "/bookings")
 public class BookingServlet extends HttpServlet {
     private BookingService bookingService;
 
@@ -29,7 +29,7 @@ public class BookingServlet extends HttpServlet {
         User user = session != null ? (User) session.getAttribute("user") : null;
 
         if (user == null) {
-            response.sendRedirect("login.jsp");
+            response.sendRedirect("WEB-INF/view/login.jsp");
             return;
         }
 
@@ -40,7 +40,7 @@ public class BookingServlet extends HttpServlet {
                 // Show user's bookings
                 List<Booking> bookings = bookingService.getUserBookings(user.getUserId());
                 request.setAttribute("bookings", bookings);
-                request.getRequestDispatcher("/my-bookings.jsp").forward(request, response);
+                request.getRequestDispatcher("WEB-INF/view/my-bookings.jsp").forward(request, response);
             }
             else if ("details".equals(action)) {
                 // Show booking details
@@ -49,14 +49,14 @@ public class BookingServlet extends HttpServlet {
 
                 if (booking != null && booking.getUserId() == user.getUserId()) {
                     request.setAttribute("booking", booking);
-                    request.getRequestDispatcher("/booking-details.jsp").forward(request, response);
+                    request.getRequestDispatcher("WEB-INF/view/booking-details.jsp").forward(request, response);
                 } else {
                     response.sendError(HttpServletResponse.SC_FORBIDDEN, "Access denied");
                 }
             }
         } catch (Exception e) {
             request.setAttribute("error", e.getMessage());
-            request.getRequestDispatcher("/error.jsp").forward(request, response);
+            request.getRequestDispatcher("WEB-INF/view/error.jsp").forward(request, response);
         }
     }
 
@@ -67,7 +67,7 @@ public class BookingServlet extends HttpServlet {
         User user = session != null ? (User) session.getAttribute("user") : null;
 
         if (user == null) {
-            response.sendRedirect("login.jsp");
+            response.sendRedirect("WEB-INF/view/login.jsp");
             return;
         }
 
@@ -109,7 +109,7 @@ public class BookingServlet extends HttpServlet {
             }
         } catch (Exception e) {
             request.setAttribute("error", e.getMessage());
-            request.getRequestDispatcher("/booking-error.jsp").forward(request, response);
+            request.getRequestDispatcher("WEB-INF/view/booking-error.jsp").forward(request, response);
         }
     }
 }

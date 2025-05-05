@@ -12,6 +12,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static util.DbConnectionUtil.getConnection;
+
 public class AdminDAO {
     private final VehicleDAO vehicleDAO = new VehicleDAO();
     private final BookingDAO bookingDAO = new BookingDAO();
@@ -24,7 +26,7 @@ public class AdminDAO {
         String sql = "SELECT * FROM users ORDER BY created_at DESC LIMIT ? OFFSET ?";
         List<User> users = new ArrayList<>();
 
-        try (Connection conn = DbConnectionUtil.getConnection();
+        try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, limit);
@@ -39,17 +41,56 @@ public class AdminDAO {
         }
         return users;
     }
+    public static int countUsers() throws SQLException {
+        String sql = "SELECT COUNT(*) FROM users"; // Adjust table name if needed
 
-    public boolean updateUserRole(int userId, int newRole) throws SQLException {
-        String sql = "UPDATE users SET role = ? WHERE user_id = ?";
-        try (Connection conn = DbConnectionUtil.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
 
-            stmt.setInt(1, newRole);
-            stmt.setInt(2, userId);
-            return stmt.executeUpdate() > 0;
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
         }
+
+        return 0;
     }
+
+    public static int countBookings() throws SQLException {
+        String sql = "SELECT COUNT(*) FROM booking";
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        }
+        return 0;
+
+    }
+    public static int countVehicle() throws SQLException{
+        String sql = "SELECT COUNT(*) FROM vehicle";
+        try (Connection conn = getConnection();
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        ResultSet rs = stmt.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        }
+        return 0;
+    }
+
+
+//    public boolean updateUserRole(int userId, int newRole) throws SQLException {
+//        String sql = "UPDATE users SET role = ? WHERE user_id = ?";
+//        try (Connection conn = DbConnectionUtil.getConnection();
+//             PreparedStatement stmt = conn.prepareStatement(sql)) {
+//
+//            stmt.setInt(1, newRole);
+//            stmt.setInt(2, userId);
+//            return stmt.executeUpdate() > 0;
+//        }
+//    }
 
     // Booking Management
     public List<Booking> getAllBookings(int limit, int offset) throws SQLException {
@@ -59,7 +100,7 @@ public class AdminDAO {
                 "ORDER BY b.booking_start_date DESC LIMIT ? OFFSET ?";
         List<Booking> bookings = new ArrayList<>();
 
-        try (Connection conn = DbConnectionUtil.getConnection();
+        try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, limit);
@@ -109,7 +150,7 @@ public class AdminDAO {
     // Helper methods
     private int getCount(String table) throws SQLException {
         String sql = "SELECT COUNT(*) FROM " + table;
-        try (Connection conn = DbConnectionUtil.getConnection();
+        try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
 
@@ -119,14 +160,14 @@ public class AdminDAO {
 
     private double getTotalRevenue() throws SQLException {
         String sql = "SELECT SUM(payment_amount) FROM payment WHERE payment_status = 'Completed'";
-        try (Connection conn = DbConnectionUtil.getConnection();
+        try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
 
             return rs.next() ? rs.getDouble(1) : 0;
         }
     }
-    private List<Booking> getRecentBookings(int limit) throws SQLException {
+    public List<Booking> getRecentBookings(int limit) throws SQLException {
         String sql = "SELECT b.bookingId, b.booking_status as status, " +
                 "b.booking_start_date as startDate, b.booking_end_date as endDate, " +
                 "b.booking_total_amount as totalAmount, ub.user_id as userId, " +
@@ -141,7 +182,7 @@ public class AdminDAO {
         List<Booking> bookings = new ArrayList<>();
         Map<Integer, Booking> bookingMap = new HashMap<>();
 
-        try (Connection conn = DbConnectionUtil.getConnection();
+        try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, limit);

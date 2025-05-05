@@ -6,13 +6,13 @@
         <ul class="nav flex-column">
             <li class="nav-item">
                 <a class="nav-link text-white ${param.active == 'dashboard' ? 'active' : ''}"
-                   href="${pageContext.request.contextPath}/admin/">
+                <a href="${pageContext.request.contextPath}/admin-dashboard">Dashboard</a>
                     <i class="bi bi-speedometer2 me-2"></i> Dashboard
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-white ${param.active == 'users' ? 'active' : ''}"
-                   href="${pageContext.request.contextPath}/admin/users">
+                <a class="nav-link text-white ${param.active == 'admin-users' ? 'active' : ''}"
+                   href="${pageContext.request.contextPath}/admin-users">
                     <i class="bi bi-people me-2"></i> Users
                 </a>
             </li>

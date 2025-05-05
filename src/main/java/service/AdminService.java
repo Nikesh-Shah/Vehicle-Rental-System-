@@ -2,6 +2,7 @@ package service;
 
 import dao.AdminDAO;
 import dao.BookingDAO;
+import dao.UserDAO;
 import model.*;
 
 
@@ -16,6 +17,7 @@ public class AdminService {
     private final AuthService userService;
     private final CategoryService categoryService;
     private final PaymentService paymentService;
+    private final UserDAO userDAO;
 
     public AdminService() {
         this.adminDAO = new AdminDAO();
@@ -24,18 +26,12 @@ public class AdminService {
         this.userService = new AuthService();
         this.categoryService = new CategoryService();
         this.paymentService = new PaymentService();
+        this.userDAO = new UserDAO();
+
     }
 
-    // Dashboard
-    public Map<String, Object> getDashboardStats() {
-        try {
-            return adminDAO.getDashboardStatistics();
-        } catch (SQLException e) {
-            throw new RuntimeException("Failed to load dashboard stats", e);
-        }
-    }
 
-    // User Management
+
     public List<User> getUsers(int page, int pageSize) {
         try {
             return adminDAO.getAllUsers(pageSize, (page - 1) * pageSize);
@@ -44,13 +40,33 @@ public class AdminService {
         }
     }
 
-    public boolean updateUserRole(int userId, int newRole) {
+
+    public int getTotalUsers() {
         try {
-            return adminDAO.updateUserRole(userId, newRole);
+            return adminDAO.countUsers();
         } catch (SQLException e) {
-            throw new RuntimeException("Failed to update user role", e);
+            throw new RuntimeException("Failed to count users", e);
         }
     }
+    public int getTotalBookings() {
+        try {
+            return adminDAO.countBookings();
+        }catch (SQLException e){
+            throw new RuntimeException("Failed to count bookings", e);
+
+        }
+    }
+    public int getTotalVehicles(){
+        try {
+            return adminDAO.countVehicle();
+        }catch (SQLException e){
+
+            throw new RuntimeException("Failed to count vehicles", e);
+        }
+    }
+
+
+
 
     // Booking Management
     public List<Booking> getBookings(int page, int pageSize) {
@@ -105,6 +121,17 @@ public class AdminService {
             return adminDAO.getAllPayments(pageSize, (page - 1) * pageSize);
         } catch (SQLException e) {
             throw new RuntimeException("Failed to fetch payments", e);
+        }
+    }
+    public boolean deleteUser(int userId) {
+        return userDAO.deleteUserById(userId);
+    }
+
+    public List<Booking> getRecentBookings(int limit) {
+        try {
+            return adminDAO.getRecentBookings(limit);
+        }catch (SQLException e){
+            throw new RuntimeException("Failed to fetch recent bookings", e);
         }
     }
 }

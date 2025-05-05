@@ -23,7 +23,7 @@ public class LoginServlet extends HttpServlet {
         String password = request.getParameter("password");
         String remember = request.getParameter("rememberMe");
 
-        // Debug: log the email received in the request
+
         System.out.println("[DEBUG] Login attempt received with email: " + email);
 
         AuthService.AuthResult result = AuthService.authenticate(email, password);
@@ -43,15 +43,16 @@ public class LoginServlet extends HttpServlet {
 
             } else {
                 Cookie cookie = new Cookie("rememberEmail", "");
-                cookie.setMaxAge(0); // delete cookie
+                cookie.setMaxAge(0);
                 response.addCookie(cookie);
             }
 
             // Debug: Check if the user is an admin
             if (user.isAdmin()) {
-                System.out.println("[DEBUG] User is an admin. Forwarding to admin dashboard.");
-                request.getRequestDispatcher("/WEB-INF/view/protected/admindasboard.jsp").forward(request, response);
-            } else {
+                System.out.println("[DEBUG] User is an admin. Redirecting to admin dashboard servlet.");
+                response.sendRedirect("admin-dashboard");
+            }
+            else {
                 System.out.println("[DEBUG] User is not an admin. Forwarding to the homepage.");
                 request.getRequestDispatcher("index.jsp").forward(request, response);
             }

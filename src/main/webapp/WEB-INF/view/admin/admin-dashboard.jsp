@@ -32,7 +32,7 @@
               <div class="d-flex justify-content-between align-items-center">
                 <div>
                   <h6 class="card-title text-uppercase">Users</h6>
-                  <h2 class="mb-0">${stats.totalUsers}</h2>
+                  <h2 class="mb-0">${totalUsers}</h2>
                 </div>
                 <i class="bi bi-people-fill fs-1"></i>
               </div>
@@ -45,7 +45,7 @@
               <div class="d-flex justify-content-between align-items-center">
                 <div>
                   <h6 class="card-title text-uppercase">Bookings</h6>
-                  <h2 class="mb-0">${stats.totalBookings}</h2>
+                  <h2 class="mb-0">${totalBookings}</h2>
                 </div>
                 <i class="bi bi-calendar-check fs-1"></i>
               </div>
@@ -58,7 +58,7 @@
               <div class="d-flex justify-content-between align-items-center">
                 <div>
                   <h6 class="card-title text-uppercase">Vehicles</h6>
-                  <h2 class="mb-0">${stats.totalVehicles}</h2>
+                  <h2 class="mb-0">${totalVehicles}</h2>
                 </div>
                 <i class="bi bi-car-front fs-1"></i>
               </div>
@@ -71,7 +71,7 @@
               <div class="d-flex justify-content-between align-items-center">
                 <div>
                   <h6 class="card-title text-uppercase">Revenue</h6>
-                  <h2 class="mb-0"><fmt:formatNumber value="${stats.totalRevenue}" type="currency"/></h2>
+                  <h2 class="mb-0"><fmt:formatNumber value="${totalRevenue}" type="currency"/></h2>
                 </div>
                 <i class="bi bi-cash-stack fs-1"></i>
               </div>
@@ -86,7 +86,8 @@
           <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
               <h5 class="mb-0">Recent Bookings</h5>
-              <a href="admin/bookings" class="btn btn-sm btn-outline-primary">View All</a>
+
+              <a href="${pageContext.request.contextPath}/admin/admin-bookings" class="btn btn-sm btn-outline-primary">View All</a>
             </div>
             <div class="card-body">
               <div class="table-responsive">
@@ -94,24 +95,33 @@
                   <thead>
                   <tr>
                     <th>ID</th>
-                    <th>Customer</th>
                     <th>Status</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Total Amount</th>
+                    <th>User ID</th>
+                    <th>Vehicles</th>
                   </tr>
                   </thead>
                   <tbody>
-                  <c:forEach items="${stats.recentBookings}" var="booking">
-                    <tr>
-                      <td>${booking.bookingId}</td>
-                      <td>${booking.customerName}</td>
-                      <td>
-                                                        <span class="badge bg-${booking.status == 'Confirmed' ? 'success' :
-                                                                             booking.status == 'Pending' ? 'warning' :
-                                                                             booking.status == 'Cancelled' ? 'danger' : 'info'}">
-                                                            ${booking.status}
-                                                        </span>
-                      </td>
-                    </tr>
-                  </c:forEach>
+                  <c:if test="${not empty recentBookings}">
+                    <c:forEach var="booking" items="${recentBookings}">
+                      <tr>
+                        <td>${booking.bookingId}</td>
+                        <td>${booking.status}</td>
+                        <td>${booking.startDate}</td>
+                        <td>${booking.endDate}</td>
+                        <td>${booking.totalAmount}</td>
+                        <td>${booking.userId}</td>
+                        <td>
+                          <c:forEach var="vehicle" items="${booking.vehicles}">
+                            ${vehicle.brand} ${vehicle.model} (ID: ${vehicle.vehicleId})<br/>
+                          </c:forEach>
+                        </td>
+                      </tr>
+                    </c:forEach>
+                  </c:if>
+
                   </tbody>
                 </table>
               </div>
@@ -136,7 +146,7 @@
                   </tr>
                   </thead>
                   <tbody>
-                  <c:forEach items="${stats.recentPayments}" var="payment">
+                  <c:forEach items="${recentPayments}" var="payment">
                     <tr>
                       <td>${payment.paymentId}</td>
                       <td><fmt:formatNumber value="${payment.paymentAmount}" type="currency"/></td>

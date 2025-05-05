@@ -7,12 +7,14 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static util.DbConnectionUtil.getConnection;
+
 public class UserDAO {
 
     public static int createUser(User user) throws SQLException {
         String sql = "INSERT INTO users (fname, lname, email, password, role, phone) VALUES (?, ?, ?, ?, ?, ?)";
 
-        try (Connection conn = DbConnectionUtil.getConnection();
+        try (Connection conn = getConnection();
              PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             System.out.println("[DEBUG] Database connection established for createUser");
@@ -55,7 +57,7 @@ public class UserDAO {
         String sql = "SELECT * FROM users WHERE email = ?";
         System.out.println("[DEBUG] Retrieving user by email: " + email);
 
-        try (Connection conn = DbConnectionUtil.getConnection();
+        try (Connection conn = getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, email);
@@ -84,7 +86,7 @@ public class UserDAO {
         String sql = "SELECT 1 FROM users WHERE email = ? LIMIT 1";
         System.out.println("[DEBUG] Checking if email exists: " + email);
 
-        try (Connection conn = DbConnectionUtil.getConnection();
+        try (Connection conn = getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, email);
@@ -97,7 +99,7 @@ public class UserDAO {
         }
     }
     public static boolean updatePassword(String email, String password) throws SQLException {
-        try (Connection conn = DbConnectionUtil.getConnection()) {
+        try (Connection conn = getConnection()) {
             String hashed = BCrypt.hashpw(password, BCrypt.gensalt());
             PreparedStatement ps = conn.prepareStatement("UPDATE users SET password = ? WHERE email = ?");
             ps.setString(1, hashed);
@@ -111,32 +113,20 @@ public class UserDAO {
             return false;
         }
     }
+    public boolean deleteUserById(int userId) {
+        String sql = "DELETE FROM users WHERE user_id = ?";
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-
-
-    public static List<User> getAllUsers() throws SQLException{
-        String sql = "SELECT * FROM users";
-
-        System.out.println("[DEBUG] Retrieving all users");
-        List<User> users = new ArrayList<>();
-        try (Connection conn = DbConnectionUtil.getConnection();
-        PreparedStatement ps = conn.prepareStatement(sql);
-        ResultSet rs = ps.executeQuery()) {
-            while(rs.next()){
-                User user = new User();
-                user.setUserId(rs.getInt("user_id"));
-                user.setFname(rs.getString("fname"));
-                user.setLname(rs.getString("lname"));
-                user.setEmail(rs.getString("email"));
-                user.setPassword(rs.getString("password"));
-                user.setRole(rs.getInt("role"));
-                user.setPhone(rs.getString("phone"));
-                users.add(user);
-            }
-
-        }catch (SQLException e){
-            System.err.println("error fetching users:"+ e.getMessage());
+            stmt.setInt(1, userId);
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
         }
-        return users;
     }
+
+
+
+
 }

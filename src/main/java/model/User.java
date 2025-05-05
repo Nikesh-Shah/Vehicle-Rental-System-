@@ -10,6 +10,7 @@ public class User {
     private String password;
     private int role;
     private String phone;
+    private Timestamp createdAt;
 
     // Role constants
     public static final int ROLE_USER = 0;
@@ -63,10 +64,11 @@ public class User {
     public boolean isUser() {
         return this.role == ROLE_USER;
     }
-
     public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
     }
+
     public Timestamp getCreatedAt() {
-        return new Timestamp(System.currentTimeMillis());
+        return this.createdAt;
     }
 }
