@@ -81,6 +81,26 @@ public class UserDAO {
         }
         return null;
     }
+    public static boolean updateUser(User user) {
+        String sql = "UPDATE users SET fname = ?, lname = ?, phone = ? WHERE user_id = ?";
+
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, user.getFname());
+            stmt.setString(2, user.getLname());
+            stmt.setString(3, user.getPhone());
+            stmt.setInt(4, user.getUserId());
+
+            int rows = stmt.executeUpdate();
+            return rows > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
 
     public static boolean emailExists(String email) throws SQLException {
         String sql = "SELECT 1 FROM users WHERE email = ? LIMIT 1";

@@ -19,17 +19,22 @@ public class AdminUserServlet extends HttpServlet {
     private static final int DEFAULT_PAGE_SIZE = 10;
     private AdminService adminService;
 
+    @Override
+    public void init() throws ServletException {
+        adminService = new AdminService();
+    }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
         System.out.println("doGet() triggered in AdminUserServlet");
 
 
         // Handle pagination
         int page = getPageNumber(request);
         List<User> users = adminService.getUsers(page, DEFAULT_PAGE_SIZE);
-        int totalUsers = adminService.getTotalUsers(); // Total users for pagination
+        int totalUsers = adminService.getTotalUsers();
 
         // Set attributes
         request.setAttribute("users", users);

@@ -97,6 +97,9 @@ public class AdminService {
     public boolean deleteVehicle(int vehicleId) {
         return vehicleService.deleteVehicle(vehicleId);
     }
+    public Vehicle getVehicleById(int vehicleId) {
+        return vehicleService.getVehicleById(vehicleId);
+    }
 
     // Category Management
     public List<Category> getCategories() {

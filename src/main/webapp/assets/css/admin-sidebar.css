@@ -1,0 +1,326 @@
+/* admin-sidebar.css - Custom CSS for GoRent Admin Sidebar without Bootstrap */
+
+/* ===== VARIABLES ===== */
+:root {
+    --sidebar-width: 250px;
+    --sidebar-bg: #1a1c23;
+    --sidebar-hover: #2d303a;
+    --sidebar-active: #4361ee;
+    --sidebar-text: #e2e8f0;
+    --sidebar-icon: #a0aec0;
+    --sidebar-transition: all 0.3s ease;
+    --sidebar-border-radius: 8px;
+    --sidebar-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+/* ===== SIDEBAR BASE STYLES ===== */
+.sidebar {
+    width: var(--sidebar-width);
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: var(--sidebar-bg);
+    color: var(--sidebar-text);
+    z-index: 1030;
+    overflow-y: auto;
+    transition: var(--sidebar-transition);
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Replace Bootstrap classes */
+.col-md-3, .col-lg-2, .d-md-block, .bg-dark, .collapse, .vh-100, .sticky-top {
+    /* These classes are now handled by our custom CSS */
+}
+
+.position-sticky {
+    position: sticky;
+    top: 0;
+}
+
+.pt-3 {
+    padding-top: 1rem;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.mb-4 {
+    margin-bottom: 1.5rem;
+}
+
+.text-white {
+    color: white;
+}
+
+/* ===== SIDEBAR HEADER ===== */
+.sidebar h4 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0;
+    padding: 1rem 0;
+    color: white;
+    position: relative;
+}
+
+.sidebar h4::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 3px;
+    background-color: var(--sidebar-active);
+    border-radius: 3px;
+}
+
+/* ===== SIDEBAR NAVIGATION ===== */
+.nav {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.flex-column {
+    display: flex;
+    flex-direction: column;
+}
+
+.nav-item {
+    margin: 0.25rem 0.75rem;
+    border-radius: var(--sidebar-border-radius);
+    transition: var(--sidebar-transition);
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    color: var(--sidebar-text);
+    text-decoration: none;
+    border-radius: var(--sidebar-border-radius);
+    transition: var(--sidebar-transition);
+    position: relative;
+}
+
+.nav-link:hover {
+    background-color: var(--sidebar-hover);
+    transform: translateX(5px);
+}
+
+.nav-link.active {
+    background-color: var(--sidebar-active);
+    color: white;
+    box-shadow: 0 4px 8px rgba(67, 97, 238, 0.3);
+}
+
+/* ===== SIDEBAR ICONS ===== */
+.nav-link i {
+    font-size: 1.25rem;
+    margin-right: 0.75rem;
+    transition: var(--sidebar-transition);
+    order: -1; /* Make sure icon is first */
+}
+
+.me-2 {
+    margin-right: 0.5rem;
+}
+
+.nav-link:hover i {
+    transform: scale(1.1);
+}
+
+/* ===== LOGOUT ITEM ===== */
+.mt-4 {
+    margin-top: 2rem;
+}
+
+.nav-item.mt-4 {
+    margin-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 1rem;
+}
+
+.nav-item.mt-4 .nav-link {
+    color: #f56565;
+}
+
+.nav-item.mt-4 .nav-link i {
+    color: #f56565;
+}
+
+.nav-item.mt-4 .nav-link:hover {
+    background-color: rgba(245, 101, 101, 0.1);
+}
+
+/* ===== SCROLLBAR STYLING ===== */
+.sidebar::-webkit-scrollbar {
+    width: 5px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+/* ===== RESPONSIVE STYLES ===== */
+@media (max-width: 767.98px) {
+    .sidebar {
+        transform: translateX(-100%);
+        width: 100%;
+        max-width: 300px;
+    }
+
+    .sidebar.show {
+        transform: translateX(0);
+    }
+
+    /* Main content adjustment */
+    body {
+        padding-left: 0;
+    }
+
+    body.sidebar-open {
+        overflow: hidden;
+    }
+}
+
+/* ===== MOBILE TOGGLE BUTTON ===== */
+.sidebar-mobile-toggle {
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    z-index: 1060;
+    width: 40px;
+    height: 40px;
+    background-color: var(--sidebar-active);
+    color: white;
+    border-radius: 50%;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 767.98px) {
+    .sidebar-mobile-toggle {
+        display: flex;
+    }
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.nav-item {
+    animation: fadeIn 0.3s ease forwards;
+    animation-delay: calc(0.05s * var(--item-index, 0));
+    opacity: 0;
+}
+
+.nav-item:nth-child(1) { --item-index: 1; }
+.nav-item:nth-child(2) { --item-index: 2; }
+.nav-item:nth-child(3) { --item-index: 3; }
+.nav-item:nth-child(4) { --item-index: 4; }
+.nav-item:nth-child(5) { --item-index: 5; }
+.nav-item:nth-child(6) { --item-index: 6; }
+.nav-item:nth-child(7) { --item-index: 7; }
+.nav-item:nth-child(8) { --item-index: 8; }
+
+/* ===== MAIN CONTENT ADJUSTMENT ===== */
+body {
+    margin: 0;
+    padding-left: var(--sidebar-width);
+    transition: padding-left var(--sidebar-transition);
+}
+
+@media (max-width: 767.98px) {
+    body {
+        padding-left: 0;
+    }
+}
+
+/* ===== FIX FOR DUPLICATE DASHBOARD TEXT ===== */
+.nav-link:first-child {
+    display: flex;
+    align-items: center;
+}
+
+/* This will hide the duplicate text */
+.nav-link:first-child::after {
+    content: "Dashboard";
+    display: block;
+}
+
+.nav-link:first-child {
+    font-size: 0;
+}
+
+.nav-link:first-child i {
+    font-size: 1.25rem;
+}
+
+.nav-link:first-child::after {
+    font-size: 1rem;
+}
+
+/* ===== ACTIVE INDICATOR ===== */
+.nav-link.active::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 4px;
+    background-color: white;
+    border-radius: 0 4px 4px 0;
+}
+
+/* ===== HOVER EFFECTS ===== */
+.nav-link {
+    overflow: hidden;
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 0;
+    background-color: rgba(255, 255, 255, 0.1);
+    transition: height 0.3s ease;
+    z-index: -1;
+}
+
+.nav-link:hover::after {
+    height: 100%;
+}
+
+/* ===== BRAND LOGO ===== */
+.text-center::before {
+    content: 'G';
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    background-color: var(--sidebar-active);
+    color: white;
+    border-radius: 8px;
+    line-height: 40px;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}

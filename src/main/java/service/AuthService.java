@@ -66,10 +66,7 @@ public class AuthService {
             User user = new User(fname.trim(), lname.trim(), email.trim(),
                     hashedPassword, phone.trim());
 
-            // Set as admin if it's the first user
-            if (isFirstUser()) {
-                user.setRole(User.ROLE_ADMIN);
-            }
+
 
             int userId = UserDAO.createUser(user);
             user.setUserId(userId);
@@ -105,14 +102,21 @@ public class AuthService {
             return new AuthResult(false, "Login failed. Please try again.", null);
         }
     }
-
-    // Check if this is the first user (to make them admin)
-    private static boolean isFirstUser() throws SQLException {
-        String sql = "SELECT COUNT(*) FROM users";
-        try (Connection conn = DbConnectionUtil.getConnection();
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
-            return rs.next() && rs.getInt(1) == 0;
-        }
+    public static boolean updateUser(User user) {
+        return UserDAO.updateUser(user);
     }
-}
+
+
+    public static User getUserByEmail(String email) throws SQLException {
+        try {
+            return UserDAO.getUserByEmail(email);
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    }
+
+
+

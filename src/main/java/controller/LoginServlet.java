@@ -28,12 +28,13 @@ public class LoginServlet extends HttpServlet {
 
         AuthService.AuthResult result = AuthService.authenticate(email, password);
 
-        // Debug: Check the result of authentication
         if (result.isSuccess()) {
             System.out.println("[DEBUG] Authentication successful for user: " + email);
             User user = result.getUser();
             HttpSession session = request.getSession();
             session.setAttribute("user", user);
+
+
 
 
             if ("true".equals(remember)) {

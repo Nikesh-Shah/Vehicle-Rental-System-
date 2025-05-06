@@ -52,7 +52,7 @@
                     <c:forEach items="${users}" var="user">
                         <tr>
                             <td>${user.userId}</td>
-                            <td>${user.firstName} ${user.lastName}</td>
+                            <td>${user.fname} ${user.lname}</td>
                             <td>${user.email}</td>
                             <td>
                                 <!-- Delete user form -->
@@ -128,7 +128,7 @@
         setTimeout(() => {
             document.getElementById('userDetailsContent').innerHTML = `
                     <p><strong>User ID:</strong> ${user.userId}</p>
-<p><strong>Name:</strong> ${user.firstName} ${user.lastName}</p>
+<p><strong>Name:</strong> ${user.fname} ${user.lname}</p>
                     <p><strong>Email:</strong> ${user.email}email</p>
                     <p><strong>Phone:</strong> ${user.phone}</p>
                     <p><strong>Member since:</strong> ${user.createdAt}</p>

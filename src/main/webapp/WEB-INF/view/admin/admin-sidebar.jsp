@@ -6,8 +6,8 @@
         <ul class="nav flex-column">
             <li class="nav-item">
                 <a class="nav-link text-white ${param.active == 'dashboard' ? 'active' : ''}"
-                <a href="${pageContext.request.contextPath}/admin-dashboard">Dashboard</a>
-                    <i class="bi bi-speedometer2 me-2"></i> Dashboard
+                href="${pageContext.request.contextPath}/admin-dashboard">Dashboard
+                    <i class="bi bi-speedometer2 me-2"></i>
                 </a>
             </li>
             <li class="nav-item">
@@ -18,13 +18,14 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link text-white ${param.active == 'bookings' ? 'active' : ''}"
-                   href="${pageContext.request.contextPath}/admin/bookings">
+                   href="${pageContext.request.contextPath}/admin-booking">
                     <i class="bi bi-calendar-check me-2"></i> Bookings
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link text-white ${param.active == 'vehicles' ? 'active' : ''}"
-                   href="${pageContext.request.contextPath}/admin/vehicles">
+
+                   href="${pageContext.request.contextPath}/admin-vehicles">
                     <i class="bi bi-car-front me-2"></i> Vehicles
                 </a>
             </li>
