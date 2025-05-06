@@ -8,26 +8,29 @@ import java.util.List;
 import util.DbConnectionUtil;
 
 public class VehicleDAO {
-    // Constants for vehicle status
     public static final String STATUS_AVAILABLE = "Available";
     public static final String STATUS_BOOKED = "Booked";
     public static final String STATUS_MAINTENANCE = "Maintenance";
 
-    // CRUD Operations
-    public List<Vehicle> getAllVehicles() throws SQLException {
+    public List<Vehicle> getAllVehicles(int limit, int offset) throws SQLException {
         List<Vehicle> vehicles = new ArrayList<>();
-        String sql = "SELECT * FROM vehicle";
+        String sql = "SELECT * FROM vehicle LIMIT ? OFFSET ?";
 
         try (Connection conn = DbConnectionUtil.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            while (rs.next()) {
-                vehicles.add(mapResultSetToVehicle(rs));
+            stmt.setInt(1, limit);
+            stmt.setInt(2, offset);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    vehicles.add(mapResultSetToVehicle(rs));
+                }
             }
         }
         return vehicles;
     }
+
 
     public Vehicle getVehicleById(int id) throws SQLException {
         String sql = "SELECT * FROM vehicle WHERE vehicleId = ?";
@@ -127,20 +130,7 @@ public class VehicleDAO {
         }
         return vehicles;
     }
-//    public List<Vehicle> getBookedVehicles(Date startDate, Date endDate) throws SQLException {
-//        String sql = "SELECT DISTINCT v.*\n" +
-//                "FROM vehicle v\n" +
-//                "JOIN booking_vehicle bv ON v.vehicleId = bv.vehicleId\n" +
-//                "JOIN booking b ON bv.bookingId = b.bookingId\n" +
-//                "WHERE CURDATE() BETWEEN b.booking_start_date AND b.booking_end_date\n";
-//        try (Connection conn = DbConnectionUtil.getConnection();
-//        ResultSet rs =) {
-//            while (rs.next())
-//        }
-//
-//    }
 
-    // Helper method to map ResultSet to Vehicle object
     private Vehicle mapResultSetToVehicle(ResultSet rs) throws SQLException {
         Vehicle vehicle = new Vehicle();
         vehicle.setVehicleId(rs.getInt("vehicleId"));

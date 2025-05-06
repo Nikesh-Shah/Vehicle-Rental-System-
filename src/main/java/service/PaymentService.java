@@ -16,9 +16,7 @@ public class PaymentService {
         this.bookingDAO = new BookingDAO();
     }
 
-    /**
-     * Process a COD payment for a booking
-     */
+
     public boolean processCODPayment(int bookingId) {
         try {
             // Get booking details
@@ -46,9 +44,7 @@ public class PaymentService {
         }
     }
 
-    /**
-     * Mark a COD payment as completed (when cash is collected)
-     */
+
     public boolean completeCODPayment(int paymentId) {
         try {
             return paymentDAO.updatePaymentStatus(paymentId, PaymentDAO.STATUS_COMPLETED);
@@ -57,9 +53,7 @@ public class PaymentService {
         }
     }
 
-    /**
-     * Get all pending COD payments (for admin)
-     */
+
     public List<Payment> getPendingCODPayments() {
         try {
             return paymentDAO.getPendingCODPayments();

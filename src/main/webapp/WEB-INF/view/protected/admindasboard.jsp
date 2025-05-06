@@ -1,4 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -60,11 +64,14 @@
                 </a>
             </li>
             <li>
-                <a href="${pageContext.request.contextPath}/logout">
-                    <i class="fas fa-sign-out-alt"></i>
-                    <span>Logout</span>
-                </a>
+                <form action="${pageContext.request.contextPath}/logout" method="post" style="display:inline;">
+                    <button type="submit" style="background:none; border:none; padding:0; cursor:pointer; color: white">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Logout</span>
+                    </button>
+                </form>
             </li>
+
         </ul>
     </div>
 
@@ -93,7 +100,7 @@
                             <i class="fas fa-car"></i>
                         </div>
                         <div class="stat-info">
-                            <h3>Total Vehicles</h3>
+                            <h3>${stats.totalVehicles}</h3>
                             <p>25</p>
                         </div>
                     </div>
@@ -103,8 +110,8 @@
                             <i class="fas fa-calendar-alt"></i>
                         </div>
                         <div class="stat-info">
-                            <h3>Active Bookings</h3>
-                            <p>12</p>
+                            <h3>Total Bookings</h3>
+                            <p>${stats.totalBookings}</p>
                         </div>
                     </div>
 
@@ -114,7 +121,7 @@
                         </div>
                         <div class="stat-info">
                             <h3>Registered Users</h3>
-                            <p>132</p>
+                            <p>${stats.totalUsers}</p>
                         </div>
                     </div>
 
@@ -124,7 +131,7 @@
                         </div>
                         <div class="stat-info">
                             <h3>Total Revenue</h3>
-                            <p>$12,234.00</p>
+                            <p><fmt:formatNumber value="${stats.totalRevenue}" type="currency"/></p>
                         </div>
                     </div>
                 </div>
@@ -136,70 +143,55 @@
                     </div>
                 </div>
 
-                <div class="recent-section">
-                    <h3>Recent Bookings</h3>
-                    <table class="data-table">
-                        <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Customer</th>
-                            <th>Vehicle</th>
-                            <th>Start Date</th>
-                            <th>End Date</th>
-                            <th>Amount</th>
-                            <th>Status</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>B001</td>
-                            <td>John Smith</td>
-                            <td>Toyota Camry</td>
-                            <td>2023-04-15</td>
-                            <td>2023-04-20</td>
-                            <td>$375.00</td>
-                            <td><span class="status active">Active</span></td>
-                        </tr>
-                        <tr>
-                            <td>B002</td>
-                            <td>Sarah Johnson</td>
-                            <td>Honda CR-V</td>
-                            <td>2023-04-10</td>
-                            <td>2023-04-17</td>
-                            <td>$665.00</td>
-                            <td><span class="status completed">Completed</span></td>
-                        </tr>
-                        <tr>
-                            <td>B003</td>
-                            <td>Michael Brown</td>
-                            <td>Ford F-150</td>
-                            <td>2023-04-18</td>
-                            <td>2023-04-25</td>
-                            <td>$840.00</td>
-                            <td><span class="status pending">Pending</span></td>
-                        </tr>
-                        <tr>
-                            <td>B004</td>
-                            <td>Emily Davis</td>
-                            <td>Tesla Model 3</td>
-                            <td>2023-04-05</td>
-                            <td>2023-04-12</td>
-                            <td>$1,050.00</td>
-                            <td><span class="status completed">Completed</span></td>
-                        </tr>
-                        <tr>
-                            <td>B005</td>
-                            <td>David Wilson</td>
-                            <td>BMW X5</td>
-                            <td>2023-04-22</td>
-                            <td>2023-04-29</td>
-                            <td>$1,260.00</td>
-                            <td><span class="status pending">Pending</span></td>
-                        </tr>
-                        </tbody>
-                    </table>
+                <!-- Recent Bookings (Dynamic Version) -->
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0">Recent Bookings</h5>
+                                <a href="admin/bookings" class="btn btn-sm btn-outline-primary">View All</a>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover data-table">
+                                        <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Customer</th>
+                                            <th>Vehicle</th>
+                                            <th>Start Date</th>
+                                            <th>End Date</th>
+                                            <th>Amount</th>
+                                            <th>Status</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <c:forEach items="${stats.recentBookings}" var="booking">
+                                            <tr>
+                                                <td>${booking.bookingId}</td>
+                                                <td>${booking.customerName}</td>
+                                                <td>${booking.vehicleName}</td>
+                                                <td>${booking.startDate}</td>
+                                                <td>${booking.endDate}</td>
+                                                <td>$${booking.amount}</td>
+                                                <td>
+                                        <span class="status
+                                            ${booking.status == 'Active' ? 'active' :
+                                              booking.status == 'Completed' ? 'completed' :
+                                              booking.status == 'Pending' ? 'pending' : ''}">
+                                                ${booking.status}
+                                        </span>
+                                                </td>
+                                            </tr>
+                                        </c:forEach>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
+
 
             <!-- Vehicles Tab -->
             <div id="vehicles" class="tab-content">

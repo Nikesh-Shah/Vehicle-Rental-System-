@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.Payment;
+import model.Vehicle;
 import util.DbConnectionUtil;
 public class PaymentDAO {
     // Constants for our COD-only system
@@ -36,9 +37,7 @@ public class PaymentDAO {
         }
     }
 
-    /**
-     * Link payment to a booking
-     */
+
     public boolean linkPaymentToBooking(int bookingId, int paymentId) throws SQLException {
         String sql = "UPDATE user_booking SET paymentId = ? WHERE bookingId = ?";
 
@@ -51,9 +50,7 @@ public class PaymentDAO {
         }
     }
 
-    /**
-     * Update payment status (for admin marking as collected)
-     */
+
     public boolean updatePaymentStatus(int paymentId, String status) throws SQLException {
         String sql = "UPDATE payment SET payment_status = ? WHERE paymentId = ?";
 
@@ -66,9 +63,7 @@ public class PaymentDAO {
         }
     }
 
-    /**
-     * Get all pending COD payments (for admin)
-     */
+
     public List<Payment> getPendingCODPayments() throws SQLException {
         String sql = "SELECT * FROM payment WHERE payment_method = ? AND payment_status = ?";
         List<Payment> payments = new ArrayList<>();
@@ -93,4 +88,28 @@ public class PaymentDAO {
         }
         return payments;
     }
+    public List<Payment> getAllPayments(int limit, int offset) throws SQLException {
+        String sql = "SELECT * FROM payment LIMIT ? OFFSET ?";
+        List<Payment> payments = new ArrayList<>();
+        try (Connection conn = DbConnectionUtil.getConnection();
+        PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, limit);
+            stmt.setInt(2, offset);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                   Payment payment = new Payment();
+                   payment.setPaymentId(rs.getInt("paymentId"));
+                   payment.setPaymentDate(rs.getDate("payment_date"));
+                   payment.setAmount(rs.getDouble("payment_amount"));
+                   payment.setMethod(rs.getString("payment_method"));
+                   payment.setStatus(rs.getString("payment_status"));
+                   payments.add(payment);
+
+                }
+            }
+        }
+        return payments;
+    }
+
+
 }

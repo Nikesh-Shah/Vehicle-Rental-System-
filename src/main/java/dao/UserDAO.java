@@ -4,13 +4,17 @@ import model.User;
 import org.mindrot.jbcrypt.BCrypt;
 import util.DbConnectionUtil;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import static util.DbConnectionUtil.getConnection;
 
 public class UserDAO {
 
     public static int createUser(User user) throws SQLException {
         String sql = "INSERT INTO users (fname, lname, email, password, role, phone) VALUES (?, ?, ?, ?, ?, ?)";
 
-        try (Connection conn = DbConnectionUtil.getConnection();
+        try (Connection conn = getConnection();
              PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             System.out.println("[DEBUG] Database connection established for createUser");
@@ -53,7 +57,7 @@ public class UserDAO {
         String sql = "SELECT * FROM users WHERE email = ?";
         System.out.println("[DEBUG] Retrieving user by email: " + email);
 
-        try (Connection conn = DbConnectionUtil.getConnection();
+        try (Connection conn = getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, email);
@@ -77,12 +81,32 @@ public class UserDAO {
         }
         return null;
     }
+    public static boolean updateUser(User user) {
+        String sql = "UPDATE users SET fname = ?, lname = ?, phone = ? WHERE user_id = ?";
+
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, user.getFname());
+            stmt.setString(2, user.getLname());
+            stmt.setString(3, user.getPhone());
+            stmt.setInt(4, user.getUserId());
+
+            int rows = stmt.executeUpdate();
+            return rows > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
 
     public static boolean emailExists(String email) throws SQLException {
         String sql = "SELECT 1 FROM users WHERE email = ? LIMIT 1";
         System.out.println("[DEBUG] Checking if email exists: " + email);
 
-        try (Connection conn = DbConnectionUtil.getConnection();
+        try (Connection conn = getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, email);
@@ -94,17 +118,35 @@ public class UserDAO {
             }
         }
     }
-
-    public static boolean updatePassword(String email,String password) throws SQLException {
-        try(Connection conn = DbConnectionUtil.getConnection();){
-            String hashed= BCrypt.hashpw(password, BCrypt.gensalt());
+    public static boolean updatePassword(String email, String password) throws SQLException {
+        try (Connection conn = getConnection()) {
+            String hashed = BCrypt.hashpw(password, BCrypt.gensalt());
             PreparedStatement ps = conn.prepareStatement("UPDATE users SET password = ? WHERE email = ?");
             ps.setString(1, hashed);
             ps.setString(2, email);
-            return ps.executeUpdate() > 0;
-        }catch (Exception e){
+
+            int rowsAffected = ps.executeUpdate();
+            System.out.println("[DEBUG] updatePassword: Rows affected = " + rowsAffected);
+            return rowsAffected > 0;
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
     }
+    public boolean deleteUserById(int userId) {
+        String sql = "DELETE FROM users WHERE user_id = ?";
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, userId);
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
+
+
 }
