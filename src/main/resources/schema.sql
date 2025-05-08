@@ -1,4 +1,3 @@
--- Creating Database
 CREATE DATABASE IF NOT EXISTS GoRent;
 CREATE TABLE users (
                        user_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -21,7 +20,12 @@ CREATE TABLE vehicle (
                          vehicle_brand VARCHAR(100) NOT NULL,
                          vehicle_model VARCHAR(100) NOT NULL,
                          vehicle_price_per_day DECIMAL(10,2) NOT NULL,
-                         vehicle_status VARCHAR(50) NOT NULL
+                         vehicle_status VARCHAR(50) NOT NULL,
+                         categoryId int(11) NOT NULL ,
+                         vehicle_image VARCHAR(255) NOT NULL
+
+
+
 );
 
 CREATE TABLE booking (

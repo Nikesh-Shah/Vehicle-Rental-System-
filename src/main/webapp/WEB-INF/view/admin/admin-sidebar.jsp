@@ -48,10 +48,14 @@
                 </a>
             </li>
             <li class="nav-item mt-4">
-                <a class="nav-link text-white" href="${pageContext.request.contextPath}/logout">
-                    <i class="bi bi-box-arrow-right me-2"></i> Logout
-                </a>
+                <form action="${pageContext.request.contextPath}/logout" method="post">
+                    <button class="btn-log" type="submit" style="background: none; border: none; padding: 0; cursor: pointer; left: 20px;">
+                        <i class="fas fa-sign-out-alt dropdown-icon"></i>
+                        <span>Logout</span>
+                    </button>
+                </form>
             </li>
         </ul>
     </div>
 </div>
+

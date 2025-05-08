@@ -12,6 +12,9 @@ public class Booking {
     private double totalAmount;
     private int userId;
     private List<Vehicle> vehicles;
+    private User user;
+
+
 
     // Constructors
     public Booking() {
@@ -55,6 +58,7 @@ public class Booking {
     }
 
     public Date getEndDate() {
+
         return endDate;
     }
 
@@ -88,5 +92,15 @@ public class Booking {
 
     public void addVehicle(Vehicle vehicle) {
         this.vehicles.add(vehicle);
+    }
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+        if(user != null) {
+            this.userId = user.getUserId();
+        }
     }
 }

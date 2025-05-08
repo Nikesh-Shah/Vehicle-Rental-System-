@@ -12,15 +12,12 @@ public class VehicleDAO {
     public static final String STATUS_BOOKED = "Booked";
     public static final String STATUS_MAINTENANCE = "Maintenance";
 
-    public List<Vehicle> getAllVehicles(int limit, int offset) throws SQLException {
+    public List<Vehicle> getAllVehicles() throws SQLException {
         List<Vehicle> vehicles = new ArrayList<>();
-        String sql = "SELECT * FROM vehicle LIMIT ? OFFSET ?";
-
+        String sql = "SELECT * FROM vehicle";
         try (Connection conn = DbConnectionUtil.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setInt(1, limit);
-            stmt.setInt(2, offset);
 
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
@@ -130,6 +127,38 @@ public class VehicleDAO {
         }
         return vehicles;
     }
+    public boolean isVehicleAvailable(int vehicleId, Date startDate, Date endDate) throws SQLException {
+        String sql = "SELECT COUNT(*) FROM booking_vehicle bv " +
+                "JOIN booking b ON bv.bookingId = b.bookingId " +
+                "WHERE bv.vehicleId = ? AND b.booking_status NOT IN ('Cancelled') " +
+                "AND ((b.booking_start_date <= ? AND b.booking_end_date >= ?) " +
+                "OR (b.booking_start_date BETWEEN ? AND ?))";
+
+        try (Connection conn = DbConnectionUtil.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, vehicleId);
+            stmt.setDate(2, new java.sql.Date(endDate.getTime()));
+            stmt.setDate(3, new java.sql.Date(startDate.getTime()));
+            stmt.setDate(4, new java.sql.Date(startDate.getTime()));
+            stmt.setDate(5, new java.sql.Date(endDate.getTime()));
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                return rs.next() && rs.getInt(1) == 0;
+            }
+        }
+    }
+
+    public boolean updateVehicleStatus(int vehicleId, String status) throws SQLException {
+        String sql = "UPDATE vehicle SET vehicle_status = ? WHERE vehicleId = ?";
+        try (Connection conn = DbConnectionUtil.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, status);
+            stmt.setInt(2, vehicleId);
+            return stmt.executeUpdate() > 0;
+        }
+    }
 
     private Vehicle mapResultSetToVehicle(ResultSet rs) throws SQLException {
         Vehicle vehicle = new Vehicle();
@@ -138,8 +167,27 @@ public class VehicleDAO {
         vehicle.setModel(rs.getString("vehicle_model"));
         vehicle.setPricePerDay(rs.getDouble("vehicle_price_per_day"));
         vehicle.setStatus(rs.getString("vehicle_status"));
-        vehicle.setCategoryId(rs.getInt("categoryId"));
         vehicle.setImage(rs.getString("vehicle_image"));
         return vehicle;
+    }
+        public double getVehiclePricePerDay(int vehicleId) {
+            double pricePerDay = 0.0;
+            String query = "SELECT vehicle_price_per_day FROM vehicle WHERE vehicleId = ?";
+
+            try (Connection conn = DbConnectionUtil.getConnection();
+                 PreparedStatement stmt = conn.prepareStatement(query)) {
+
+                stmt.setInt(1, vehicleId);
+                ResultSet rs = stmt.executeQuery();
+
+                if (rs.next()) {
+                    pricePerDay = rs.getDouble("vehicle_price_per_day");
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return pricePerDay;
+
+
     }
 }

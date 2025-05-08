@@ -118,7 +118,7 @@ public class AdminDAO {
 
     // Vehicle Management
     public List<Vehicle> getAllVehicles(int limit, int offset) throws SQLException {
-        return vehicleDAO.getAllVehicles(limit, offset);
+        return vehicleDAO.getAllVehicles();
     }
 
     // Category Management
@@ -127,9 +127,9 @@ public class AdminDAO {
     }
 
     // Payment Management
-    public List<Payment> getAllPayments(int limit, int offset) throws SQLException {
-        return paymentDAO.getAllPayments(limit, offset);
-    }
+//    public List<Payment> getAllPayments(int limit, int offset) throws SQLException {
+//        return paymentDAO.getAllPayments(limit, offset);
+//    }
 
     public Map<String, Object> getDashboardStatistics() throws SQLException {
         Map<String, Object> stats = new HashMap<>();

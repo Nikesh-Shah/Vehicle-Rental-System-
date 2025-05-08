@@ -1,71 +1,50 @@
-<%@ page contentType="text/html;charset=UTF-8" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="UTF-8">
   <title>My Bookings</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    h2 { border-bottom: 2px solid #444; padding-bottom: 5px; }
+    .booking { border: 1px solid #ccc; margin-bottom: 15px; padding: 10px; border-radius: 5px; }
+    .vehicles { margin-top: 10px; }
+    .vehicle { display: inline-block; width: 180px; margin-right: 10px; vertical-align: top; text-align: center; }
+    .vehicle img { max-width: 100%; height: auto; border-radius: 4px; }
+    .none { color: #888; font-style: italic; }
+  </style>
 </head>
 <body>
-<%@ include file="/WEB-INF/view/common/navbar.jsp" %>
-<div class="container mt-4">
-  <h1 class="mb-4">My Bookings</h1>
 
-  <c:if test="${not empty param.cancelSuccess}">
-    <div class="alert alert-success">Booking cancelled successfully!</div>
-  </c:if>
+<h1>My Bookings</h1>
 
-  <c:choose>
-    <c:when test="${empty bookings}">
-      <div class="alert alert-info">
-        You don't have any bookings yet. <a href="vehicles">Book a vehicle now!</a>
-      </div>
-    </c:when>
-    <c:otherwise>
-      <div class="table-responsive">
-        <table class="table table-striped">
-          <thead>
-          <tr>
-            <th>Booking #</th>
-            <th>Dates</th>
-            <th>Vehicles</th>
-            <th>Total</th>
-            <th>Status</th>
-            <th>Actions</th>
-          </tr>
-          </thead>
-          <tbody>
-          <c:forEach items="${bookings}" var="booking">
-            <tr>
-              <td>${booking.bookingId}</td>
-              <td>
-                <fmt:formatDate value="${booking.startDate}" pattern="MMM d"/> -
-                <fmt:formatDate value="${booking.endDate}" pattern="MMM d, yyyy"/>
-              </td>
-              <td>
-                <c:forEach items="${booking.vehicles}" var="vehicle" varStatus="loop">
-                  ${vehicle.brand} ${vehicle.model}<c:if test="${!loop.last}">, </c:if>
-                </c:forEach>
-              </td>
-              <td>$<fmt:formatNumber value="${booking.totalAmount}" minFractionDigits="2"/></td>
-              <td>
-                                        <span class="badge bg-${booking.status == 'Confirmed' ? 'success' :
-                                                               booking.status == 'Pending' ? 'warning' :
-                                                               booking.status == 'Cancelled' ? 'danger' : 'info'}">
-                                            ${booking.status}
-                                        </span>
-              </td>
-              <td>
-                <a href="bookings?action=details&id=${booking.bookingId}" class="btn btn-sm btn-outline-primary">Details</a>
-              </td>
-            </tr>
-          </c:forEach>
-          </tbody>
-        </table>
-      </div>
-    </c:otherwise>
-  </c:choose>
-</div>
+<h2>Current & Upcoming Bookings</h2>
+<h2>Current Bookings</h2>
+<c:forEach var="booking" items="${currentBookings}">
+  <p>
+    <strong>Booking ID:</strong> ${booking.bookingId} <br>
+    <strong>Start Date:</strong> ${booking.startDate} <br>
+    <strong>End Date:</strong> ${booking.endDate} <br>
+    <strong>Total Amount:</strong> ${booking.totalAmount} <br>
+    <strong>Status:</strong> ${booking.status}
+  </p>
+  <hr>
+</c:forEach>
+
+<h2>Previous Bookings</h2>
+<c:forEach var="booking" items="${previousBookings}">
+  <p>
+    <strong>Booking ID:</strong> ${booking.bookingId} <br>
+    <strong>Start Date:</strong> ${booking.startDate} <br>
+    <strong>End Date:</strong> ${booking.endDate} <br>
+    <strong>Total Amount:</strong> ${booking.totalAmount} <br>
+    <strong>Status:</strong> ${booking.status}
+  </p>
+  <hr>
+</c:forEach>
+
+
 </body>
 </html>

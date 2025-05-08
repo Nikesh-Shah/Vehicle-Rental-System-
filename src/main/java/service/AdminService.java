@@ -77,13 +77,13 @@ public class AdminService {
         }
     }
 
-    public boolean updateBookingStatus(int bookingId, String status) throws SQLException {
-        return BookingDAO.updateBookingStatus(bookingId, status);
-    }
+//    public boolean updateBookingStatus(int bookingId, String status) throws SQLException {
+//        return BookingDAO.updateBookingStatus(bookingId, status);
+//    }
 
     // Vehicle Management
     public List<Vehicle> getVehicles(int page, int pageSize) {
-        return vehicleService.getAllVehicles(pageSize, (page - 1) * pageSize);
+        return vehicleService.getAllVehicles();
     }
 
     public int addVehicle(Vehicle vehicle) {
@@ -119,13 +119,13 @@ public class AdminService {
     }
 
     // Payment Management
-    public List<Payment> getPayments(int page, int pageSize) {
-        try {
-            return adminDAO.getAllPayments(pageSize, (page - 1) * pageSize);
-        } catch (SQLException e) {
-            throw new RuntimeException("Failed to fetch payments", e);
-        }
-    }
+//    public List<Payment> getPayments(int page, int pageSize) {
+//        try {
+//            return adminDAO.getAllPayments(pageSize, (page - 1) * pageSize);
+//        } catch (SQLException e) {
+//            throw new RuntimeException("Failed to fetch payments", e);
+//        }
+//    }
     public boolean deleteUser(int userId) {
         return userDAO.deleteUserById(userId);
     }

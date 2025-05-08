@@ -24,36 +24,17 @@ public class VehicleServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Default pagination values
-        int limit = 10;
-        int offset = 0;
 
-        // Get pagination parameters from the request
         try {
-            String limitParam = request.getParameter("limit");
-            String offsetParam = request.getParameter("offset");
 
-            if (limitParam != null) {
-                limit = Integer.parseInt(limitParam);
-                System.out.println("[DEBUG] Pagination limit set to: " + limit);
-            } else {
-                System.out.println("[DEBUG] No limit parameter provided, using default: " + limit);
-            }
-
-            if (offsetParam != null) {
-                offset = Integer.parseInt(offsetParam);
-                System.out.println("[DEBUG] Pagination offset set to: " + offset);
-            } else {
-                System.out.println("[DEBUG] No offset parameter provided, using default: " + offset);
-            }
         } catch (NumberFormatException e) {
             // Log error or handle invalid parameters
             System.err.println("[ERROR] Invalid pagination parameters.");
         }
 
         try {
-            // Fetch vehicles from the service
-            System.out.println("[DEBUG] Fetching vehicles from service with limit: " + limit + " and offset: " + offset);
-            List<Vehicle> vehicles = vehicleService.getAllVehicles(limit, offset);
+            System.out.println("[DEBUG] Fetching vehicles from service with limit: " );
+            List<Vehicle> vehicles = vehicleService.getAllVehicles();
             System.out.println("[DEBUG] Retrieved " + vehicles.size() + " vehicles.");
 
             request.setAttribute("vehicles", vehicles);

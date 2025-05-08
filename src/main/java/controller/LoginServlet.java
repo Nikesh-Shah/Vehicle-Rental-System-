@@ -19,41 +19,46 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        // Step 1: Get form parameters
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         String remember = request.getParameter("rememberMe");
 
-
         System.out.println("[DEBUG] Login attempt received with email: " + email);
 
+        // Step 2: Authenticate the user
         AuthService.AuthResult result = AuthService.authenticate(email, password);
 
         if (result.isSuccess()) {
             System.out.println("[DEBUG] Authentication successful for user: " + email);
+
+            // Step 3: Get User object and create session
             User user = result.getUser();
             HttpSession session = request.getSession();
+
+            // ✅ Store the user object AND the userId in the session
             session.setAttribute("user", user);
+            session.setAttribute("userId", user.getUserId());
 
+            System.out.println("[DEBUG] userId stored in session: " + user.getUserId());
 
-
-
+            // Step 4: Handle "Remember Me" functionality
             if ("true".equals(remember)) {
                 Cookie cookie = new Cookie("rememberEmail", email);
-                cookie.setMaxAge(60*60*24*7);
+                cookie.setMaxAge(60 * 60 * 24 * 7);
                 response.addCookie(cookie);
-
             } else {
                 Cookie cookie = new Cookie("rememberEmail", "");
                 cookie.setMaxAge(0);
                 response.addCookie(cookie);
             }
 
-            // Debug: Check if the user is an admin
+            // Step 5: Redirect based on admin status
             if (user.isAdmin()) {
                 System.out.println("[DEBUG] User is an admin. Redirecting to admin dashboard servlet.");
                 response.sendRedirect("admin-dashboard");
-            }
-            else {
+            } else {
                 System.out.println("[DEBUG] User is not an admin. Forwarding to the homepage.");
                 request.getRequestDispatcher("index.jsp").forward(request, response);
             }
@@ -62,6 +67,7 @@ public class LoginServlet extends HttpServlet {
             System.out.println("[DEBUG] Authentication failed for user: " + email);
             System.out.println("[DEBUG] Error message: " + result.getMessage());
 
+            // Step 6: Forward back to login page with error message
             request.setAttribute("error", result.getMessage());
             request.setAttribute("email", email);
             request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);

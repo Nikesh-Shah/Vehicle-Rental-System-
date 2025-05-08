@@ -1,116 +1,55 @@
 package controller;
 
-import jakarta.servlet.*;
-import jakarta.servlet.http.*;
-import jakarta.servlet.annotation.*;
-import model.Booking;
-import model.User;
-import service.BookingService;
+import dao.VehicleDAO;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import model.Vehicle;
+
 
 import java.io.IOException;
 import java.sql.Date;
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
+import java.sql.SQLException;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
-import java.util.stream.Collectors;
-
-@WebServlet(name = "BookingServlet", value = "/bookings")
+@WebServlet("/calculate-total")
 public class BookingServlet extends HttpServlet {
-    private BookingService bookingService;
+    private VehicleDAO vehicleDAO = new VehicleDAO();
 
-    @Override
-    public void init() {
-        this.bookingService = new BookingService();
-    }
-
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
-        HttpSession session = request.getSession(false);
-        User user = session != null ? (User) session.getAttribute("user") : null;
-
-        if (user == null) {
-            response.sendRedirect("/WEB-INF/view/login.jsp");
-            return;
-        }
-
-        try {
-            String action = request.getParameter("action");
-
-            if (action == null) {
-                List<Booking> bookings = bookingService.getUserBookings(user.getUserId());
-                request.setAttribute("bookings", bookings);
-                request.getRequestDispatcher("/WEB-INF/view/my-bookings.jsp").forward(request, response);
-
-            } else if ("details".equals(action)) {
-                int bookingId = Integer.parseInt(request.getParameter("id"));
-                Booking booking = bookingService.getBookingById(bookingId);
-
-                if (booking != null && booking.getUserId() == user.getUserId()) {
-                    request.setAttribute("booking", booking);
-                    request.getRequestDispatcher("/WEB-INF/view/booking-details.jsp").forward(request, response);
-                } else {
-                    response.sendError(HttpServletResponse.SC_FORBIDDEN, "Access denied");
-                }
-            }
-
-        } catch (Exception e) {
-            request.setAttribute("error", e.getMessage());
-            request.getRequestDispatcher("/WEB-INF/view/error.jsp").forward(request, response);
-        }
-    }
-
-    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        HttpSession session = request.getSession(false);
-        User user = session != null ? (User) session.getAttribute("user") : null;
-
-        if (user == null) {
-            response.sendRedirect("/WEB-INF/view/login.jsp");
-            return;
-        }
+        int vehicleId = Integer.parseInt(request.getParameter("vehicleId"));
+        Date startDate = Date.valueOf(request.getParameter("startDate"));
+        Date endDate = Date.valueOf(request.getParameter("endDate"));
 
         try {
-            String action = request.getParameter("action");
+            Vehicle vehicle = vehicleDAO.getVehicleById(vehicleId);
 
-            if ("create".equals(action)) {
-                String[] vehicleIds = request.getParameterValues("vehicleIds");
-                String startDateStr = request.getParameter("startDate");
-                String endDateStr = request.getParameter("endDate");
-
-                Date startDate = (Date) new SimpleDateFormat("yyyy-MM-dd").parse(startDateStr);
-                Date endDate = (Date) new SimpleDateFormat("yyyy-MM-dd").parse(endDateStr);
-
-                List<Integer> ids = Arrays.stream(vehicleIds)
-                        .map(Integer::parseInt)
-                        .collect(Collectors.toList());
-
-                Booking booking = bookingService.createBooking(user.getUserId(), ids, startDate, endDate);
-
-                if (booking != null) {
-                    response.sendRedirect("bookings?action=details&id=" + booking.getBookingId());
-                } else {
-                    throw new RuntimeException("Failed to create booking");
-                }
-
-            } else if ("cancel".equals(action)) {
-                int bookingId = Integer.parseInt(request.getParameter("bookingId"));
-
-                boolean success = bookingService.cancelBooking(bookingId, user.getUserId());
-
-                if (success) {
-                    response.sendRedirect("bookings?cancelSuccess=true");
-                } else {
-                    throw new RuntimeException("Failed to cancel booking");
-                }
+            if(!vehicleDAO.isVehicleAvailable(vehicleId, startDate, endDate)) {
+                request.setAttribute("error", "Vehicle is no longer available");
+                request.setAttribute("vehicle", vehicle);
+                request.getRequestDispatcher("/WEB-INF/view/rentForm.jsp").forward(request, response);
+                return;
             }
 
-        } catch (Exception e) {
-            request.setAttribute("error", e.getMessage());
-            request.getRequestDispatcher("/WEB-INF/view/booking-error.jsp").forward(request, response);
+            long days = ChronoUnit.DAYS.between(
+                    startDate.toLocalDate(),
+                    endDate.toLocalDate()
+            );
+            double total = vehicle.getPricePerDay() * days;
+
+            request.setAttribute("vehicle", vehicle);
+            request.setAttribute("startDate", startDate);
+            request.setAttribute("endDate", endDate);
+            request.setAttribute("total", total);
+            request.getRequestDispatcher("/WEB-INF/view/payment.jsp").forward(request, response);
+
+        } catch (SQLException e) {
+            throw new ServletException("Error processing booking", e);
         }
     }
 }

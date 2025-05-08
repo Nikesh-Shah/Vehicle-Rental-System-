@@ -8,12 +8,13 @@ public class Vehicle {
     private String status;
     private int categoryId;
     private String image;
+    private String categoryName;
 
     // Constructors
     public Vehicle() {}
 
     public Vehicle(int vehicleId, String brand, String model, double pricePerDay,
-                   String status, int categoryId, String image) {
+                   String status, int categoryId, String image, String categoryName) {
         this.vehicleId = vehicleId;
         this.brand = brand;
         this.model = model;
@@ -21,6 +22,7 @@ public class Vehicle {
         this.status = status;
         this.categoryId = categoryId;
         this.image = image;
+        this.categoryName = categoryName;
     }
 
     // Getters and Setters
@@ -78,5 +80,11 @@ public class Vehicle {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public void setCategoryName(String categoryName) {
+    }
+    public String getCategoryName() {
+        return categoryName;
     }
 }

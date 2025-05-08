@@ -17,25 +17,25 @@ public class VehicleService {
         this.categoryDAO = new CategoryDAO();
     }
 
-    public List<Vehicle> getAllVehicles(int limit, int offset) {
+    public List<Vehicle> getAllVehicles() {
         try {
-            return vehicleDAO.getAllVehicles(limit,offset);
+            return vehicleDAO.getAllVehicles();
         } catch (SQLException e) {
             throw new RuntimeException("Failed to retrieve vehicles", e);
         }
     }
 
-    public List<Vehicle> getAvailableVehicles(Date startDate, Date endDate) {
-        validateDates(startDate, endDate);
+//    public List<Vehicle> getAvailableVehicles(Date startDate, Date endDate) {
+//        validateDates(startDate, endDate);
+//
+//        try {
+//            return vehicleDAO.getAvailableVehicles(startDate, endDate);
+//        } catch (SQLException e) {
+//            throw new RuntimeException("Failed to retrieve available vehicles", e);
+//        }
+//    }
 
-        try {
-            return vehicleDAO.getAvailableVehicles(startDate, endDate);
-        } catch (SQLException e) {
-            throw new RuntimeException("Failed to retrieve available vehicles", e);
-        }
-    }
-
-    public Vehicle getVehicleById(int id) {
+    public  Vehicle getVehicleById(int id) {
         try {
             Vehicle vehicle = vehicleDAO.getVehicleById(id);
             if (vehicle == null) {
@@ -70,7 +70,6 @@ public class VehicleService {
         validateVehicle(vehicle);
 
         try {
-            // Verify vehicle exists
             if (vehicleDAO.getVehicleById(vehicle.getVehicleId()) == null) {
                 throw new IllegalArgumentException("Vehicle not found with ID: " + vehicle.getVehicleId());
             }
@@ -94,7 +93,6 @@ public class VehicleService {
         }
     }
 
-    // Validation methods
     private void validateVehicle(Vehicle vehicle) {
         if (vehicle.getBrand() == null || vehicle.getBrand().trim().isEmpty()) {
             throw new IllegalArgumentException("Brand is required");
@@ -115,7 +113,6 @@ public class VehicleService {
             throw new IllegalArgumentException("Start date must be before end date");
         }
 
-        // Fix: Use current system time to create a java.sql.Date object
         Date currentDate = new Date(System.currentTimeMillis());
 
         if (startDate.before(currentDate)) {
