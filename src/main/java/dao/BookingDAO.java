@@ -118,12 +118,46 @@ public class BookingDAO {
         updateBookingStatus(bookingId, "Cancelled");
     }
 
-    public void deleteBooking(int bookingId) throws SQLException {
-        String sql = "DELETE FROM booking WHERE bookingId = ?";
-        try (Connection conn = DbConnectionUtil.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, bookingId);
-            stmt.executeUpdate();
+    public boolean deleteBooking(int bookingId) throws SQLException {
+        Connection conn = null;
+        try {
+            conn = DbConnectionUtil.getConnection();
+            conn.setAutoCommit(false); // Start transaction
+
+            // 1. Delete from booking_vehicle first
+            String deleteVehicleSQL = "DELETE FROM booking_vehicle WHERE bookingId = ?";
+            try (PreparedStatement stmt = conn.prepareStatement(deleteVehicleSQL)) {
+                stmt.setInt(1, bookingId);
+                stmt.executeUpdate();
+            }
+
+            // 2. Delete from user_booking (if exists)
+            String deleteUserBookingSQL = "DELETE FROM user_booking WHERE bookingId = ?";
+            try (PreparedStatement stmt = conn.prepareStatement(deleteUserBookingSQL)) {
+                stmt.setInt(1, bookingId);
+                stmt.executeUpdate();
+            }
+
+            // 3. Delete from payment (if exists)
+            String deletePaymentSQL = "DELETE FROM payment WHERE bookingId = ?";
+            try (PreparedStatement stmt = conn.prepareStatement(deletePaymentSQL)) {
+                stmt.setInt(1, bookingId);
+                stmt.executeUpdate();
+            }
+
+            // 4. Finally delete from booking
+            String deleteBookingSQL = "DELETE FROM booking WHERE bookingId = ?";
+            try (PreparedStatement stmt = conn.prepareStatement(deleteBookingSQL)) {
+                stmt.setInt(1, bookingId);
+                int affectedRows = stmt.executeUpdate();
+                conn.commit(); // Commit transaction
+                return affectedRows > 0;
+            }
+        } catch (SQLException e) {
+            if (conn != null) conn.rollback();
+            throw e;
+        } finally {
+            if (conn != null) conn.close();
         }
     }
     public List<Booking> getAllBookings(String statusFilter) throws SQLException {

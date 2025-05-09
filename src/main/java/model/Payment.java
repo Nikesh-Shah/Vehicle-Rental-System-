@@ -71,4 +71,26 @@ public class Payment {
     public void setBookingId(int bookingId) {
         this.bookingId = bookingId;
     }
+
+    private String customerName;      // Combined "fname + lname" from users table
+    private Date bookingStartDate;    // From booking table
+    private Date bookingEndDate;      // From booking table
+
+    // Getters and setters for new fields
+    public String getCustomerName() { return customerName; }
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
+
+    public Date getBookingStartDate() { return bookingStartDate; }
+    public void setBookingStartDate(Date bookingStartDate) {
+        this.bookingStartDate = bookingStartDate;
+    }
+
+    public Date getBookingEndDate() { return bookingEndDate; }
+    public void setBookingEndDate(Date bookingEndDate) {
+        this.bookingEndDate = bookingEndDate;
+    }
+
+
 }

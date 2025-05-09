@@ -18,14 +18,16 @@
         <h1 class="page-title">Vehicles Available for Rent</h1>
 
         <div class="search-container">
-            <form onsubmit="return handleSearch()" style="width: 100%; display: flex;">
-                <input type="text" id="vehicle-search" class="search-input" placeholder="Find your perfect vehicle...">
+            <form action="vehicles" method="get" style="width: 100%; display: flex;">
+                <input type="text" id="vehicle-search" name="query" class="search-input" placeholder="Find your perfect vehicle...">
                 <button type="submit" class="search-button">
                     <i class="fas fa-search"></i> Search
                 </button>
             </form>
+
         </div>
     </header>
+
 
 
 
@@ -51,9 +53,6 @@
                         <input type="hidden" name="vehicleModel" value="${vehicle.model}">
                         <input type="hidden" name="pricePerDay" value="${vehicle.pricePerDay}">
                         <a href="rent-form?vehicleId=${vehicle.vehicleId}">Rent Now</a>
-                    <%--                        <button type="submit" class="btn btn-primary" ${vehicle.status != 'Available' ? 'disabled' : ''}>--%>
-<%--                            Rent Now--%>
-<%--                        </button>--%>
                     </form>
                 </div>
             </div>

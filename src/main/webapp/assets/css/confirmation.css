@@ -1,0 +1,276 @@
+:root {
+    --primary-color: #3a86ff;
+    --secondary-color: #ff006e;
+    --accent-color: #8338ec;
+    --success-color: #28a745;
+    --light-color: #f8f9fa;
+    --dark-color: #212529;
+    --gray-100: #f8f9fa;
+    --gray-200: #e9ecef;
+    --gray-300: #dee2e6;
+    --gray-400: #ced4da;
+    --gray-500: #adb5bd;
+    --gray-600: #6c757d;
+    --gray-700: #495057;
+    --gray-800: #343a40;
+    --gray-900: #212529;
+    --border-radius: 0.5rem;
+    --box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    --transition: all 0.3s ease-in-out;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: var(--gray-800);
+    background-color: var(--gray-100);
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* Confirmation Section Styling */
+section {
+    max-width: 800px;
+    margin: 100px auto 60px;
+    padding: 3rem;
+    background-color: white;
+    border-radius: var(--border-radius);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    text-align: center;
+    position: relative;
+    animation: fadeInUp 0.8s ease-out;
+    overflow: hidden;
+}
+
+/* Success Circle Background */
+section::before {
+    content: '';
+    position: absolute;
+    top: -100px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(40, 167, 69, 0.1) 0%, rgba(255, 255, 255, 0) 70%);
+    border-radius: 50%;
+    z-index: 0;
+    animation: pulse 3s infinite;
+}
+
+/* Confetti Animation Elements */
+section::after {
+    content: '';
+    position: absolute;
+    top: -50px;
+    left: 0;
+    right: 0;
+    height: 100%;
+    background-image:
+            radial-gradient(circle, var(--primary-color) 2px, transparent 2px),
+            radial-gradient(circle, var(--secondary-color) 2px, transparent 2px),
+            radial-gradient(circle, var(--accent-color) 2px, transparent 2px),
+            radial-gradient(circle, var(--success-color) 2px, transparent 2px);
+    background-size: 20px 20px;
+    background-position: 0 0, 10px 10px, 15px 5px, 5px 15px;
+    opacity: 0.2;
+    z-index: -1;
+    animation: confettiFall 15s linear infinite;
+}
+
+/* Heading Styles */
+h1 {
+    font-size: 2.8rem;
+    color: var(--success-color);
+    margin-bottom: 1.5rem;
+    position: relative;
+    display: inline-block;
+    animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.2s both;
+}
+
+h1::after {
+    content: '✓';
+    position: absolute;
+    top: -15px;
+    right: -40px;
+    font-size: 2rem;
+    background-color: var(--success-color);
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 8px rgba(40, 167, 69, 0.3);
+    animation: bounceIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.5s both;
+}
+
+/* Booking ID Styles */
+p:nth-of-type(1) {
+    font-size: 1.2rem;
+    color: var(--gray-700);
+    margin-bottom: 1.5rem;
+    padding: 1rem 2rem;
+    background-color: var(--gray-100);
+    border-radius: var(--border-radius);
+    display: inline-block;
+    animation: fadeIn 0.8s ease-out 0.4s both;
+    border: 1px dashed var(--gray-300);
+}
+
+/* Thank You Message */
+p:nth-of-type(2) {
+    font-size: 1.4rem;
+    color: var(--primary-color);
+    font-weight: 500;
+    margin-top: 1.5rem;
+    animation: fadeIn 0.8s ease-out 0.6s both;
+}
+
+/* Decorative Elements */
+section::before, section::after {
+    pointer-events: none;
+}
+
+/* Return Button (Optional - Add this if you want a button to return to home) */
+.return-home {
+    display: inline-block;
+    margin-top: 2rem;
+    padding: 0.8rem 1.5rem;
+    background: linear-gradient(45deg, var(--primary-color), #2a75e6);
+    color: white;
+    border-radius: var(--border-radius);
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s;
+    box-shadow: 0 4px 8px rgba(58, 134, 255, 0.2);
+    animation: fadeIn 0.8s ease-out 0.8s both;
+}
+
+.return-home:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(58, 134, 255, 0.3);
+}
+
+/* Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes popIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes bounceIn {
+    0% {
+        opacity: 0;
+        transform: scale(0);
+    }
+    60% {
+        opacity: 1;
+        transform: scale(1.2);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes pulse {
+    0% {
+        transform: translateX(-50%) scale(1);
+        opacity: 0.6;
+    }
+    50% {
+        transform: translateX(-50%) scale(1.2);
+        opacity: 0.4;
+    }
+    100% {
+        transform: translateX(-50%) scale(1);
+        opacity: 0.6;
+    }
+}
+
+@keyframes confettiFall {
+    from {
+        background-position: 0 -100px, 10px -90px, 15px -95px, 5px -85px;
+    }
+    to {
+        background-position: 0 500px, 10px 510px, 15px 505px, 5px 515px;
+    }
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    section {
+        margin: 80px 20px 40px;
+        padding: 2rem;
+    }
+
+    h1 {
+        font-size: 2.2rem;
+    }
+
+    h1::after {
+        top: -10px;
+        right: -30px;
+        width: 30px;
+        height: 30px;
+        font-size: 1.5rem;
+    }
+
+    p:nth-of-type(1) {
+        font-size: 1rem;
+        padding: 0.8rem 1.5rem;
+    }
+
+    p:nth-of-type(2) {
+        font-size: 1.2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    section {
+        padding: 1.5rem;
+    }
+
+    h1 {
+        font-size: 1.8rem;
+    }
+
+    h1::after {
+        top: -8px;
+        right: -25px;
+        width: 25px;
+        height: 25px;
+        font-size: 1.2rem;
+    }
+}

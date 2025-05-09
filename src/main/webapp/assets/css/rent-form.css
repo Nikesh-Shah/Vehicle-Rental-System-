@@ -1,0 +1,309 @@
+/* Refined CSS for Rent Form Page */
+:root {
+    --primary-color: #3a86ff;
+    --primary-light: rgba(58, 134, 255, 0.1);
+    --secondary-color: #ff006e;
+    --accent-color: #8338ec;
+    --light-color: #f8f9fa;
+    --dark-color: #212529;
+    --success-color: #28a745;
+    --warning-color: #ffc107;
+    --danger-color: #dc3545;
+    --gray-100: #f8f9fa;
+    --gray-200: #e9ecef;
+    --gray-300: #dee2e6;
+    --gray-400: #ced4da;
+    --gray-500: #adb5bd;
+    --gray-600: #6c757d;
+    --gray-700: #495057;
+    --gray-800: #343a40;
+    --gray-900: #212529;
+    --border-radius: 0.5rem;
+    --box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease-in-out;
+}
+
+body {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: var(--gray-800);
+    background-color: var(--gray-100);
+    background-image: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+    min-height: 100vh;
+}
+.section{
+    padding-top:150px ;
+    padding-bottom: 150px;
+}
+.container {
+    width: 100%;
+    max-width: 850px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.vehicle-details {
+    background-color: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    position: relative;
+    overflow: hidden;
+    width: 80%;
+    margin-left: auto;
+}
+
+.vehicle-details::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(to bottom, var(--primary-color), var(--accent-color));
+}
+
+.vehicle-details h2 {
+    color: var(--primary-color);
+    font-size: 1.3rem;
+    margin-bottom: 1.25rem;
+    font-weight: 600;
+    position: relative;
+    padding-left: 0.5rem;
+}
+
+.vehicle-details h2::before {
+    content: '🚗';
+    margin-right: 0.5rem;
+    font-size: 1.2rem;
+}
+
+.vehicle-details img {
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    margin: 0 auto 1.25rem;
+    display: block;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.vehicle-details img:hover {
+    transform: scale(1.02);
+}
+
+.vehicle-details h3 {
+    font-size: 1.2rem;
+    color: var(--dark-color);
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.vehicle-details p {
+    font-size: 0.95rem;
+    margin-bottom: 0.75rem;
+    color: var(--gray-700);
+    padding: 0.5rem 0.75rem;
+    background-color: var(--gray-100);
+    border-radius: var(--border-radius);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.vehicle-details p:nth-of-type(1) {
+    font-weight: 600;
+    color: var(--primary-color);
+    font-size: 1.05rem;
+}
+
+.vehicle-details p:nth-of-type(1)::before {
+    content: '💰';
+    margin-right: 0.5rem;
+    font-size: 1rem;
+}
+
+.vehicle-details p:nth-of-type(2)::before {
+    content: '🔄';
+    margin-right: 0.5rem;
+    font-size: 1rem;
+}
+
+/* Form Styling */
+form {
+    background-color: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    padding: 1.75rem;
+    margin-bottom: 2rem;
+    position: relative;
+    overflow: hidden;
+    width: 60%;
+    margin-right: 70%;
+}
+
+form::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(to right, var(--primary-color), var(--accent-color));
+}
+
+form h3 {
+    color: var(--primary-color);
+    font-size: 1.3rem;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+    position: relative;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--gray-200);
+}
+
+form h3::before {
+    content: '📅';
+    margin-right: 0.5rem;
+    font-size: 1.2rem;
+}
+
+label {
+    display: block;
+    margin-bottom: 1.25rem;
+    font-weight: 500;
+    color: var(--gray-700);
+    font-size: 0.95rem;
+}
+
+input[type="date"] {
+    width: 50%;
+    padding: 0.7rem 0.8rem;
+    border: 2px solid var(--gray-300);
+    border-radius: var(--border-radius);
+    font-size: 0.95rem;
+    margin-top: 0.3rem;
+    transition: var(--transition);
+    background-color: var(--gray-100);
+}
+
+input[type="date"]:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(58, 134, 255, 0.15);
+    background-color: white;
+}
+
+button[type="submit"] {
+    display: inline-block;
+    padding: 0.7rem 1.5rem;
+    background: linear-gradient(to right, var(--primary-color), #2a75e6);
+    color: white;
+    border-radius: var(--border-radius);
+    font-weight: 600;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    border: none;
+    font-size: 0.95rem;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    box-shadow: 0 4px 8px rgba(58, 134, 255, 0.2);
+    margin-top: 4rem;
+    position: relative;
+    overflow: hidden;
+}
+
+button[type="submit"]::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: 0.5s;
+}
+
+button[type="submit"]:hover::before {
+    left: 100%;
+}
+
+button[type="submit"]:hover {
+    background: linear-gradient(to right, #2a75e6, #1a65d6);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(58, 134, 255, 0.3);
+}
+
+button[type="submit"]:active {
+    transform: translateY(-1px);
+}
+
+/* Card Animations */
+.vehicle-details, form {
+    animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.vehicle-details {
+    animation-delay: 0.2s;
+}
+
+form {
+    animation-delay: 0.4s;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive Styles */
+@media (min-width: 768px) {
+    .container {
+        display: grid;
+        grid-template-columns: 0.9fr 1.1fr;
+        gap: 1.75rem;
+    }
+
+    .vehicle-details, form {
+        margin-bottom: 0;
+        height: 100%;
+    }
+}
+
+@media (max-width: 767px) {
+    .vehicle-details, form {
+        margin-bottom: 1.75rem;
+    }
+
+    .container {
+        padding: 1.25rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .container {
+        padding: 1rem;
+    }
+
+    .vehicle-details, form {
+        padding: 1.25rem;
+    }
+
+    .vehicle-details h2, form h3 {
+        font-size: 1.2rem;
+    }
+
+    .vehicle-details p {
+        font-size: 0.9rem;
+    }
+}

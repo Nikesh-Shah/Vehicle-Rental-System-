@@ -190,4 +190,33 @@ public class VehicleDAO {
 
 
     }
+
+    public List<Vehicle> searchVehicles(String query) {
+        List<Vehicle> vehicleList = new ArrayList<>();
+        String sql = "SELECT * FROM vehicle WHERE LOWER(vehicle_brand) LIKE ? OR LOWER(vehicle_model) LIKE ?";
+
+        try (Connection conn = DbConnectionUtil.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            String searchPattern = "%" + query.toLowerCase() + "%";
+            stmt.setString(1, searchPattern);
+            stmt.setString(2, searchPattern);
+
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Vehicle vehicle = new Vehicle();
+                vehicle.setVehicleId(rs.getInt("vehicleId"));
+                vehicle.setBrand(rs.getString("vehicle_brand"));
+                vehicle.setModel(rs.getString("vehicle_model"));
+                vehicle.setPricePerDay(rs.getDouble("vehicle_price_per_day"));
+                vehicle.setImage(rs.getString("vehicle_image"));
+                vehicle.setStatus(rs.getString("vehicle_status"));
+                vehicleList.add(vehicle);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return vehicleList;
+    }
 }

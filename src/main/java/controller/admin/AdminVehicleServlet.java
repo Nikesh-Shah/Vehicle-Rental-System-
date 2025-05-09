@@ -37,6 +37,12 @@ public class AdminVehicleServlet extends HttpServlet {
             if ("edit".equals(action)) {
                 showEditPage(request, response);
                 return;
+            }else if ("add".equals(action)) {
+                List<Category> categories = adminService.getCategories();
+                request.setAttribute("categories", categories);
+                request.getRequestDispatcher("/WEB-INF/view/admin/admin-add-vehicle.jsp")
+                        .forward(request, response);
+                return;
             }
 
 
@@ -117,21 +123,18 @@ public class AdminVehicleServlet extends HttpServlet {
     private void addVehicle(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            System.out.println("Adding vehicle...");
             Vehicle vehicle = createVehicleFromRequest(request);
             int vehicleId = adminService.addVehicle(vehicle);
-            boolean success = vehicleId > 0;
-            String message = success ? "Vehicle added successfully with ID: " + vehicleId : "Failed to add vehicle";
-            System.out.println("Add result: " + message);
-
-            response.setContentType("application/json");
-            response.getWriter().write("{\"success\": " + success + ", \"message\": \"" + message + "\"}");
+            if (vehicleId > 0) {
+                response.sendRedirect(request.getContextPath() + "/admin-vehicles");
+            } else {
+                throw new IllegalArgumentException("Failed to add vehicle.");
+            }
         } catch (IllegalArgumentException e) {
-            System.out.println("Validation error during add: " + e.getMessage());
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            response.getWriter().write("{\"success\": false, \"message\": \"" + e.getMessage() + "\"}");
+            handleError(request, response, e);
         }
     }
+
 
     private void updateVehicle(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -161,7 +164,6 @@ public class AdminVehicleServlet extends HttpServlet {
     private void deleteVehicle(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            System.out.println("Deleting vehicle...");
             String vehicleIdStr = request.getParameter("vehicleId");
 
             if (vehicleIdStr == null || !vehicleIdStr.matches("\\d+")) {
@@ -171,16 +173,15 @@ public class AdminVehicleServlet extends HttpServlet {
             int vehicleId = Integer.parseInt(vehicleIdStr);
             boolean success = adminService.deleteVehicle(vehicleId);
             String message = success ? "Vehicle deleted successfully." : "Failed to delete vehicle.";
-            System.out.println("Delete result: " + message);
 
             response.setContentType("application/json");
             response.getWriter().write("{\"success\": " + success + ", \"message\": \"" + message + "\"}");
         } catch (IllegalArgumentException e) {
-            System.out.println("Validation error during delete: " + e.getMessage());
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             response.getWriter().write("{\"success\": false, \"message\": \"" + e.getMessage() + "\"}");
         }
     }
+
 
     private Vehicle createVehicleFromRequest(HttpServletRequest request) throws IOException, ServletException {
         System.out.println("Extracting vehicle data from request...");

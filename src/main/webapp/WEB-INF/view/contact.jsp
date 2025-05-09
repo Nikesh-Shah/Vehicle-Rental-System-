@@ -211,7 +211,6 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // FAQ toggle functionality
         document.querySelectorAll('.faq-question').forEach(function(question) {
             question.addEventListener('click', function() {
                 this.parentNode.classList.toggle('active');
@@ -220,7 +219,6 @@
             });
         });
 
-        // Animation triggers for scroll
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {

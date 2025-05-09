@@ -11,7 +11,7 @@ import service.VehicleService;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(name ="VehicleServlet", value= "/vehicles")
+@WebServlet(name = "VehicleServlet", value = "/vehicles")
 public class VehicleServlet extends HttpServlet {
     private VehicleService vehicleService;
 
@@ -23,28 +23,30 @@ public class VehicleServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Default pagination values
-
         try {
+            // Get the search query parameter
+            String query = request.getParameter("query");
 
-        } catch (NumberFormatException e) {
-            // Log error or handle invalid parameters
-            System.err.println("[ERROR] Invalid pagination parameters.");
-        }
+            // Initialize the list of vehicles
+            List<Vehicle> vehicles;
 
-        try {
-            System.out.println("[DEBUG] Fetching vehicles from service with limit: " );
-            List<Vehicle> vehicles = vehicleService.getAllVehicles();
+            if (query != null && !query.trim().isEmpty()) {
+                // If search query is provided, search for matching vehicles
+                System.out.println("[DEBUG] Searching vehicles with query: " + query);
+                vehicles = vehicleService.searchVehicles(query);
+            } else {
+                // If no search query, fetch all vehicles
+                System.out.println("[DEBUG] Fetching all vehicles.");
+                vehicles = vehicleService.getAllVehicles();
+            }
+
             System.out.println("[DEBUG] Retrieved " + vehicles.size() + " vehicles.");
-
             request.setAttribute("vehicles", vehicles);
-            System.out.println("Vehicles list: " + vehicles);
 
             // Forward request to JSP
             request.getRequestDispatcher("/WEB-INF/view/vehicles.jsp").forward(request, response);
             System.out.println("[DEBUG] Request forwarded to vehicles.jsp.");
         } catch (Exception e) {
-            // Handle any exceptions (e.g., database errors)
             System.err.println("[ERROR] Exception occurred while fetching vehicles: " + e.getMessage());
             request.setAttribute("errorMessage", "An error occurred while loading vehicles.");
             request.getRequestDispatcher("/WEB-INF/view/error.jsp").forward(request, response);

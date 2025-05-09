@@ -17,6 +17,11 @@ public class VehicleService {
         this.categoryDAO = new CategoryDAO();
     }
 
+    public List<Vehicle> searchVehicles(String query) {
+        return vehicleDAO.searchVehicles(query);
+    }
+
+
     public List<Vehicle> getAllVehicles() {
         try {
             return vehicleDAO.getAllVehicles();
