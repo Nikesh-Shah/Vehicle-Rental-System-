@@ -20,10 +20,9 @@ public class DeleteCategoryServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // ✅ [DEBUG] Starting DeleteCategoryServlet doPost
+
         System.out.println("[DEBUG] → Entering DeleteCategoryServlet doPost...");
 
-        // ✅ [DEBUG] Session validation
         HttpSession session = request.getSession(false);
         if (!isAdmin(session)) {
             System.out.println("[DEBUG] ✘ Unauthorized access attempt. Redirecting to login.");
@@ -34,17 +33,14 @@ public class DeleteCategoryServlet extends HttpServlet {
         }
 
         try {
-            // ✅ [DEBUG] Attempting to read category ID
             String categoryIdParam = request.getParameter("id");
             System.out.println("[DEBUG] → Received category ID: " + categoryIdParam);
 
             int categoryId = Integer.parseInt(categoryIdParam);
 
-            // ✅ [DEBUG] Attempting to delete category
             System.out.println("[DEBUG] → Attempting to delete category with ID: " + categoryId);
             categoryDAO.deleteCategory(categoryId);
 
-            // ✅ [DEBUG] Deletion successful, redirecting
             System.out.println("[DEBUG] ✔ Category deleted successfully. Redirecting to category list.");
             response.sendRedirect(request.getContextPath() + "/admin/categories");
 

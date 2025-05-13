@@ -30,11 +30,14 @@
                     <input type="text" id="name" name="name" value="${category.name}" class="form-control" required>
                 </div>
 
+
+
                 <div class="form-group">
-                    <label for="image" class="form-label">Image URL</label>
-                    <input type="url" id="image" name="image" value="${category.image}" class="form-control" placeholder="https://example.com/image.jpg">
+                    <label for="image" class="form-label">Choose Image</label>
+                    <input type="file" id="image" name="image" value="${category.image}" class="form-control" placeholder="https://example.com/image.jpg">
                     <div id="imagePreview" class="image-preview">
-                        <img id="preview" src="${category.image}" alt="Category Image Preview">
+                        <img id="preview" src="${pageContext.request.contextPath}/${category.image}"  alt="Category Image Preview">
+
                     </div>
                 </div>
 

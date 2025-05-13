@@ -95,7 +95,7 @@
                     </td>
                     <td>${booking.startDate}</td>
                     <td>${booking.endDate}</td>
-                    <td><fmt:formatNumber value="${booking.totalAmount}" type="currency"/></td>
+                    <td>NRs. <fmt:formatNumber value="${booking.totalAmount}" type="number" /></td>
                     <td>${booking.userId}</td>
                     <td>
                       <c:forEach var="vehicle" items="${booking.vehicles}">

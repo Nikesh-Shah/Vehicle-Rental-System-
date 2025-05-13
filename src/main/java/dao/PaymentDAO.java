@@ -21,12 +21,7 @@ public class PaymentDAO {
     }
     public List<Payment> getAllPayments() throws SQLException {
         List<Payment> payments = new ArrayList<>();
-        String sql = "SELECT p.*, u.fname, u.lname, b.booking_start_date, b.booking_end_date " +
-                "FROM payment p " +
-                "JOIN user_booking ub ON p.paymentId = ub.paymentId " +
-                "JOIN users u ON ub.user_id = u.user_id " +
-                "JOIN booking b ON ub.bookingId = b.bookingId " +
-                "ORDER BY p.payment_date DESC";
+        String sql = "SELECT * FROM payment ORDER t ";
 
         try (Connection conn = DbConnectionUtil.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);

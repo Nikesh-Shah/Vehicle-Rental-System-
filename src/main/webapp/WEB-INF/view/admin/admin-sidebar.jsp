@@ -61,13 +61,6 @@
                     </a>
                 </li>
                 <li>
-                    <a href="${pageContext.request.contextPath}/admin/reports"
-                       class="<%= currentUri.contains("/admin/reports") ? "active" : "" %>">
-                        <i class="bi bi-graph-up"></i>
-                        <span>Reports</span>
-                    </a>
-                </li>
-                <li>
                     <form action="${pageContext.request.contextPath}/logout" method="post">
                         <button type="submit">
                             <i class="fas fa-sign-out-alt"></i>

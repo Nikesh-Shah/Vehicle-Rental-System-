@@ -1,4 +1,7 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/home.css" />
+
 
 
 <section class="faq-section">
@@ -97,59 +100,7 @@
     </div>
 </section>
 
-<!-- Popular Vehicles Section -->
-<section class="vehicles-section">
-    <h1>Popular Vehicles</h1>
-    <p class="subtitle">Discover our most popular rental options loved by our customers.</p>
 
-    <div class="vehicle-grid">
-        <div class="vehicle-card">
-            <div class="vehicle-image">
-                <div class="placeholder-image"></div>
-            </div>
-            <div class="vehicle-info">
-                <h3>Premium Sedan 1</h3>
-                <p>Comfortable ride with premium features</p>
-                <div class="vehicle-footer">
-                    <span class="price">Rs 2000/day</span>
-                    <a href="#" class="view-details">View Details</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="vehicle-card">
-            <div class="vehicle-image">
-                <div class="placeholder-image"></div>
-            </div>
-            <div class="vehicle-info">
-                <h3>Premium Sedan 2</h3>
-                <p>Comfortable ride with premium features</p>
-                <div class="vehicle-footer">
-                    <span class="price">Rs 2000/day</span>
-                    <a href="#" class="view-details">View Details</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="vehicle-card">
-            <div class="vehicle-image">
-                <div class="placeholder-image"></div>
-            </div>
-            <div class="vehicle-info">
-                <h3>Premium Sedan 3</h3>
-                <p>Comfortable ride with premium features</p>
-                <div class="vehicle-footer">
-                    <span class="price">Rs 2000/day</span>
-                    <a href="#" class="view-details">View Details</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="view-all-container">
-        <a href="#" class="btn-view-all">View All Vehicles <span class="arrow-icon">→</span></a>
-    </div>
-</section>
 
 
 <script>

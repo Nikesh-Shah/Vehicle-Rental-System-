@@ -37,7 +37,6 @@ public class LoginServlet extends HttpServlet {
             User user = result.getUser();
             HttpSession session = request.getSession();
 
-            // ✅ Store the user object AND the userId in the session
             session.setAttribute("user", user);
             session.setAttribute("userId", user.getUserId());
 

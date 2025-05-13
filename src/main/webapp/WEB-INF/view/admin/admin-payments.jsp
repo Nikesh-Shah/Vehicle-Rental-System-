@@ -1,29 +1,151 @@
+<%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
-<%@ include file="/WEB-INF/view/admin/admin-sidebar.jsp" %>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Payment Management</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/payment-management.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+</head>
+<body>
+<div class="admin-layout">
+    <%@ include file="/WEB-INF/view/admin/admin-sidebar.jsp" %>
 
-<table class="table">
-    <thead>
-    <tr>
-        <th>Payment ID</th>
-        <th>Customer</th>
-        <th>Amount</th>
-        <th>Booking Dates</th>
-        <th>Status</th>
-    </tr>
-    </thead>
-    <tbody>
-    <c:forEach items="${payments}" var="payment">
-        <tr>
-            <td>${payment.paymentId}</td>
-            <td>${payment.customerName}</td>
-            <td>$<fmt:formatNumber value="${payment.amount}" maxFractionDigits="2"/></td>
-            <td>
-                <fmt:formatDate value="${payment.bookingStartDate}" pattern="MMM dd"/> -
-                <fmt:formatDate value="${payment.bookingEndDate}" pattern="MMM dd, yyyy"/>
-            </td>
-            <td>${payment.status}</td>
-        </tr>
-    </c:forEach>
-    </tbody>
-</table>
+    <div class="main-content">
+        <div class="page-header">
+            <h1>Payment Management</h1>
+        </div>
+
+        <!-- Payment Summary Cards -->
+        <div class="payment-summary">
+            <div class="summary-card">
+                <div class="summary-card-inner">
+                    <div class="summary-content">
+                        <h6>Total Revenue</h6>
+                        <h2>NRs<fmt:formatNumber value="${totalRevenue}" maxFractionDigits="2"/></h2>
+                    </div>
+                    <div class="summary-icon">
+                        <i class="bi bi-cash-coin"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="summary-card">
+                <div class="summary-card-inner">
+                    <div class="summary-content">
+                        <h6>Completed Payments</h6>
+                        <h2>${completedPayments}</h2>
+                    </div>
+                    <div class="summary-icon">
+                        <i class="bi bi-check-circle"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="summary-card">
+                <div class="summary-card-inner">
+                    <div class="summary-content">
+                        <h6>Pending Payments</h6>
+                        <h2>${pendingPayments}</h2>
+                    </div>
+                    <div class="summary-icon">
+                        <i class="bi bi-hourglass-split"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="summary-card">
+                <div class="summary-card-inner">
+                    <div class="summary-content">
+                        <h6>Average Payment</h6>
+                        <h2>NRs<fmt:formatNumber value="${averagePayment}" maxFractionDigits="2"/></h2>
+                    </div>
+                    <div class="summary-icon">
+                        <i class="bi bi-graph-up"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filter Section -->
+        <div class="filter-section">
+            <form class="search-form" action="${pageContext.request.contextPath}/admin/payments" method="get">
+                <input type="text" name="search" placeholder="Search payments..." class="search-input">
+                <button type="submit" class="search-button">
+                    <i class="bi bi-search"></i>
+                </button>
+            </form>
+
+            <div class="filter-group">
+                <span class="filter-label">Status:</span>
+                <select class="filter-select" name="status" onchange="this.form.submit()">
+                    <option value="">All Statuses</option>
+                    <option value="Completed">Completed</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Failed">Failed</option>
+                    <option value="Refunded">Refunded</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <span class="filter-label">Date Range:</span>
+                <select class="filter-select" name="dateRange" onchange="this.form.submit()">
+                    <option value="all">All Time</option>
+                    <option value="today">Today</option>
+                    <option value="week">This Week</option>
+                    <option value="month">This Month</option>
+                    <option value="year">This Year</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Payment Table -->
+        <div class="payment-table-container">
+            <table class="payment-table">
+                <thead>
+                <tr>
+                    <th>Payment ID</th>
+                    <th>Customer</th>
+                    <th>Amount</th>
+                    <th>Booking Dates</th>
+                    <th>Status</th>
+                </tr>
+                </thead>
+                <tbody>
+                <c:forEach items="${payments}" var="payment">
+                    <tr>
+                        <td><span class="payment-id">${payment.paymentId}</span></td>
+                        <td><span class="customer-name">${payment.customerName}</span></td>
+                        <td><span class="payment-amount">NRs<fmt:formatNumber value="${payment.amount}" maxFractionDigits="2"/></span></td>
+                        <td>
+                            <fmt:formatDate value="${payment.bookingStartDate}" pattern="MMM dd"/> -
+                            <fmt:formatDate value="${payment.bookingEndDate}" pattern="MMM dd, yyyy"/>
+                        </td>
+                        <td>
+                            <span class="status-badge status-${payment.status.toLowerCase()}">${payment.status}</span>
+                        </td>
+                    </tr>
+                </c:forEach>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination">
+            <a href="?page=${currentPage - 1}" class="page-link ${currentPage <= 1 ? 'disabled' : ''}">
+                <i class="bi bi-chevron-left"></i> Previous
+            </a>
+
+            <c:forEach begin="1" end="${totalPages > 5 ? 5 : totalPages}" var="i">
+                <a href="?page=${i}" class="page-link ${currentPage == i ? 'active' : ''}">${i}</a>
+            </c:forEach>
+
+            <a href="?page=${currentPage + 1}" class="page-link ${currentPage >= totalPages ? 'disabled' : ''}">
+                Next <i class="bi bi-chevron-right"></i>
+            </a>
+        </div>
+    </div>
+</div>
+</body>
+</html>
