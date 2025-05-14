@@ -2,7 +2,6 @@ package model;
 public class Category {
     private int categoryId;
     private String name;
-    private String image;
     private String description;
 
     // Constructors
@@ -11,7 +10,6 @@ public class Category {
     public Category(int categoryId, String name, String image, String description) {
         this.categoryId = categoryId;
         this.name = name;
-        this.image = image;
         this.description = description;
     }
 
@@ -32,13 +30,7 @@ public class Category {
         this.name = name;
     }
 
-    public String getImage() {
-        return image;
-    }
 
-    public void setImage(String image) {
-        this.image = image;
-    }
 
     public String getDescription() {
         return description;

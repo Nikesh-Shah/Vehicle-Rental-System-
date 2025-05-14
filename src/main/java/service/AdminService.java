@@ -2,6 +2,7 @@ package service;
 
 import dao.AdminDAO;
 import dao.BookingDAO;
+import dao.PaymentDAO;
 import dao.UserDAO;
 import model.*;
 
@@ -16,8 +17,8 @@ public class AdminService {
     private final BookingService bookingService;
     private final AuthService userService;
     private final CategoryService categoryService;
-    private final PaymentService paymentService;
     private final UserDAO userDAO;
+    private final PaymentDAO paymentDAO;
 
     public AdminService() {
         this.adminDAO = new AdminDAO();
@@ -25,8 +26,8 @@ public class AdminService {
         this.bookingService = new BookingService();
         this.userService = new AuthService();
         this.categoryService = new CategoryService();
-        this.paymentService = new PaymentService();
         this.userDAO = new UserDAO();
+        this.paymentDAO = new PaymentDAO();
 
     }
 
@@ -118,14 +119,7 @@ public class AdminService {
         return categoryService.deleteCategory(categoryId);
     }
 
-    // Payment Management
-//    public List<Payment> getPayments(int page, int pageSize) {
-//        try {
-//            return adminDAO.getAllPayments(pageSize, (page - 1) * pageSize);
-//        } catch (SQLException e) {
-//            throw new RuntimeException("Failed to fetch payments", e);
-//        }
-//    }
+
     public boolean deleteUser(int userId) {
         return userDAO.deleteUserById(userId);
     }
@@ -135,6 +129,20 @@ public class AdminService {
             return adminDAO.getRecentBookings(limit);
         }catch (SQLException e){
             throw new RuntimeException("Failed to fetch recent bookings", e);
+        }
+    }
+    public List<Payment> getRecentPayments(int limit) {
+        try {
+            return paymentDAO.getRecentPayments(limit);
+        }catch (SQLException e){
+            throw new RuntimeException("Failed to fetch recent payments", e);
+        }
+    }
+    public double getTotalRevenue(){
+        try {
+            return paymentDAO.calculateTotalRevenue();
+        }catch (SQLException e){
+            throw new RuntimeException("Failed to calculate total revenue", e);
         }
     }
 }

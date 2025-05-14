@@ -41,7 +41,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="price" class="form-label">Price per Day ($):</label>
+                    <label for="price" class="form-label">Price per Day (NRs):</label>
                     <input type="number" id="price" name="price" class="form-control" min="0" step="0.01" required/>
                 </div>
 

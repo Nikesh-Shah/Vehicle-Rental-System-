@@ -33,7 +33,6 @@ public class LoginServlet extends HttpServlet {
         if (result.isSuccess()) {
             System.out.println("[DEBUG] Authentication successful for user: " + email);
 
-            // Step 3: Get User object and create session
             User user = result.getUser();
             HttpSession session = request.getSession();
 

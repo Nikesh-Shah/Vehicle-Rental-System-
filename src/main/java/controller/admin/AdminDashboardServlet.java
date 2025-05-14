@@ -46,17 +46,18 @@ public class AdminDashboardServlet extends HttpServlet {
         int totalUsers = adminService.getTotalUsers();
         int totalVehicles = adminService.getTotalVehicles();
         int totalBookings = adminService.getTotalBookings();
-//        double totalRevenue = adminService.getTotalRevenue(); // Assuming method for total revenue
+        double totalRevenue = adminService.getTotalRevenue();
         List<Booking> recentBookings = adminService.getRecentBookings(limit);
-//        List<Payment> recentPayments = adminService.getRecentPayments(); // Assuming method for recent payments
+        List<Payment> recentPayments = adminService.getRecentPayments(limit);
 
         // Set attributes
         request.setAttribute("totalUsers", totalUsers);
         request.setAttribute("totalVehicles", totalVehicles);
         request.setAttribute("totalBookings", totalBookings);
-//        request.setAttribute("totalRevenue", totalRevenue);
+        request.setAttribute("totalRevenue", totalRevenue);
         request.setAttribute("recentBookings", recentBookings);
-//        request.setAttribute("recentPayments", recentPayments);
+        System.out.println("recentPaments"+recentPayments);
+        request.setAttribute("recentPayments", recentPayments);
 
         // Forward to dashboard view
         request.getRequestDispatcher("/WEB-INF/view/admin/admin-dashboard.jsp").forward(request, response);

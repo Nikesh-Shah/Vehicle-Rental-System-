@@ -35,7 +35,7 @@
                 <div class="summary-card-inner">
                     <div class="summary-content">
                         <h6>Completed Payments</h6>
-                        <h2>${completedPayments}</h2>
+                        <h2>${totalCompletedRevenue}</h2>
                     </div>
                     <div class="summary-icon">
                         <i class="bi bi-check-circle"></i>
@@ -47,22 +47,10 @@
                 <div class="summary-card-inner">
                     <div class="summary-content">
                         <h6>Pending Payments</h6>
-                        <h2>${pendingPayments}</h2>
+                        <h2>${totalPendingRevenue}</h2>
                     </div>
                     <div class="summary-icon">
                         <i class="bi bi-hourglass-split"></i>
-                    </div>
-                </div>
-            </div>
-
-            <div class="summary-card">
-                <div class="summary-card-inner">
-                    <div class="summary-content">
-                        <h6>Average Payment</h6>
-                        <h2>NRs<fmt:formatNumber value="${averagePayment}" maxFractionDigits="2"/></h2>
-                    </div>
-                    <div class="summary-icon">
-                        <i class="bi bi-graph-up"></i>
                     </div>
                 </div>
             </div>
@@ -108,8 +96,10 @@
                     <th>Payment ID</th>
                     <th>Customer</th>
                     <th>Amount</th>
+                    <th>Method</th>
                     <th>Booking Dates</th>
                     <th>Status</th>
+                    <th>Actions</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -118,6 +108,7 @@
                         <td><span class="payment-id">${payment.paymentId}</span></td>
                         <td><span class="customer-name">${payment.customerName}</span></td>
                         <td><span class="payment-amount">NRs<fmt:formatNumber value="${payment.amount}" maxFractionDigits="2"/></span></td>
+                        <td>${payment.method}</td>
                         <td>
                             <fmt:formatDate value="${payment.bookingStartDate}" pattern="MMM dd"/> -
                             <fmt:formatDate value="${payment.bookingEndDate}" pattern="MMM dd, yyyy"/>
@@ -125,13 +116,25 @@
                         <td>
                             <span class="status-badge status-${payment.status.toLowerCase()}">${payment.status}</span>
                         </td>
+                        <td>
+                            <form action="${pageContext.request.contextPath}/admin/payments" method="post" class="status-form">
+                                <input type="hidden" name="paymentId" value="${payment.paymentId}"/>
+                                <select name="status" class="status-select">
+                                    <option value="Pending" ${payment.status == 'Pending' ? 'selected' : ''}>Pending</option>
+                                    <option value="Completed" ${payment.status == 'Completed' ? 'selected' : ''}>Completed</option>
+                                    <option value="Failed" ${payment.status == 'Failed' ? 'selected' : ''}>Failed</option>
+                                </select>
+                                <button type="submit" class="update-btn">
+                                    <i class="bi bi-check2"></i> Update
+                                </button>
+                            </form>
+                        </td>
                     </tr>
                 </c:forEach>
                 </tbody>
             </table>
         </div>
 
-        <!-- Pagination -->
         <div class="pagination">
             <a href="?page=${currentPage - 1}" class="page-link ${currentPage <= 1 ? 'disabled' : ''}">
                 <i class="bi bi-chevron-left"></i> Previous

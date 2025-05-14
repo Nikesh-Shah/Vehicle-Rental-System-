@@ -91,7 +91,7 @@ body {
 /* Payment Summary Cards */
 .payment-summary {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 1.5rem;
     margin-bottom: 2rem;
 }
@@ -111,7 +111,6 @@ body {
 .summary-card:nth-child(1) { animation-delay: 0.1s; }
 .summary-card:nth-child(2) { animation-delay: 0.2s; }
 .summary-card:nth-child(3) { animation-delay: 0.3s; }
-.summary-card:nth-child(4) { animation-delay: 0.4s; }
 
 .summary-card:hover {
     transform: translateY(-5px);
@@ -131,7 +130,6 @@ body {
 .summary-card:nth-child(1)::before { background: var(--primary-color); }
 .summary-card:nth-child(2)::before { background: var(--success-color); }
 .summary-card:nth-child(3)::before { background: var(--warning-color); }
-.summary-card:nth-child(4)::before { background: var(--secondary-color); }
 
 .summary-card-inner {
     display: flex;
@@ -173,7 +171,6 @@ body {
 .summary-card:nth-child(1) .summary-icon { background: var(--primary-color); }
 .summary-card:nth-child(2) .summary-icon { background: var(--success-color); }
 .summary-card:nth-child(3) .summary-icon { background: var(--warning-color); }
-.summary-card:nth-child(4) .summary-icon { background: var(--secondary-color); }
 
 /* Filter Section */
 .filter-section {
@@ -352,6 +349,44 @@ body {
     border: 1px solid rgba(108, 117, 125, 0.2);
 }
 
+/* Status Form */
+.status-form {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.status-select {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.8rem;
+    border: 1px solid var(--gray-300);
+    border-radius: var(--border-radius);
+    background-color: white;
+    color: var(--gray-700);
+}
+
+.update-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.8rem;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.update-btn:hover {
+    background-color: #2a75e6;
+}
+
+.update-btn i {
+    font-size: 0.75rem;
+}
+
 /* Pagination */
 .pagination {
     display: flex;
@@ -382,6 +417,11 @@ body {
     background-color: var(--primary-color);
     color: white;
     border-color: var(--primary-color);
+}
+
+.page-link.disabled {
+    opacity: 0.5;
+    pointer-events: none;
 }
 
 /* Responsive Adjustments */

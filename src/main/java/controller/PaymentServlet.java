@@ -14,7 +14,6 @@ import model.Booking;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.io.IOException;
-
 @WebServlet("/confirm-booking")
 public class PaymentServlet extends HttpServlet {
     private BookingDAO bookingDAO = new BookingDAO();
@@ -63,18 +62,19 @@ public class PaymentServlet extends HttpServlet {
             int bookingId = bookingDAO.createBooking(booking);
             System.out.println("[DEBUG] Booking created with ID: " + bookingId);
 
-            // Step 5: Link entities
-            System.out.println("[DEBUG] Linking booking to user and vehicle...");
-            bookingDAO.linkUserToBooking(bookingId, userId);
-            System.out.println("[DEBUG] User linked to booking.");
-
-            bookingDAO.addVehicleToBooking(bookingId, vehicleId);
-            System.out.println("[DEBUG] Vehicle linked to booking.");
-
-            // Step 6: Create payment
+            // Step 5: Create payment
             System.out.println("[DEBUG] Creating payment entry...");
-            paymentDAO.createPayment(bookingId, total);
-            System.out.println("[DEBUG] Payment entry created.");
+            int paymentId = paymentDAO.createPayment(bookingId, total);
+            System.out.println("[DEBUG] Payment entry created with ID: " + paymentId);
+
+            // Step 6: Link user and vehicle to booking with payment
+            System.out.println("[DEBUG] Linking booking to user and vehicle...");
+            bookingDAO.linkUserToBooking(bookingId,vehicleId, userId, paymentId);
+            System.out.println("[DEBUG] User linked to booking successfully.");
+
+            int categoryId = vehicleDAO.getCategoryIdByVehicleId(vehicleId);
+            bookingDAO.addVehicleToBooking(bookingId, vehicleId, categoryId,userId);
+            System.out.println("[DEBUG] Vehicle linked to booking successfully.");
 
             // Step 7: Update vehicle status
             System.out.println("[DEBUG] Updating vehicle status to 'Booked'...");

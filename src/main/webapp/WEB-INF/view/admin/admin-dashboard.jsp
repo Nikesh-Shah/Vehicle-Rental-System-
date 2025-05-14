@@ -56,7 +56,7 @@
           <div class="stat-card-inner">
             <div class="stat-content">
               <h6>Revenue</h6>
-              <h2><fmt:formatNumber value="${totalRevenue}" type="currency"/></h2>
+              <h2>NRs<fmt:formatNumber value="${totalRevenue}" maxFractionDigits="2"/></h2>
             </div>
             <div class="stat-icon">
               <i class="bi bi-cash-coin"></i>
@@ -70,7 +70,7 @@
         <div class="activity-card">
           <div class="activity-header">
             <h5>Recent Bookings</h5>
-            <a href="${pageContext.request.contextPath}/admin/admin-bookings">View All</a>
+            <a href="${pageContext.request.contextPath}/admin/bookings">View All</a>
           </div>
           <div class="activity-body">
             <table class="dashboard-table">
@@ -119,17 +119,26 @@
             <table class="dashboard-table">
               <thead>
               <tr>
-                <th>ID</th>
+                <th>Payment ID</th>
+                <th>Customer</th>
                 <th>Amount</th>
-                <th>Method</th>
+                <th>Booking Dates</th>
+                <th>Status</th>
               </tr>
               </thead>
               <tbody>
               <c:forEach items="${recentPayments}" var="payment">
                 <tr>
-                  <td>${payment.paymentId}</td>
-                  <td><fmt:formatNumber value="${payment.paymentAmount}" type="currency"/></td>
-                  <td>${payment.paymentMethod}</td>
+                  <td><span class="payment-id">${payment.paymentId}</span></td>
+                  <td><span class="customer-name">${payment.customerName}</span></td>
+                  <td><span class="payment-amount">NRs<fmt:formatNumber value="${payment.amount}" maxFractionDigits="2"/></span></td>
+                  <td>
+                    <fmt:formatDate value="${payment.bookingStartDate}" pattern="MMM dd"/> -
+                    <fmt:formatDate value="${payment.bookingEndDate}" pattern="MMM dd, yyyy"/>
+                  </td>
+                  <td>
+                    <span class="status-badge status-${payment.status.toLowerCase()}">${payment.status}</span>
+                  </td>
                 </tr>
               </c:forEach>
               </tbody>

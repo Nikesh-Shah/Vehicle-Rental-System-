@@ -44,7 +44,6 @@ public class CategoryDAO {
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             stmt.setString(1, category.getName()); // Matches model's getName()
-            stmt.setString(2, category.getImage());
             stmt.setString(3, category.getDescription());
             stmt.executeUpdate();
 
@@ -63,7 +62,6 @@ public class CategoryDAO {
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, category.getName());
-            stmt.setString(2, category.getImage());
             stmt.setString(3, category.getDescription());
             stmt.setInt(4, category.getCategoryId());
 
@@ -113,7 +111,6 @@ public class CategoryDAO {
         Category category = new Category();
         category.setCategoryId(rs.getInt("categoryId"));
         category.setName(rs.getString("category_name")); // Matches DB column to model's setName()
-        category.setImage(rs.getString("category_image"));
         category.setDescription(rs.getString("category_description"));
         return category;
     }

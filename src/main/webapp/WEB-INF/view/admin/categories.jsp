@@ -32,7 +32,6 @@
                         <thead>
                         <tr>
                             <th>Name</th>
-                            <th>Image</th>
                             <th>Description</th>
                             <th>Actions</th>
                         </tr>
@@ -41,18 +40,13 @@
                         <c:forEach items="${categories}" var="category">
                             <tr>
                                 <td><span class="category-name">${category.name}</span></td>
-                                <td>
-                                    <c:if test="${not empty category.image}">
-                                        <img src="${category.image}" alt="${category.name}" class="category-image">
-                                    </c:if>
-                                </td>
                                 <td><div class="category-description">${category.description}</div></td>
                                 <td>
                                     <div class="action-buttons">
                                         <a href="${pageContext.request.contextPath}/admin/category-form?id=${category.categoryId}" class="btn btn-warning btn-sm">
                                             <i class="bi bi-pencil"></i> Edit
                                         </a>
-                                        <form action="${pageContext.request.contextPath}/admin/delete-category" method="post" style="display: inline;">
+                                        <form action="${pageContext.request.contextPath}/admin/categories" method="post" style="display: inline;">
                                             <input type="hidden" name="id" value="${category.categoryId}">
                                             <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Delete this category?')">
                                                 <i class="bi bi-trash"></i> Delete

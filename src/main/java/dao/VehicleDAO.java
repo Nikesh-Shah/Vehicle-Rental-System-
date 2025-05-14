@@ -51,7 +51,7 @@ public class VehicleDAO {
 
     public int addVehicle(Vehicle vehicle) throws SQLException {
         String sql = "INSERT INTO vehicle (vehicle_brand, vehicle_model, vehicle_price_per_day, " +
-                "vehicle_status, categoryId, vehicle_image) VALUES (?, ?, ?, ?, ?, ?)";
+                "vehicle_status, categoryId, vehicle_image,) VALUES (?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = DbConnectionUtil.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -252,7 +252,7 @@ public class VehicleDAO {
 
                 // Only add one vehicle per category
                 if (!vehicleMap.containsKey(category)) {
-                    vehicleMap.put(category, vehicle);  // Add vehicle for this category
+                    vehicleMap.put(category, vehicle);
                 }
             }
         } catch (SQLException e) {
@@ -261,5 +261,23 @@ public class VehicleDAO {
         }
         return vehicleMap;
     }
+    public int getCategoryIdByVehicleId(int vehicleId) throws SQLException {
+        String sql = "SELECT categoryId FROM vehicle WHERE vehicleId = ?";
+
+        try (Connection conn = DbConnectionUtil.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, vehicleId);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("categoryId");
+                } else {
+                    throw new SQLException("[ERROR] Category ID not found for Vehicle ID: " + vehicleId);
+                }
+            }
+        }
+    }
+
 
 }

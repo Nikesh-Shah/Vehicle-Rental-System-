@@ -33,28 +33,49 @@ public class BookingDAO {
             }
         }
     }
+    public void linkUserToBooking(int bookingId,int vehicleId, int userId, int paymentId) throws SQLException {
+        String sql = "INSERT INTO user_booking (bookingId,vehicleId, user_id, paymentId) VALUES (?, ?, ?,?)";
 
-    public void linkUserToBooking(int bookingId, int userId) throws SQLException {
-        String sql = "INSERT INTO user_booking (bookingId, user_id) VALUES (?, ?)";
-        try (Connection conn = DbConnectionUtil.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-            stmt.setInt(1, bookingId);
-            stmt.setInt(2, userId);
-            stmt.executeUpdate();
-        }
-    }
-
-    public void addVehicleToBooking(int bookingId, int vehicleId) throws SQLException {
-        String sql = "INSERT INTO booking_vehicle (bookingId, vehicleId) VALUES (?, ?)";
         try (Connection conn = DbConnectionUtil.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, bookingId);
             stmt.setInt(2, vehicleId);
-            stmt.executeUpdate();
+            stmt.setInt(3, userId);
+            stmt.setInt(4, paymentId);
+
+            int rowsInserted = stmt.executeUpdate();
+
+            if (rowsInserted > 0) {
+                System.out.println("[DEBUG] User linked to booking successfully with payment (Booking ID: " + bookingId + ", User ID: " + userId + ", Payment ID: " + paymentId + ")");
+            } else {
+                System.out.println("[ERROR] Failed to link user to booking.");
+            }
         }
     }
+
+
+    public void addVehicleToBooking(int bookingId, int vehicleId, int categoryId, int userId) throws SQLException {
+        String sql = "INSERT INTO booking_vehicle (bookingId, vehicleId, categoryId, user_id) VALUES (?, ?, ?, ?)";
+
+        try (Connection conn = DbConnectionUtil.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, bookingId);
+            stmt.setInt(2, vehicleId);
+            stmt.setInt(3, categoryId);
+            stmt.setInt(4, userId);
+
+            int rowsInserted = stmt.executeUpdate();
+
+            if (rowsInserted > 0) {
+                System.out.println("[DEBUG] Vehicle added to booking successfully (Booking ID: " + bookingId + ", Vehicle ID: " + vehicleId + ")");
+            } else {
+                System.out.println("[ERROR] Failed to add vehicle to booking.");
+            }
+        }
+    }
+
     public List<Booking> getBookingsByUserId(int userId) throws SQLException {
         String sql =
                 "SELECT b.bookingId, b.booking_start_date, b.booking_end_date, " +
@@ -114,52 +135,52 @@ public class BookingDAO {
         }
     }
 
-    public void cancelBooking(int bookingId) throws SQLException {
-        updateBookingStatus(bookingId, "Cancelled");
-    }
 
     public boolean deleteBooking(int bookingId) throws SQLException {
         Connection conn = null;
         try {
             conn = DbConnectionUtil.getConnection();
             conn.setAutoCommit(false); // Start transaction
+            System.out.println("[DEBUG] Connection established successfully");
 
             // 1. Delete from booking_vehicle first
+            System.out.println("[DEBUG] Deleting from booking_vehicle with ID: " + bookingId);
             String deleteVehicleSQL = "DELETE FROM booking_vehicle WHERE bookingId = ?";
             try (PreparedStatement stmt = conn.prepareStatement(deleteVehicleSQL)) {
                 stmt.setInt(1, bookingId);
-                stmt.executeUpdate();
+                int rows = stmt.executeUpdate();
+                System.out.println("[DEBUG] Rows deleted from booking_vehicle: " + rows);
             }
 
             // 2. Delete from user_booking (if exists)
+            System.out.println("[DEBUG] Deleting from user_booking with ID: " + bookingId);
             String deleteUserBookingSQL = "DELETE FROM user_booking WHERE bookingId = ?";
             try (PreparedStatement stmt = conn.prepareStatement(deleteUserBookingSQL)) {
                 stmt.setInt(1, bookingId);
-                stmt.executeUpdate();
+                int rows = stmt.executeUpdate();
+                System.out.println("[DEBUG] Rows deleted from user_booking: " + rows);
             }
 
-            // 3. Delete from payment (if exists)
-            String deletePaymentSQL = "DELETE FROM payment WHERE bookingId = ?";
-            try (PreparedStatement stmt = conn.prepareStatement(deletePaymentSQL)) {
-                stmt.setInt(1, bookingId);
-                stmt.executeUpdate();
-            }
 
             // 4. Finally delete from booking
+            System.out.println("[DEBUG] Deleting from booking with ID: " + bookingId);
             String deleteBookingSQL = "DELETE FROM booking WHERE bookingId = ?";
             try (PreparedStatement stmt = conn.prepareStatement(deleteBookingSQL)) {
                 stmt.setInt(1, bookingId);
                 int affectedRows = stmt.executeUpdate();
+                System.out.println("[DEBUG] Rows deleted from booking: " + affectedRows);
                 conn.commit(); // Commit transaction
                 return affectedRows > 0;
             }
         } catch (SQLException e) {
             if (conn != null) conn.rollback();
+            System.out.println("[ERROR] SQL Exception during deletion: " + e.getMessage());
             throw e;
         } finally {
             if (conn != null) conn.close();
         }
     }
+
     public List<Booking> getAllBookings(String statusFilter) throws SQLException {
         String sql = "SELECT b.*, u.user_id, u.fname, u.lname, u.email, " +
                 "GROUP_CONCAT(CONCAT(v.vehicle_brand, ' ', v.vehicle_model) SEPARATOR '|') AS vehicles " +

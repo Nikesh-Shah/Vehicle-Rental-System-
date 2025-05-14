@@ -24,7 +24,6 @@ public class AddEditCategoryServlet extends HttpServlet {
 
         HttpSession session = request.getSession(false);
 
-        // ✅ Updated Admin Check
         if (session == null || session.getAttribute("user") == null) {
             System.out.println("[DEBUG] Session is null or user not found. Redirecting to login.");
             response.sendRedirect(request.getContextPath() + "/login");
@@ -67,7 +66,6 @@ public class AddEditCategoryServlet extends HttpServlet {
             // Creating Category object from request parameters
             Category category = new Category();
             category.setName(request.getParameter("name"));
-            category.setImage(request.getParameter("image"));
             category.setDescription(request.getParameter("description"));
 
             String idParam = request.getParameter("id");

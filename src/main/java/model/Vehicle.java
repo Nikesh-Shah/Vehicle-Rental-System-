@@ -9,6 +9,7 @@ public class Vehicle {
     private int categoryId;
     private String image;
     private String categoryName;
+    private int quantity;
 
     // Constructors
     public Vehicle() {}
@@ -23,6 +24,15 @@ public class Vehicle {
         this.categoryId = categoryId;
         this.image = image;
         this.categoryName = categoryName;
+        this.quantity = quantity;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 
     // Getters and Setters

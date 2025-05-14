@@ -66,4 +66,73 @@ public class AdminBookingsServlet extends HttpServlet {
         System.out.println("[DEBUG] User role is: " + user.getRole());
         return user.getRole() == 1;
     }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        System.out.println("[DEBUG] AdminBookingActionServlet: doPost() called");
+
+        String action       = request.getParameter("action");
+        String bookingIdStr = request.getParameter("bookingId");
+        String status       = request.getParameter("status");
+
+        if (action == null || bookingIdStr == null || bookingIdStr.isEmpty()) {
+            request.setAttribute("error", "Missing required parameters.");
+            request.getRequestDispatcher("/WEB-INF/view/error.jsp")
+                    .forward(request, response);
+            return;
+        }
+
+        try {
+            int bookingId = Integer.parseInt(bookingIdStr);
+
+            switch (action) {
+                case "update":
+                    if (status == null || status.isEmpty()) {
+                        request.setAttribute("error", "Status is required for update.");
+                        request.getRequestDispatcher("/WEB-INF/view/error.jsp")
+                                .forward(request, response);
+                        return;
+                    }
+                    System.out.printf("[DEBUG] Updating booking %d → %s\n", bookingId, status);
+                    bookingDAO.updateBookingStatus(bookingId, status);
+                    break;
+
+                case "delete":
+                    System.out.printf("[DEBUG] Deleting booking %d\n", bookingId);
+                    boolean deleted = bookingDAO.deleteBooking(bookingId);
+                    if (!deleted) {
+                        request.setAttribute("error", "Failed to delete booking.");
+                        request.getRequestDispatcher("/WEB-INF/view/error.jsp")
+                                .forward(request, response);
+                        return;
+                    }
+                    break;
+
+                default:
+                    throw new IllegalArgumentException("Unknown action: " + action);
+            }
+
+            // Redirect back to the bookings list
+            response.sendRedirect(request.getContextPath() + "/admin/bookings");
+
+        } catch (NumberFormatException e) {
+            System.out.println("[ERROR] Invalid bookingId format: " + e.getMessage());
+            request.setAttribute("error", "Invalid booking ID.");
+            request.getRequestDispatcher("/WEB-INF/view/error.jsp")
+                    .forward(request, response);
+
+        } catch (SQLException e) {
+            System.out.println("[ERROR] DB error: " + e.getMessage());
+            request.setAttribute("error", "Database error occurred.");
+            request.getRequestDispatcher("/WEB-INF/view/error.jsp")
+                    .forward(request, response);
+
+        } catch (Exception e) {
+            System.out.println("[ERROR] Unexpected error: " + e.getMessage());
+            request.setAttribute("error", "An unexpected error occurred.");
+            request.getRequestDispatcher("/WEB-INF/view/error.jsp")
+                    .forward(request, response);
+        }
+    }
 }
