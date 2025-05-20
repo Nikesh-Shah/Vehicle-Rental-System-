@@ -1,0 +1,262 @@
+/* Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f5f7fa;
+    color: #333;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+/* Booking Card */
+.booking-card {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.page-title {
+    background-color: #3498db;
+    color: white;
+    padding: 20px;
+    font-size: 24px;
+    text-align: center;
+}
+
+/* Summary Section */
+.summary {
+    display: flex;
+    flex-direction: column;
+    padding: 25px;
+    border-bottom: 1px solid #eaeaea;
+}
+
+.vehicle-image {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.vehicle-image img {
+    max-width: 100%;
+    height: auto;
+    max-height: 250px;
+    border-radius: 8px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    object-fit: cover;
+}
+
+.vehicle-title {
+    font-size: 22px;
+    color: #2c3e50;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.booking-details {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.detail-item {
+    display: flex;
+    align-items: flex-start;
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+.detail-icon {
+    background-color: #3498db;
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+    flex-shrink: 0;
+}
+
+.detail-content h3 {
+    font-size: 16px;
+    color: #3498db;
+    margin-bottom: 5px;
+}
+
+.detail-content p {
+    color: #555;
+}
+
+.total-price {
+    font-weight: bold;
+    color: #e74c3c;
+    font-size: 18px;
+    margin-top: 5px;
+}
+
+/* Payment Section */
+.payment-section {
+    padding: 25px;
+}
+
+.payment-section h2 {
+    font-size: 20px;
+    color: #2c3e50;
+    margin-bottom: 20px;
+}
+
+.payment-options {
+    margin-bottom: 30px;
+}
+
+.payment-option {
+    position: relative;
+    margin-bottom: 15px;
+}
+
+.payment-option input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+}
+
+.payment-option label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.radio-custom {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid #3498db;
+    margin-right: 15px;
+    position: relative;
+}
+
+.payment-option input[type="radio"]:checked + label .radio-custom::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #3498db;
+}
+
+.payment-label {
+    display: flex;
+    align-items: center;
+}
+
+.payment-label i {
+    margin-right: 10px;
+    color: #3498db;
+}
+
+/* Action Buttons */
+.action-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.btn-primary, .btn-secondary {
+    padding: 12px 25px;
+    border-radius: 5px;
+    font-weight: 600;
+    text-decoration: none;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    border: none;
+    font-size: 16px;
+}
+
+.btn-primary {
+    background-color: #3498db;
+    color: white;
+    flex-grow: 1;
+    margin-left: 10px;
+}
+
+.btn-primary:hover {
+    background-color: #2980b9;
+}
+
+.btn-secondary {
+    background-color: #e0e0e0;
+    color: #555;
+    padding: 12px 20px;
+}
+
+.btn-secondary:hover {
+    background-color: #d0d0d0;
+}
+
+/* Responsive Design */
+@media (min-width: 768px) {
+    .summary {
+        flex-direction: row;
+        align-items: flex-start;
+    }
+
+    .vehicle-image {
+        width: 40%;
+        margin-bottom: 0;
+        margin-right: 25px;
+    }
+
+    .vehicle-info {
+        width: 60%;
+    }
+
+    .vehicle-title {
+        text-align: left;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        margin: 20px auto;
+    }
+
+    .page-title {
+        font-size: 20px;
+        padding: 15px;
+    }
+
+    .detail-item {
+        padding: 12px;
+    }
+
+    .detail-icon {
+        width: 35px;
+        height: 35px;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .btn-primary, .btn-secondary {
+        width: 100%;
+        margin-left: 0;
+    }
+}

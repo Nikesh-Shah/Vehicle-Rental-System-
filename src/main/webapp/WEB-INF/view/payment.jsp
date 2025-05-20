@@ -4,23 +4,23 @@
 <html>
 <head>
   <title>Confirm Booking</title>
-  <style>
-    .summary { border: 1px solid #ddd; padding: 20px; margin-bottom: 20px; }
-    .summary img { max-width: 200px; }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/payment.css" />
 </head>
 <body>
+<%@ include file="/WEB-INF/view/common/navbar.jsp" %>
+
 <div class="summary">
   <h2>Booking Summary</h2>
   <img src="${vehicle.image}" alt="${vehicle.brand} ${vehicle.model}">
   <h3>${vehicle.brand} ${vehicle.model}</h3>
 
   <div class="details">
-    <p><strong>Rental Period:</strong><br>
+    <p><strong>Rental Period:</strong>
       ${startDate} to ${endDate}</p>
 
-    <p><strong>Price Breakdown:</strong><br>
-      Nrs${vehicle.pricePerDay} x ${days} days = $${total}</p>
+    <p><strong>Price Breakdown:</strong>
+      NRs${vehicle.pricePerDay} × ${days} days = NRs${total}</p>
   </div>
 </div>
 
@@ -32,11 +32,13 @@
 
   <h3>Payment Method</h3>
   <div class="payment-method">
-    <input type="radio" name="paymentMethod" value="COD" checked>
-    <label>Cash on Delivery (COD)</label>
+    <input type="radio" id="cod" name="paymentMethod" value="COD" checked>
+    <label for="cod">Cash on Delivery (COD)</label>
   </div>
 
   <button type="submit">Confirm Booking</button>
 </form>
+<jsp:include page="/WEB-INF/view/common/footer.jsp" />
+
 </body>
 </html>

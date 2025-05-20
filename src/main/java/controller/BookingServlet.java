@@ -26,10 +26,17 @@ public class BookingServlet extends HttpServlet {
         Date startDate = Date.valueOf(request.getParameter("startDate"));
         Date endDate = Date.valueOf(request.getParameter("endDate"));
 
+        System.out.println("[DEBUG] Received booking request");
+        System.out.println("[DEBUG] Vehicle ID: " + vehicleId);
+        System.out.println("[DEBUG] Start Date: " + startDate);
+        System.out.println("[DEBUG] End Date: " + endDate);
+
         try {
             Vehicle vehicle = vehicleDAO.getVehicleById(vehicleId);
+            System.out.println("[DEBUG] Vehicle fetched: " + vehicle);
 
-            if(!vehicleDAO.isVehicleAvailable(vehicleId, startDate, endDate)) {
+            if (!vehicleDAO.isVehicleAvailable(vehicleId, startDate, endDate)) {
+                System.out.println("[DEBUG] Vehicle is not available for the selected dates.");
                 request.setAttribute("error", "Vehicle is no longer available");
                 request.setAttribute("vehicle", vehicle);
                 request.getRequestDispatcher("/WEB-INF/view/rentForm.jsp").forward(request, response);
@@ -40,15 +47,23 @@ public class BookingServlet extends HttpServlet {
                     startDate.toLocalDate(),
                     endDate.toLocalDate()
             );
-            double total = vehicle.getPricePerDay() * days;
-            int reduceQuantity=1;
-            boolean isReduced = vehicleDAO.reduceVehicleQuantity(vehicleId, reduceQuantity);
+            System.out.println("[DEBUG] Number of rental days: " + days);
 
-            if(!isReduced) {
+            double total = vehicle.getPricePerDay() * days;
+            System.out.println("[DEBUG] Total rental cost: NRs " + total);
+
+            int reduceQuantity = 1;
+            boolean isReduced = vehicleDAO.reduceVehicleQuantity(vehicleId, reduceQuantity);
+            System.out.println("[DEBUG] Quantity reduced: " + isReduced);
+
+            if (!isReduced) {
+                System.out.println("[DEBUG] Quantity could not be reduced. Forwarding to rent form.");
                 request.setAttribute("vehicle", vehicle);
                 request.getRequestDispatcher("/WEB-INF/view/rentForm.jsp").forward(request, response);
                 return;
             }
+
+            System.out.println("[DEBUG] Booking processing successful. Forwarding to payment page.");
 
             request.setAttribute("vehicle", vehicle);
             request.setAttribute("startDate", startDate);
@@ -57,6 +72,7 @@ public class BookingServlet extends HttpServlet {
             request.getRequestDispatcher("/WEB-INF/view/payment.jsp").forward(request, response);
 
         } catch (SQLException e) {
+            System.out.println("[ERROR] SQLException during booking process: " + e.getMessage());
             throw new ServletException("Error processing booking", e);
         }
     }

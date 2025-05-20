@@ -4,7 +4,7 @@
 <html>
 <head>
     <title>Popular Vehicles</title>
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/vehicles.css" />
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/feature.css" />
 </head>
 <body>
 <section class="vehicles-section">

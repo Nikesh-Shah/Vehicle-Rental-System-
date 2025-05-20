@@ -65,7 +65,7 @@ public class MyBookingsServlet extends HttpServlet {
 
             request.setAttribute("currentBookings", current);
             request.setAttribute("previousBookings", previous);
-            request.getRequestDispatcher("/WEB-INF/view/my-bookings.jsp")
+            request.getRequestDispatcher("/WEB-INF/view/bookings.jsp")
                     .forward(request, response);
             System.out.println("[DEBUG] Forward complete");
 

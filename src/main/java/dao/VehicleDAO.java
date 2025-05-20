@@ -227,45 +227,95 @@ public class VehicleDAO {
         }
         return vehicleList;
     }
-    public Map<Category, Vehicle> getOneVehicle() throws SQLException {
-        Map<Category, Vehicle> vehicleMap = new HashMap<>();
-        String query = """
-        SELECT c.categoryId,
-               v.vehicleId, v.vehicle_brand, v.vehicle_model,
-               v.vehicle_price_per_day, v.vehicle_status, v.vehicle_image, v.quantity
-        FROM category c
-        JOIN vehicle v ON c.categoryId = v.categoryId
-        ORDER BY c.categoryId, v.vehicleId  
-        LIMIT 4  
+//    public Map<Category, Vehicle> getOneVehicle() throws SQLException {
+//        Map<Category, Vehicle> vehicleMap = new HashMap<>();
+//        String query = """
+//        SELECT c.categoryId,
+//               v.vehicleId, v.vehicle_brand, v.vehicle_model,
+//               v.vehicle_price_per_day, v.vehicle_status, v.vehicle_image, v.quantity
+//        FROM category c
+//        JOIN vehicle v ON c.categoryId = v.categoryId
+//        ORDER BY c.categoryId, v.vehicleId
+//        LIMIT 4
+//    """;
+//        try (Connection conn = DbConnectionUtil.getConnection();
+//             PreparedStatement stmt = conn.prepareStatement(query);
+//             ResultSet rs = stmt.executeQuery()) {
+//
+//            while (rs.next()) {
+//                Category category = new Category();
+//                category.setCategoryId(rs.getInt("categoryId"));
+//
+//                Vehicle vehicle = new Vehicle();
+//                vehicle.setVehicleId(rs.getInt("vehicleId"));
+//                vehicle.setBrand(rs.getString("vehicle_brand"));
+//                vehicle.setModel(rs.getString("vehicle_model"));
+//                vehicle.setPricePerDay(rs.getDouble("vehicle_price_per_day"));
+//                vehicle.setStatus(rs.getString("vehicle_status"));
+//                vehicle.setQuantity(rs.getInt("quantity"));
+//                vehicle.setImage(rs.getString("vehicle_image"));
+//
+//                // Only add one vehicle per category
+//                if (!vehicleMap.containsKey(category)) {
+//                    vehicleMap.put(category, vehicle);
+//                }
+//            }
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//            throw new SQLException("SQLException: " + e.getMessage());
+//        }
+//        return vehicleMap;
+//    }
+public Map<Category, Vehicle> getOneVehicle() throws SQLException {
+    Map<Category, Vehicle> vehicleMap = new HashMap<>();
+    String query = """
+        WITH ranked_vehicles AS (
+            SELECT 
+                c.categoryId,
+                v.vehicleId, 
+                v.vehicle_brand, 
+                v.vehicle_model,
+                v.vehicle_price_per_day,
+                v.vehicle_status,
+                v.vehicle_image,
+                v.quantity,
+                ROW_NUMBER() OVER (PARTITION BY c.categoryId ORDER BY v.vehicleId) AS rn
+            FROM category c
+            JOIN vehicle v ON c.categoryId = v.categoryId
+        )
+        SELECT *
+        FROM ranked_vehicles
+        WHERE rn = 1
+        ORDER BY categoryId
+        LIMIT 4
     """;
-        try (Connection conn = DbConnectionUtil.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(query);
-             ResultSet rs = stmt.executeQuery()) {
 
-            while (rs.next()) {
-                Category category = new Category();
-                category.setCategoryId(rs.getInt("categoryId"));
+    try (Connection conn = DbConnectionUtil.getConnection();
+         PreparedStatement stmt = conn.prepareStatement(query);
+         ResultSet rs = stmt.executeQuery()) {
 
-                Vehicle vehicle = new Vehicle();
-                vehicle.setVehicleId(rs.getInt("vehicleId"));
-                vehicle.setBrand(rs.getString("vehicle_brand"));
-                vehicle.setModel(rs.getString("vehicle_model"));
-                vehicle.setPricePerDay(rs.getDouble("vehicle_price_per_day"));
-                vehicle.setStatus(rs.getString("vehicle_status"));
-                vehicle.setQuantity(rs.getInt("quantity"));
-                vehicle.setImage(rs.getString("vehicle_image"));
+        while (rs.next()) {
+            Category category = new Category();
+            category.setCategoryId(rs.getInt("categoryId"));
 
-                // Only add one vehicle per category
-                if (!vehicleMap.containsKey(category)) {
-                    vehicleMap.put(category, vehicle);
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new SQLException("SQLException: " + e.getMessage());
+            Vehicle vehicle = new Vehicle();
+            vehicle.setVehicleId(rs.getInt("vehicleId"));
+            vehicle.setBrand(rs.getString("vehicle_brand"));
+            vehicle.setModel(rs.getString("vehicle_model"));
+            vehicle.setPricePerDay(rs.getDouble("vehicle_price_per_day"));
+            vehicle.setStatus(rs.getString("vehicle_status"));
+            vehicle.setQuantity(rs.getInt("quantity"));
+            vehicle.setImage(rs.getString("vehicle_image"));
+
+            vehicleMap.put(category, vehicle);
         }
-        return vehicleMap;
+    } catch (SQLException e) {
+        e.printStackTrace();
+        throw new SQLException("SQLException: " + e.getMessage());
     }
+    return vehicleMap;
+}
+
     public int getCategoryIdByVehicleId(int vehicleId) throws SQLException {
         String sql = "SELECT categoryId FROM vehicle WHERE vehicleId = ?";
 
