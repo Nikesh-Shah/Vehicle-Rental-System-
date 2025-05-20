@@ -15,6 +15,7 @@
         <c:forEach var="entry" items="${categoryVehicleMap}">
             <c:set var="category" value="${entry.key}" />
             <c:set var="vehicle" value="${entry.value}" />
+
             <div class="vehicle-card">
                 <img src="${vehicle.image}" alt="${vehicle.brand} ${vehicle.model}" class="vehicle-image">
                 <div class="vehicle-details">
@@ -22,11 +23,16 @@
                     <p class="vehicle-model">${vehicle.model}</p>
                     <p class="vehicle-price">NRs ${vehicle.pricePerDay} / day</p>
 
+                    <!-- Status Display -->
                     <span id="status-${vehicle.vehicleId}"
-                          class="vehicle-status ${vehicle.status == 'Available' ? 'status-available' : vehicle.status == 'Rented' ? 'status-rented' : 'status-maintenance'}">
+                          class="vehicle-status
+                        ${vehicle.status == 'Available' ? 'status-available' :
+                         vehicle.status == 'Rented' ? 'status-rented' :
+                         'status-maintenance'}">
                             ${vehicle.status}
                     </span>
 
+                    <!-- Rent Now Button -->
                     <form action="booking-form.jsp" method="get">
                         <input type="hidden" name="vehicleId" value="${vehicle.vehicleId}">
                         <input type="hidden" name="vehicleBrand" value="${vehicle.brand}">

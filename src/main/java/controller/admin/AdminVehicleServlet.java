@@ -70,7 +70,6 @@ public class AdminVehicleServlet extends HttpServlet {
                 return;
             }
             if ("update".equals(action)) {
-                // reuse your helper to parse & validate everything (incl. image)
                 Vehicle vehicle = createVehicleFromRequest(request);
 
                 String idStr = request.getParameter("vehicleId");
@@ -189,14 +188,16 @@ public class AdminVehicleServlet extends HttpServlet {
         String model = request.getParameter("model");
         String priceStr = request.getParameter("price");
         String status = request.getParameter("status");
+        String quantityStr = request.getParameter("quantity");
         String categoryIdStr = request.getParameter("categoryId");
 
-        System.out.println("Received: brand=" + brand + ", model=" + model + ", price=" + priceStr + ", status=" + status + ", categoryId=" + categoryIdStr);
+        System.out.println("Received: brand=" + brand + ", model=" + model + ", price=" + priceStr + ", status=" + status + ", Quantity="+quantityStr+", categoryId=" + categoryIdStr);
 
         if (brand == null || brand.isEmpty() ||
                 model == null || model.isEmpty() ||
                 priceStr == null || !priceStr.matches("\\d+(\\.\\d+)?") ||
                 status == null || status.isEmpty() ||
+                quantityStr == null || !quantityStr.matches("\\d+(\\.\\d+)?") ||
                 categoryIdStr == null || !categoryIdStr.matches("\\d+")) {
             throw new IllegalArgumentException("Missing or invalid input data.");
         }
@@ -224,6 +225,7 @@ public class AdminVehicleServlet extends HttpServlet {
         vehicle.setPricePerDay(Double.parseDouble(priceStr));
         vehicle.setStatus(status);
         vehicle.setCategoryId(Integer.parseInt(categoryIdStr));
+        vehicle.setQuantity(Integer.parseInt(quantityStr));
         vehicle.setImage("uploads/" + fileName); // relative path for browser
         return vehicle;
 

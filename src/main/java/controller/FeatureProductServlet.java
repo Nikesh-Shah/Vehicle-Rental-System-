@@ -11,42 +11,37 @@ import model.Vehicle;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Map;
 
 
 @WebServlet("/feature")
 public class FeatureProductServlet extends HttpServlet {
     private VehicleDAO vehicleDAO;
+    private Map<Category, Vehicle> categoryVehicleMap;
 
     @Override
-    public void init(){
+    public void init() throws ServletException {
         vehicleDAO = new VehicleDAO();
+        try {
+            categoryVehicleMap = vehicleDAO.getOneVehicle();
+            getServletContext().setAttribute("categoryVehicleMap", categoryVehicleMap);
+            System.out.println("Category-Vehicle Map Initialized and stored in ServletContext: " + categoryVehicleMap);
+        } catch (SQLException e) {
+            System.out.println("Error in initializing ServletContext: " + e.getMessage());
+            e.printStackTrace();
+            throw new ServletException("Error initializing Category-Vehicle Map.", e);
+        }
     }
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        try {
-            System.out.println("[DEBUG] Attempting to fetch vehicles from database...");
+        System.out.println("[DEBUG] Attempting to fetch vehicles from database...");
 
-            Map<Category, Vehicle> categoryVehicleMap = vehicleDAO.getOneVehicle();
+        request.setAttribute("categoryVehicleMap", categoryVehicleMap);
 
-            if (categoryVehicleMap == null || categoryVehicleMap.isEmpty()) {
-                System.out.println("[DEBUG] categoryVehicleMap is EMPTY!");
-            } else {
-                System.out.println("[DEBUG] categoryVehicleMap fetched successfully:");
-                categoryVehicleMap.forEach((categoryId, vehicle) ->
-                        System.out.println("Category ID: " + categoryId + " | Vehicle: " + vehicle.getBrand() + " " + vehicle.getModel())
-                );
-            }
+        System.out.println("[DEBUG] Forwarding to index.jsp");
+        request.getRequestDispatcher("/WEB-INF/view/featuredproduct.jsp").forward(request, response);
+        System.out.println("[DEBUG] Forwarding done successfully!");
 
-            request.setAttribute("categoryVehicleMap", categoryVehicleMap);
-
-            System.out.println("[DEBUG] Forwarding to index.jsp");
-            request.getRequestDispatcher("/WEB-INF/view/featuredproduct.jsp").forward(request, response);
-            System.out.println("[DEBUG] Forwarding done successfully!");
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new ServletException(e);
-        }
     }}
 
 

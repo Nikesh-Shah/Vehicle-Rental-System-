@@ -12,12 +12,17 @@
 
 </head>
 <body>
+<c:if test="${empty categoryVehicleMap}">
+    <c:redirect url="feature" />
+</c:if>
 <%@ include file="/WEB-INF/view/common/navbar.jsp" %>
 <jsp:include page="/WEB-INF/view/hero.jsp" />
 <jsp:include page="/WEB-INF/view/howitworks.jsp" />
 <jsp:include page="/WEB-INF/view/testimonials.jsp" />
 <jsp:include page="/WEB-INF/view/faq.jsp" />
+<jsp:include page="/WEB-INF/view/featuredproduct.jsp" />
 <jsp:include page="/WEB-INF/view/common/footer.jsp" />
+
 </body>
 </html>
 

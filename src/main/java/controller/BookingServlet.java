@@ -41,6 +41,14 @@ public class BookingServlet extends HttpServlet {
                     endDate.toLocalDate()
             );
             double total = vehicle.getPricePerDay() * days;
+            int reduceQuantity=1;
+            boolean isReduced = vehicleDAO.reduceVehicleQuantity(vehicleId, reduceQuantity);
+
+            if(!isReduced) {
+                request.setAttribute("vehicle", vehicle);
+                request.getRequestDispatcher("/WEB-INF/view/rentForm.jsp").forward(request, response);
+                return;
+            }
 
             request.setAttribute("vehicle", vehicle);
             request.setAttribute("startDate", startDate);

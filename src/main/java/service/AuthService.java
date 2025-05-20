@@ -34,7 +34,6 @@ public class AuthService {
     public static AuthResult registerUser(String fname, String lname, String email,
                                           String password, String confirmPassword, String phone) {
         try {
-            // Validate inputs
             if (fname == null || fname.trim().isEmpty()) {
                 return new AuthResult(false, "First name is required", null);
             }

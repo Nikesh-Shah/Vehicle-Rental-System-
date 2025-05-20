@@ -11,7 +11,7 @@
 <div class="sidebar-container">
     <div class="sidebar-wrapper">
         <div class="sidebar-header">
-            <h4>Admin Panel</h4>
+            <h4>GoRent Admin Panel</h4>
         </div>
 
         <% String currentUri = request.getRequestURI(); %>

@@ -51,7 +51,7 @@ public class VehicleDAO {
 
     public int addVehicle(Vehicle vehicle) throws SQLException {
         String sql = "INSERT INTO vehicle (vehicle_brand, vehicle_model, vehicle_price_per_day, " +
-                "vehicle_status, categoryId, vehicle_image,) VALUES (?, ?, ?, ?, ?, ?)";
+                "vehicle_status, categoryId, vehicle_image, quantity) VALUES (?, ?, ?, ?, ?, ?,?)";
 
         try (Connection conn = DbConnectionUtil.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -62,6 +62,7 @@ public class VehicleDAO {
             stmt.setString(4, vehicle.getStatus());
             stmt.setInt(5, vehicle.getCategoryId());
             stmt.setString(6, vehicle.getImage());
+            stmt.setInt(7, vehicle.getQuantity());
 
             int affectedRows = stmt.executeUpdate();
             if (affectedRows == 0) {
@@ -80,7 +81,7 @@ public class VehicleDAO {
     public boolean updateVehicle(Vehicle vehicle) throws SQLException {
         String sql = "UPDATE vehicle SET vehicle_brand = ?, vehicle_model = ?, " +
                 "vehicle_price_per_day = ?, vehicle_status = ?, categoryId = ?, " +
-                "vehicle_image = ? WHERE vehicleId = ?";
+                "vehicle_image = ? , quantity = ? WHERE vehicleId = ?";
 
         try (Connection conn = DbConnectionUtil.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -91,7 +92,8 @@ public class VehicleDAO {
             stmt.setString(4, vehicle.getStatus());
             stmt.setInt(5, vehicle.getCategoryId());
             stmt.setString(6, vehicle.getImage());
-            stmt.setInt(7, vehicle.getVehicleId());
+            stmt.setInt(7, vehicle.getQuantity());
+            stmt.setInt(8, vehicle.getVehicleId());
 
             return stmt.executeUpdate() > 0;
         }
@@ -171,6 +173,7 @@ public class VehicleDAO {
         vehicle.setModel(rs.getString("vehicle_model"));
         vehicle.setPricePerDay(rs.getDouble("vehicle_price_per_day"));
         vehicle.setStatus(rs.getString("vehicle_status"));
+        vehicle.setQuantity(rs.getInt("quantity"));
         vehicle.setImage(rs.getString("vehicle_image"));
         return vehicle;
     }
@@ -214,6 +217,7 @@ public class VehicleDAO {
                 vehicle.setBrand(rs.getString("vehicle_brand"));
                 vehicle.setModel(rs.getString("vehicle_model"));
                 vehicle.setPricePerDay(rs.getDouble("vehicle_price_per_day"));
+                vehicle.setQuantity(rs.getInt("quantity"));
                 vehicle.setImage(rs.getString("vehicle_image"));
                 vehicle.setStatus(rs.getString("vehicle_status"));
                 vehicleList.add(vehicle);
@@ -228,11 +232,11 @@ public class VehicleDAO {
         String query = """
         SELECT c.categoryId,
                v.vehicleId, v.vehicle_brand, v.vehicle_model,
-               v.vehicle_price_per_day, v.vehicle_status, v.vehicle_image
+               v.vehicle_price_per_day, v.vehicle_status, v.vehicle_image, v.quantity
         FROM category c
         JOIN vehicle v ON c.categoryId = v.categoryId
-        ORDER BY c.categoryId, v.vehicleId  -- Ensures vehicles are ordered
-        LIMIT 4  -- This ensures that you get a small subset of vehicles
+        ORDER BY c.categoryId, v.vehicleId  
+        LIMIT 4  
     """;
         try (Connection conn = DbConnectionUtil.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query);
@@ -248,6 +252,7 @@ public class VehicleDAO {
                 vehicle.setModel(rs.getString("vehicle_model"));
                 vehicle.setPricePerDay(rs.getDouble("vehicle_price_per_day"));
                 vehicle.setStatus(rs.getString("vehicle_status"));
+                vehicle.setQuantity(rs.getInt("quantity"));
                 vehicle.setImage(rs.getString("vehicle_image"));
 
                 // Only add one vehicle per category
@@ -278,6 +283,21 @@ public class VehicleDAO {
             }
         }
     }
+    public boolean reduceVehicleQuantity(int vehicleId, int quantity) throws SQLException {
+        String sql = "UPDATE vehicle SET quantity = quantity - ? WHERE vehicleId = ? AND quantity >= ?";
+
+        try (Connection conn = DbConnectionUtil.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, quantity);
+            stmt.setInt(2, vehicleId);
+            stmt.setInt(3, quantity);
+
+            int affectedRows = stmt.executeUpdate();
+            return affectedRows > 0;
+        }
+    }
+
 
 
 }

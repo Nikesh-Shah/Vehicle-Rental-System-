@@ -68,20 +68,6 @@ public class AdminService {
 
 
 
-
-    // Booking Management
-    public List<Booking> getBookings(int page, int pageSize) {
-        try {
-            return adminDAO.getAllBookings(pageSize, (page - 1) * pageSize);
-        } catch (SQLException e) {
-            throw new RuntimeException("Failed to fetch bookings", e);
-        }
-    }
-
-//    public boolean updateBookingStatus(int bookingId, String status) throws SQLException {
-//        return BookingDAO.updateBookingStatus(bookingId, status);
-//    }
-
     // Vehicle Management
     public List<Vehicle> getVehicles(int page, int pageSize) {
         return vehicleService.getAllVehicles();
@@ -107,17 +93,6 @@ public class AdminService {
         return categoryService.getAllCategories();
     }
 
-    public boolean addCategory(Category category) {
-        return categoryService.addCategory(category) > 0;
-    }
-
-    public boolean updateCategory(Category category) {
-        return categoryService.updateCategory(category);
-    }
-
-    public boolean deleteCategory(int categoryId) {
-        return categoryService.deleteCategory(categoryId);
-    }
 
 
     public boolean deleteUser(int userId) {

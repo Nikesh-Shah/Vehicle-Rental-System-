@@ -32,14 +32,6 @@
 
 
 
-                <div class="form-group">
-                    <label for="image" class="form-label">Choose Image</label>
-                    <input type="file" id="image" name="image" value="${category.image}" class="form-control" placeholder="https://example.com/image.jpg">
-                    <div id="imagePreview" class="image-preview">
-                        <img id="preview" src="${pageContext.request.contextPath}/${category.image}"  alt="Category Image Preview">
-
-                    </div>
-                </div>
 
                 <div class="form-group">
                     <label for="description" class="form-label">Description</label>
@@ -59,34 +51,6 @@
     </div>
 </div>
 
-<script>
-    // Image preview functionality
-    document.addEventListener('DOMContentLoaded', function() {
-        const imageInput = document.getElementById('image');
-        const imagePreview = document.getElementById('imagePreview');
-        const previewImg = document.getElementById('preview');
 
-        // Show preview if image URL exists on page load
-        if (previewImg.src && previewImg.src !== window.location.href) {
-            imagePreview.style.display = 'block';
-        }
-
-        // Update preview when URL changes
-        imageInput.addEventListener('input', function() {
-            const imageUrl = this.value;
-            if (imageUrl) {
-                previewImg.src = imageUrl;
-                imagePreview.style.display = 'block';
-
-                // Handle image load error
-                previewImg.onerror = function() {
-                    imagePreview.style.display = 'none';
-                };
-            } else {
-                imagePreview.style.display = 'none';
-            }
-        });
-    });
-</script>
 </body>
 </html>

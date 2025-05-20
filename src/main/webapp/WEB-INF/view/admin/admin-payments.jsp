@@ -114,7 +114,7 @@
                             <fmt:formatDate value="${payment.bookingEndDate}" pattern="MMM dd, yyyy"/>
                         </td>
                         <td>
-                            <span class="status-badge status-${payment.status.toLowerCase()}">${payment.status}</span>
+                            <span class="status-badge ${payment.status.toLowerCase()}">${payment.status}</span>
                         </td>
                         <td>
                             <form action="${pageContext.request.contextPath}/admin/payments" method="post" class="status-form">

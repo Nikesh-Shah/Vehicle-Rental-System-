@@ -36,6 +36,7 @@ public class AdminPaymentsServlet extends HttpServlet {
 
 
 
+
             request.getRequestDispatcher("/WEB-INF/view/admin/admin-payments.jsp").forward(request, response);
 
         } catch (SQLException e) {
@@ -50,6 +51,9 @@ public class AdminPaymentsServlet extends HttpServlet {
     private void getAllPayments(HttpServletRequest request) throws SQLException {
         System.out.println("Fetching all payments from the database.");
         List<Payment> paymentList = paymentDAO.getAllPayments();
+        for (Payment payment : paymentList) {
+            System.out.println("Payment ID: " + payment.getPaymentId() + ", Status: " + payment.getStatus());
+        }
 
         if (paymentList != null && !paymentList.isEmpty()) {
             System.out.println("Found " + paymentList.size() + " payments.");
@@ -85,7 +89,7 @@ public class AdminPaymentsServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         System.out.println("Handling POST request for payments.");
         int paymentId = Integer.parseInt(request.getParameter("paymentId"));
-        String newStatus = request.getParameter("newStatus");
+        String newStatus = request.getParameter("status");
 
         try {
             boolean isUpdated = paymentDAO.updatePaymentStatus(paymentId, newStatus);
@@ -100,7 +104,7 @@ public class AdminPaymentsServlet extends HttpServlet {
         } catch (SQLException e) {
             System.out.println("[ERROR] Database error while updating payment status.");
             e.printStackTrace();
-            response.sendRedirect(request.getContextPath() + "/admin/payments?status=error");
+            response.sendRedirect(request.getContextPath() + "/admin/payments");
         }
     }
 

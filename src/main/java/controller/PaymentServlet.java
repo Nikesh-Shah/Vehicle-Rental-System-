@@ -26,7 +26,6 @@ public class PaymentServlet extends HttpServlet {
 
         System.out.println("[DEBUG] PaymentServlet: doPost() called.");
 
-        // Step 1: Validate the session and user
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("userId") == null) {
             System.out.println("[DEBUG] No active session found or user not logged in. Redirecting to login.");
@@ -34,11 +33,9 @@ public class PaymentServlet extends HttpServlet {
             return;
         }
 
-        // Step 2: Retrieve the user ID from the session
         int userId = (int) session.getAttribute("userId");
         System.out.println("[DEBUG] User ID retrieved from session: " + userId);
 
-        // Step 3: Retrieve parameters from the request
         try {
             int vehicleId = Integer.parseInt(request.getParameter("vehicleId"));
             Date startDate = Date.valueOf(request.getParameter("startDate"));
@@ -51,7 +48,6 @@ public class PaymentServlet extends HttpServlet {
             System.out.println("        End Date: " + endDate);
             System.out.println("        Total Amount: " + total);
 
-            // Step 4: Create booking
             System.out.println("[DEBUG] Creating booking...");
             Booking booking = new Booking();
             booking.setStartDate(startDate);
@@ -62,12 +58,10 @@ public class PaymentServlet extends HttpServlet {
             int bookingId = bookingDAO.createBooking(booking);
             System.out.println("[DEBUG] Booking created with ID: " + bookingId);
 
-            // Step 5: Create payment
             System.out.println("[DEBUG] Creating payment entry...");
             int paymentId = paymentDAO.createPayment(bookingId, total);
             System.out.println("[DEBUG] Payment entry created with ID: " + paymentId);
 
-            // Step 6: Link user and vehicle to booking with payment
             System.out.println("[DEBUG] Linking booking to user and vehicle...");
             bookingDAO.linkUserToBooking(bookingId,vehicleId, userId, paymentId);
             System.out.println("[DEBUG] User linked to booking successfully.");
@@ -76,12 +70,10 @@ public class PaymentServlet extends HttpServlet {
             bookingDAO.addVehicleToBooking(bookingId, vehicleId, categoryId,userId);
             System.out.println("[DEBUG] Vehicle linked to booking successfully.");
 
-            // Step 7: Update vehicle status
             System.out.println("[DEBUG] Updating vehicle status to 'Booked'...");
             vehicleDAO.updateVehicleStatus(vehicleId, "Booked");
             System.out.println("[DEBUG] Vehicle status updated successfully.");
 
-            // Step 8: Redirect to confirmation page
             System.out.println("[DEBUG] Redirecting to confirmation.jsp...");
             request.getRequestDispatcher("/WEB-INF/view/confirmation.jsp").forward(request, response);
 

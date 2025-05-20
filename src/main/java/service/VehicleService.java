@@ -30,15 +30,6 @@ public class VehicleService {
         }
     }
 
-//    public List<Vehicle> getAvailableVehicles(Date startDate, Date endDate) {
-//        validateDates(startDate, endDate);
-//
-//        try {
-//            return vehicleDAO.getAvailableVehicles(startDate, endDate);
-//        } catch (SQLException e) {
-//            throw new RuntimeException("Failed to retrieve available vehicles", e);
-//        }
-//    }
 
     public  Vehicle getVehicleById(int id) {
         try {
@@ -110,18 +101,5 @@ public class VehicleService {
         }
     }
 
-    private void validateDates(Date startDate, Date endDate) {
-        if (startDate == null || endDate == null) {
-            throw new IllegalArgumentException("Both start and end dates are required");
-        }
-        if (startDate.after(endDate)) {
-            throw new IllegalArgumentException("Start date must be before end date");
-        }
 
-        Date currentDate = new Date(System.currentTimeMillis());
-
-        if (startDate.before(currentDate)) {
-            throw new IllegalArgumentException("Start date cannot be in the past");
-        }
-    }
 }

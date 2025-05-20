@@ -18,14 +18,12 @@
             <h1>Add New Vehicle</h1>
         </div>
 
-        <!-- Error message display -->
         <c:if test="${not empty error}">
             <div class="alert alert-danger">
                 <i class="bi bi-exclamation-triangle"></i> ${error}
             </div>
         </c:if>
 
-        <!-- Add Vehicle Form -->
         <div class="form-container">
             <form action="<c:url value='/admin-vehicles'/>" method="post" enctype="multipart/form-data" id="vehicleForm">
                 <input type="hidden" name="action" value="add"/>
@@ -61,6 +59,10 @@
                             <option value="${category.categoryId}">${category.name}</option>
                         </c:forEach>
                     </select>
+                </div>
+                <div class="form-group">
+                    <label for="quantity" class="form-label">Quantity:</label>
+                    <input type="number" id="quantity" name="quantity" class="form-control" required>
                 </div>
 
                 <div class="form-group">

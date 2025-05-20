@@ -17,7 +17,6 @@
         <div class="page-header">
             <h1>Vehicle Management</h1>
 
-            <!-- Button to Add New Vehicle -->
             <a href="<c:url value='/admin-vehicles?action=add'/>" class="btn btn-success">
                 <i class="bi bi-plus-circle"></i> Add Vehicle
             </a>
@@ -60,6 +59,7 @@
                     <th>Brand</th>
                     <th>Model</th>
                     <th>Price</th>
+                    <th>Quantity</th>
                     <th>Status</th>
                     <th>Category</th>
                     <th>Image</th>
@@ -73,6 +73,7 @@
                         <td>${vehicle.brand}</td>
                         <td>${vehicle.model}</td>
                         <td><span class="price">NRs ${vehicle.pricePerDay}</span>/day</td>
+                        <td>${vehicle.quantity}</td>
                         <td>
                             <span class="status-badge status-${vehicle.status.toLowerCase()}">${vehicle.status}</span>
                         </td>
