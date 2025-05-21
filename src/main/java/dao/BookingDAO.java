@@ -135,51 +135,75 @@ public class BookingDAO {
         }
     }
 
+//
+//    public boolean deleteBooking(int bookingId) throws SQLException {
+//        Connection conn = null;
+//        try {
+//            conn = DbConnectionUtil.getConnection();
+//            conn.setAutoCommit(false); // Start transaction
+//            System.out.println("[DEBUG] Connection established successfully");
+//
+//            // 1. Delete from booking_vehicle first
+//            System.out.println("[DEBUG] Deleting from booking_vehicle with ID: " + bookingId);
+//            String deleteVehicleSQL = "DELETE FROM booking_vehicle WHERE bookingId = ?";
+//            try (PreparedStatement stmt = conn.prepareStatement(deleteVehicleSQL)) {
+//                stmt.setInt(1, bookingId);
+//                int rows = stmt.executeUpdate();
+//                System.out.println("[DEBUG] Rows deleted from booking_vehicle: " + rows);
+//            }
+//
+//            // 2. Delete from user_booking (if exists)
+//            System.out.println("[DEBUG] Deleting from user_booking with ID: " + bookingId);
+//            String deleteUserBookingSQL = "DELETE FROM user_booking WHERE bookingId = ?";
+//            try (PreparedStatement stmt = conn.prepareStatement(deleteUserBookingSQL)) {
+//                stmt.setInt(1, bookingId);
+//                int rows = stmt.executeUpdate();
+//                System.out.println("[DEBUG] Rows deleted from user_booking: " + rows);
+//            }
+//
+//
+//            // 4. Finally delete from booking
+//            System.out.println("[DEBUG] Deleting from booking with ID: " + bookingId);
+//            String deleteBookingSQL = "DELETE FROM booking WHERE bookingId = ?";
+//            try (PreparedStatement stmt = conn.prepareStatement(deleteBookingSQL)) {
+//                stmt.setInt(1, bookingId);
+//                int affectedRows = stmt.executeUpdate();
+//                System.out.println("[DEBUG] Rows deleted from booking: " + affectedRows);
+//                conn.commit(); // Commit transaction
+//                return affectedRows > 0;
+//            }
+//        } catch (SQLException e) {
+//            if (conn != null) conn.rollback();
+//            System.out.println("[ERROR] SQL Exception during deletion: " + e.getMessage());
+//            throw e;
+//        } finally {
+//            if (conn != null) conn.close();
+//        }
+//    }
+public boolean deleteBooking(int bookingId) throws SQLException {
+    Connection conn = null;
+    try {
+        conn = DbConnectionUtil.getConnection();
+        System.out.println("[DEBUG] Connection established successfully");
 
-    public boolean deleteBooking(int bookingId) throws SQLException {
-        Connection conn = null;
-        try {
-            conn = DbConnectionUtil.getConnection();
-            conn.setAutoCommit(false); // Start transaction
-            System.out.println("[DEBUG] Connection established successfully");
-
-            // 1. Delete from booking_vehicle first
-            System.out.println("[DEBUG] Deleting from booking_vehicle with ID: " + bookingId);
-            String deleteVehicleSQL = "DELETE FROM booking_vehicle WHERE bookingId = ?";
-            try (PreparedStatement stmt = conn.prepareStatement(deleteVehicleSQL)) {
-                stmt.setInt(1, bookingId);
-                int rows = stmt.executeUpdate();
-                System.out.println("[DEBUG] Rows deleted from booking_vehicle: " + rows);
-            }
-
-            // 2. Delete from user_booking (if exists)
-            System.out.println("[DEBUG] Deleting from user_booking with ID: " + bookingId);
-            String deleteUserBookingSQL = "DELETE FROM user_booking WHERE bookingId = ?";
-            try (PreparedStatement stmt = conn.prepareStatement(deleteUserBookingSQL)) {
-                stmt.setInt(1, bookingId);
-                int rows = stmt.executeUpdate();
-                System.out.println("[DEBUG] Rows deleted from user_booking: " + rows);
-            }
-
-
-            // 4. Finally delete from booking
-            System.out.println("[DEBUG] Deleting from booking with ID: " + bookingId);
-            String deleteBookingSQL = "DELETE FROM booking WHERE bookingId = ?";
-            try (PreparedStatement stmt = conn.prepareStatement(deleteBookingSQL)) {
-                stmt.setInt(1, bookingId);
-                int affectedRows = stmt.executeUpdate();
-                System.out.println("[DEBUG] Rows deleted from booking: " + affectedRows);
-                conn.commit(); // Commit transaction
-                return affectedRows > 0;
-            }
-        } catch (SQLException e) {
-            if (conn != null) conn.rollback();
-            System.out.println("[ERROR] SQL Exception during deletion: " + e.getMessage());
-            throw e;
-        } finally {
-            if (conn != null) conn.close();
+        // Soft delete: Update booking status to 'Archived'
+        System.out.println("[DEBUG] Updating booking status to 'Archived' for ID: " + bookingId);
+        String updateBookingSQL = "UPDATE booking SET booking_status = ? WHERE bookingId = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(updateBookingSQL)) {
+            stmt.setString(1, "Archived");
+            stmt.setInt(2, bookingId);
+            int rowsAffected = stmt.executeUpdate();
+            System.out.println("[DEBUG] Rows updated in booking: " + rowsAffected);
+            return rowsAffected > 0;
         }
+    } catch (SQLException e) {
+        System.out.println("[ERROR] SQL Exception during soft delete: " + e.getMessage());
+        throw e;
+    } finally {
+        if (conn != null) conn.close();
     }
+}
+
 
     public List<Booking> getAllBookings(String statusFilter) throws SQLException {
         String sql = "SELECT b.*, u.user_id, u.fname, u.lname, u.email, " +
@@ -245,53 +269,72 @@ public class BookingDAO {
     public boolean cancelBookingByUser(int bookingId) throws SQLException {
         Connection conn = null;
         try {
+            System.out.println("Starting cancellation process for bookingId: " + bookingId);
+
             conn = DbConnectionUtil.getConnection();
             conn.setAutoCommit(false);
 
             // 1. Set booking status to 'Cancelled'
+            System.out.println("Updating booking status to 'Cancelled'...");
             String updateBookingSQL = "UPDATE booking SET booking_status = 'Cancelled' WHERE bookingId = ?";
             try (PreparedStatement stmt = conn.prepareStatement(updateBookingSQL)) {
                 stmt.setInt(1, bookingId);
-                stmt.executeUpdate();
+                int rowsUpdated = stmt.executeUpdate();
+                System.out.println("Booking table updated. Rows affected: " + rowsUpdated);
             }
 
             // 2. Get vehicles associated with booking
+            System.out.println("Fetching associated vehicles...");
             String getVehiclesSQL = "SELECT vehicleId FROM booking_vehicle WHERE bookingId = ?";
             List<Integer> vehicleIds = new ArrayList<>();
             try (PreparedStatement stmt = conn.prepareStatement(getVehiclesSQL)) {
                 stmt.setInt(1, bookingId);
                 ResultSet rs = stmt.executeQuery();
                 while (rs.next()) {
-                    vehicleIds.add(rs.getInt("vehicleId"));
+                    int vehicleId = rs.getInt("vehicleId");
+                    vehicleIds.add(vehicleId);
+                    System.out.println("Found vehicleId: " + vehicleId);
                 }
             }
 
             // 3. Update vehicle quantities (+1 for each)
+            System.out.println("Updating vehicle quantities...");
             String updateVehicleQtySQL = "UPDATE vehicle SET quantity = quantity + 1 WHERE vehicleId = ?";
             try (PreparedStatement stmt = conn.prepareStatement(updateVehicleQtySQL)) {
                 for (int vehicleId : vehicleIds) {
                     stmt.setInt(1, vehicleId);
-                    stmt.executeUpdate();
+                    int rowsAffected = stmt.executeUpdate();
+                    System.out.println("VehicleId " + vehicleId + " quantity updated. Rows affected: " + rowsAffected);
                 }
             }
 
             // 4. Optional: Update payment table if needed
-            // Example:
+            System.out.println("Updating payment status to 'Refunded'...");
             String updatePaymentSQL = "UPDATE payment SET payment_status = 'Refunded' WHERE paymentId = (SELECT paymentId FROM user_booking WHERE bookingId = ?)";
             try (PreparedStatement stmt = conn.prepareStatement(updatePaymentSQL)) {
                 stmt.setInt(1, bookingId);
-                stmt.executeUpdate();
+                int paymentRowsUpdated = stmt.executeUpdate();
+                System.out.println("Payment table updated. Rows affected: " + paymentRowsUpdated);
             }
 
             conn.commit();
+            System.out.println("Cancellation process completed successfully for bookingId: " + bookingId);
             return true;
         } catch (SQLException e) {
-            if (conn != null) conn.rollback();
+            System.err.println("Error occurred during cancellation: " + e.getMessage());
+            if (conn != null) {
+                conn.rollback();
+                System.out.println("Transaction rolled back.");
+            }
             throw e;
         } finally {
-            if (conn != null) conn.close();
+            if (conn != null) {
+                conn.close();
+                System.out.println("Database connection closed.");
+            }
         }
     }
+
     public void updateBookingDatesAndPayment(int bookingId, java.util.Date newStartDate, java.util.Date newEndDate) throws SQLException {
         Connection conn = null;
         try {

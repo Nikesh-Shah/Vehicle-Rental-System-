@@ -15,6 +15,12 @@
     <div class="main-content">
         <div class="page-header">
             <h1>Payment Management</h1>
+            <div style="margin: 10px 0;">
+                <button type="button" onclick="window.print()" style="padding: 8px 16px; font-size: 16px; cursor: pointer; border: none; border-radius: 5px">
+                    🖨️ Print Report
+                </button>
+            </div>
+
         </div>
 
         <!-- Payment Summary Cards -->

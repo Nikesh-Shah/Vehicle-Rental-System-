@@ -46,6 +46,12 @@ body {
     padding: 1.5rem;
     transition: var(--transition);
 }
+@media print {
+    button {
+        display: none;
+    }
+}
+
 
 @media (max-width: 992px) {
     .main-content {

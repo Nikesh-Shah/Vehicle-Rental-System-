@@ -23,7 +23,6 @@ public class AuthFilter implements Filter {
                     if ("rememberEmail".equals(c.getName())) {
                         String email = c.getValue();
 
-                        // Re-create session and set user attribute
                         session = req.getSession(true);
                         session.setAttribute("user", email);
 

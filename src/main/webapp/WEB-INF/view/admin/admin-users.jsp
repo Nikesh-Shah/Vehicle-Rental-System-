@@ -15,6 +15,13 @@
     <div class="main-content">
         <div class="page-header">
             <h2>User Management</h2>
+            <div style="margin: 10px 0;">
+                <button type="button" onclick="window.location.href='${pageContext.request.contextPath}/admin/createuser'
+                        "style="padding: 8px 16px; font-size: 16px; cursor: pointer; margin-top: 10px; background-color: #007bff; color: white; border: none; border-radius: 4px;">
+                    ➕ Create New User
+                </button>
+            </div>
+
         </div>
 
         <c:if test="${not empty param.success}">

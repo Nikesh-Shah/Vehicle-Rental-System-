@@ -269,7 +269,13 @@ public class VehicleDAO {
 public Map<Category, Vehicle> getOneVehicle() throws SQLException {
     Map<Category, Vehicle> vehicleMap = new HashMap<>();
     String query = """
-        WITH ranked_vehicles AS (
+        WITH first_four_categories AS (
+            SELECT categoryId
+            FROM category
+            ORDER BY categoryId
+            LIMIT 4
+        ),
+        ranked_vehicles AS (
             SELECT 
                 c.categoryId,
                 v.vehicleId, 
@@ -280,23 +286,27 @@ public Map<Category, Vehicle> getOneVehicle() throws SQLException {
                 v.vehicle_image,
                 v.quantity,
                 ROW_NUMBER() OVER (PARTITION BY c.categoryId ORDER BY v.vehicleId) AS rn
-            FROM category c
+            FROM first_four_categories c
             JOIN vehicle v ON c.categoryId = v.categoryId
         )
         SELECT *
         FROM ranked_vehicles
         WHERE rn = 1
-        ORDER BY categoryId
-        LIMIT 4
+        ORDER BY categoryId;
     """;
 
     try (Connection conn = DbConnectionUtil.getConnection();
          PreparedStatement stmt = conn.prepareStatement(query);
          ResultSet rs = stmt.executeQuery()) {
 
+        System.out.println("Executing getOneVehicle query...");
+
         while (rs.next()) {
+            int categoryId = rs.getInt("categoryId");
+            System.out.println("Processing categoryId: " + categoryId);
+
             Category category = new Category();
-            category.setCategoryId(rs.getInt("categoryId"));
+            category.setCategoryId(categoryId);
 
             Vehicle vehicle = new Vehicle();
             vehicle.setVehicleId(rs.getInt("vehicleId"));
@@ -307,12 +317,18 @@ public Map<Category, Vehicle> getOneVehicle() throws SQLException {
             vehicle.setQuantity(rs.getInt("quantity"));
             vehicle.setImage(rs.getString("vehicle_image"));
 
+            System.out.println("Mapped vehicle: " + vehicle.getBrand() + " " + vehicle.getModel());
+
             vehicleMap.put(category, vehicle);
         }
+
+        System.out.println("Total categories processed: " + vehicleMap.size());
+
     } catch (SQLException e) {
         e.printStackTrace();
         throw new SQLException("SQLException: " + e.getMessage());
     }
+
     return vehicleMap;
 }
 

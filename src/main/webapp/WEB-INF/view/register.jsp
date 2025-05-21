@@ -47,11 +47,15 @@
             <div class="form-group">
                 <label for="password">Password</label>
                 <input type="password" id="password" name="password" required>
+<%--                <span class="toggle-password" toggle="#password">&#128065;</span> <!-- eye icon -->--%>
+
             </div>
 
             <div class="form-group">
                 <label for="confirmPassword">Confirm Password</label>
                 <input type="password" id="confirmPassword" name="confirmPassword" required>
+<%--                <span class="toggle-password" toggle="#confirmPassword">&#128065;</span>--%>
+
             </div>
             <div class="form-group">
                 <label for="phone">Phone</label>
@@ -75,6 +79,21 @@
         </p>
     </div>
 </div>
+<script>
+    document.querySelectorAll('.toggle-password').forEach(function(toggle) {
+        toggle.addEventListener('click', function() {
+            const input = document.querySelector(this.getAttribute('toggle'));
+            if (input.type === 'password') {
+                input.type = 'text';
+                this.style.color = '#007BFF'; // optional: change color when visible
+            } else {
+                input.type = 'password';
+                this.style.color = '#666'; // reset color
+            }
+        });
+    });
+</script>
+
 
 
 </body>

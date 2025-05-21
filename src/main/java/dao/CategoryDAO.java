@@ -37,14 +37,14 @@ public class CategoryDAO {
     }
 
     public int addCategory(Category category) throws SQLException {
-        String sql = "INSERT INTO category (category_name, category_image, category_description) " +
-                "VALUES (?, ?, ?)";
+        String sql = "INSERT INTO category (category_name,  category_description) " +
+                "VALUES (?, ?)";
 
         try (Connection conn = DbConnectionUtil.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-            stmt.setString(1, category.getName()); // Matches model's getName()
-            stmt.setString(3, category.getDescription());
+            stmt.setString(1, category.getName());
+            stmt.setString(2, category.getDescription());
             stmt.executeUpdate();
 
             try (ResultSet rs = stmt.getGeneratedKeys()) {
@@ -55,15 +55,14 @@ public class CategoryDAO {
     }
 
     public boolean updateCategory(Category category) throws SQLException {
-        String sql = "UPDATE category SET category_name = ?, category_image = ?, " +
-                "category_description = ? WHERE categoryId = ?";
+        String sql = "UPDATE category SET category_name = ?,category_description = ? WHERE categoryId = ?";
 
         try (Connection conn = DbConnectionUtil.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, category.getName());
-            stmt.setString(3, category.getDescription());
-            stmt.setInt(4, category.getCategoryId());
+            stmt.setString(2, category.getDescription());
+            stmt.setInt(3, category.getCategoryId());
 
             return stmt.executeUpdate() > 0;
         }

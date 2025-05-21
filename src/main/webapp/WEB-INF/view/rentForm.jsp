@@ -31,7 +31,11 @@
             <input type="date" name="endDate" required>
         </label>
 
-        <button type="submit">Calculate Total</button>
+
+
+            <button type="submit" class="confirm-button">Calculate Total</button>
+            <a href="javascript:history.back()" class="back-link">← Back</a>
+
     </form>
 </div>
 </section>
@@ -39,3 +43,6 @@
 <jsp:include page="/WEB-INF/view/common/footer.jsp" />
 </body>
 </html>
+
+
+

@@ -61,7 +61,7 @@
                     <th>Price</th>
                     <th>Quantity</th>
                     <th>Status</th>
-                    <th>Category</th>
+<%--                    <th>Category</th>--%>
                     <th>Image</th>
                     <th>Actions</th>
                 </tr>
@@ -77,13 +77,16 @@
                         <td>
                             <span class="status-badge status-${vehicle.status.toLowerCase()}">${vehicle.status}</span>
                         </td>
-                        <td>
-                            <c:forEach var="category" items="${categories}">
-                                <c:if test="${category.categoryId == vehicle.categoryId}">
-                                    <span class="category-badge">${category.name}</span>
-                                </c:if>
-                            </c:forEach>
-                        </td>
+
+<%--                        <td>--%>
+<%--                            <c:forEach var="cat" items="${categories}">--%>
+<%--                                <c:if test="${cat.categoryId == vehicle.categoryId}">--%>
+<%--                                    ${cat.categoryId}--%>
+<%--&lt;%&ndash;                                    <span class="category-badge">${cat.categoryId}</span>&ndash;%&gt;--%>
+<%--                                </c:if>--%>
+<%--                            </c:forEach>--%>
+<%--                        </td>--%>
+
                         <td>
                             <img src="${vehicle.image}" alt="${vehicle.brand} ${vehicle.model}" class="vehicle-image"/>
                         </td>

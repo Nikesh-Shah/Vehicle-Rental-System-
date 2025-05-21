@@ -1,0 +1,235 @@
+:root {
+    --primary-color: #3498db;
+    --primary-light: rgba(52, 152, 219, 0.1);
+    --secondary-color: #e74c3c;
+    --accent-color: #9b59b6;
+    --light-color: #f8f9fa;
+    --dark-color: #212529;
+    --success-color: #28a745;
+    --warning-color: #ffc107;
+    --danger-color: #dc3545;
+    --gray-100: #f8f9fa;
+    --gray-200: #e9ecef;
+    --gray-300: #dee2e6;
+    --gray-400: #ced4da;
+    --gray-500: #adb5bd;
+    --gray-600: #6c757d;
+    --gray-700: #495057;
+    --gray-800: #343a40;
+    --gray-900: #212529;
+    --border-radius: 0.5rem;
+    --box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+}
+
+.container-my-bookings{
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: var(--gray-800);
+    background-color: var(--gray-100);
+    background-image: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+    min-height: 100vh;
+    margin: 50px 0 0 20px;
+    padding: 20px;
+
+}
+
+h1,
+h2 {
+    color: var(--primary-color);
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--primary-light);
+}
+
+
+h1 {
+    font-size: 2rem;
+    text-align: center;
+    margin-top: 2rem;
+}
+
+h2 {
+    font-size: 1.5rem;
+    margin-top: 2rem;
+    position: relative;
+}
+
+h2::before {
+    content: "";
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 50px;
+    height: 2px;
+    background: linear-gradient(to right, var(--primary-color), var(--accent-color));
+}
+
+.P {
+    color: var(--gray-600);
+    font-style: italic;
+    padding: 1rem;
+    background-color: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    text-align: center;
+}
+
+/* Table Styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 2rem;
+    background-color: white;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--box-shadow);
+    border: none;
+}
+
+thead {
+    background: linear-gradient(to right, var(--primary-color), #2980b9);
+    color: white;
+}
+
+th {
+    padding: 1rem;
+    text-align: left;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+}
+
+td {
+    padding: 1rem;
+    border-bottom: 1px solid var(--gray-200);
+    vertical-align: top;
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+tr:nth-child(even) {
+    background-color: var(--gray-100);
+}
+
+tr:hover {
+    background-color: var(--primary-light);
+}
+
+/* Form Styling */
+form {
+    margin-bottom: 0.5rem;
+    display: inline-block;
+}
+
+input[type="submit"] {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+input[type="submit"][value="Cancel"] {
+    background-color: var(--warning-color);
+    color: var(--dark-color);
+}
+
+input[type="submit"][value="Delete"] {
+    background-color: var(--danger-color);
+    color: white;
+}
+
+input[type="submit"][value="Update"] {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+input[type="submit"]:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+input[type="date"] {
+    padding: 0.5rem;
+    border: 1px solid var(--gray-300);
+    border-radius: var(--border-radius);
+    margin: 0 0.5rem;
+}
+
+label {
+    font-size: 0.9rem;
+    color: var(--gray-700);
+    margin-right: 0.5rem;
+}
+
+/* Update Form Styling */
+td form {
+    margin-bottom: 0.5rem;
+    padding: 0.5rem 0;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    table,
+    thead,
+    tbody,
+    th,
+    td,
+    tr {
+        display: block;
+    }
+
+    thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
+
+    tr {
+        margin-bottom: 1rem;
+        border: 1px solid var(--gray-300);
+        border-radius: var(--border-radius);
+        background-color: white;
+    }
+
+    td {
+        border: none;
+        border-bottom: 1px solid var(--gray-200);
+        position: relative;
+        padding-left: 50%;
+        text-align: right;
+    }
+
+    td:before {
+        position: absolute;
+        top: 1rem;
+        left: 1rem;
+        width: 45%;
+        padding-right: 10px;
+        white-space: nowrap;
+        text-align: left;
+        font-weight: bold;
+        content: attr(data-label);
+    }
+
+    td:nth-of-type(1):before {
+        content: "Booking ID";
+    }
+    td:nth-of-type(2):before {
+        content: "Start Date";
+    }
+    td:nth-of-type(3):before {
+        content: "End Date";
+    }
+    td:nth-of-type(4):before {
+        content: "Status";
+    }
+    td:nth-of-type(5):before {
+        content: "Actions";
+    }
+}
