@@ -35,13 +35,13 @@ public class BookingServlet extends HttpServlet {
             Vehicle vehicle = vehicleDAO.getVehicleById(vehicleId);
             System.out.println("[DEBUG] Vehicle fetched: " + vehicle);
 
-            if (!vehicleDAO.isVehicleAvailable(vehicleId, startDate, endDate)) {
-                System.out.println("[DEBUG] Vehicle is not available for the selected dates.");
-                request.setAttribute("error", "Vehicle is no longer available");
-                request.setAttribute("vehicle", vehicle);
-                request.getRequestDispatcher("/WEB-INF/view/rentForm.jsp").forward(request, response);
-                return;
-            }
+//            if (!vehicleDAO.isVehicleAvailable(vehicleId, startDate, endDate)) {
+//                System.out.println("[DEBUG] Vehicle is not available for the selected dates.");
+//                request.setAttribute("error", "Vehicle is no longer available");
+//                request.setAttribute("vehicle", vehicle);
+//                request.getRequestDispatcher("/WEB-INF/view/rentForm.jsp").forward(request, response);
+//                return;
+//            }
 
             long days = ChronoUnit.DAYS.between(
                     startDate.toLocalDate(),

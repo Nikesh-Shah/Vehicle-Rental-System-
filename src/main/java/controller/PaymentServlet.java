@@ -70,9 +70,20 @@ public class PaymentServlet extends HttpServlet {
             bookingDAO.addVehicleToBooking(bookingId, vehicleId, categoryId,userId);
             System.out.println("[DEBUG] Vehicle linked to booking successfully.");
 
-            System.out.println("[DEBUG] Updating vehicle status to 'Booked'...");
-            vehicleDAO.updateVehicleStatus(vehicleId, "Booked");
-            System.out.println("[DEBUG] Vehicle status updated successfully.");
+//            System.out.println("[DEBUG] Updating vehicle status to 'Booked'...");
+//            vehicleDAO.updateVehicleStatus(vehicleId, "Booked");
+//            System.out.println("[DEBUG] Vehicle status updated successfully.");
+            System.out.println("[DEBUG] Checking vehicle availability before updating status...");
+            int quantity = vehicleDAO.getVehicleQuantity(vehicleId);
+            System.out.println("[DEBUG] Current quantity: " + quantity);
+
+            if (quantity <= 0) {
+                System.out.println("[DEBUG] Quantity is 0. Updating vehicle status to 'Booked'...");
+                vehicleDAO.updateVehicleStatus(vehicleId, "Booked");
+            } else {
+                System.out.println("[DEBUG] Quantity is still available. Skipping status update.");
+            }
+
 
             System.out.println("[DEBUG] Redirecting to confirmation.jsp...");
             request.getRequestDispatcher("/WEB-INF/view/confirmation.jsp").forward(request, response);

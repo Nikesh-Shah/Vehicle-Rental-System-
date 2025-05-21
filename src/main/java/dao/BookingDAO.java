@@ -242,6 +242,166 @@ public class BookingDAO {
         }
         return bookings;
     }
+    public boolean cancelBookingByUser(int bookingId) throws SQLException {
+        Connection conn = null;
+        try {
+            conn = DbConnectionUtil.getConnection();
+            conn.setAutoCommit(false);
+
+            // 1. Set booking status to 'Cancelled'
+            String updateBookingSQL = "UPDATE booking SET booking_status = 'Cancelled' WHERE bookingId = ?";
+            try (PreparedStatement stmt = conn.prepareStatement(updateBookingSQL)) {
+                stmt.setInt(1, bookingId);
+                stmt.executeUpdate();
+            }
+
+            // 2. Get vehicles associated with booking
+            String getVehiclesSQL = "SELECT vehicleId FROM booking_vehicle WHERE bookingId = ?";
+            List<Integer> vehicleIds = new ArrayList<>();
+            try (PreparedStatement stmt = conn.prepareStatement(getVehiclesSQL)) {
+                stmt.setInt(1, bookingId);
+                ResultSet rs = stmt.executeQuery();
+                while (rs.next()) {
+                    vehicleIds.add(rs.getInt("vehicleId"));
+                }
+            }
+
+            // 3. Update vehicle quantities (+1 for each)
+            String updateVehicleQtySQL = "UPDATE vehicle SET quantity = quantity + 1 WHERE vehicleId = ?";
+            try (PreparedStatement stmt = conn.prepareStatement(updateVehicleQtySQL)) {
+                for (int vehicleId : vehicleIds) {
+                    stmt.setInt(1, vehicleId);
+                    stmt.executeUpdate();
+                }
+            }
+
+            // 4. Optional: Update payment table if needed
+            // Example:
+            String updatePaymentSQL = "UPDATE payment SET payment_status = 'Refunded' WHERE paymentId = (SELECT paymentId FROM user_booking WHERE bookingId = ?)";
+            try (PreparedStatement stmt = conn.prepareStatement(updatePaymentSQL)) {
+                stmt.setInt(1, bookingId);
+                stmt.executeUpdate();
+            }
+
+            conn.commit();
+            return true;
+        } catch (SQLException e) {
+            if (conn != null) conn.rollback();
+            throw e;
+        } finally {
+            if (conn != null) conn.close();
+        }
+    }
+    public void updateBookingDatesAndPayment(int bookingId, java.util.Date newStartDate, java.util.Date newEndDate) throws SQLException {
+        Connection conn = null;
+        try {
+            conn = DbConnectionUtil.getConnection();
+            conn.setAutoCommit(false);
+
+            // 1. Update booking dates
+            String updateBookingSQL = "UPDATE booking SET booking_start_date = ?, booking_end_date = ? WHERE bookingId = ?";
+            try (PreparedStatement stmt = conn.prepareStatement(updateBookingSQL)) {
+                stmt.setDate(1, new java.sql.Date(newStartDate.getTime()));
+                stmt.setDate(2, new java.sql.Date(newEndDate.getTime()));
+                stmt.setInt(3, bookingId);
+                stmt.executeUpdate();
+            }
+
+            // 2. Get vehicle IDs and price per day
+            String getVehiclesSQL = "SELECT v.vehicle_price_per_day FROM booking_vehicle bv JOIN vehicle v ON bv.vehicleId = v.vehicleId WHERE bv.bookingId = ?";
+            double totalPerDay = 0;
+            try (PreparedStatement stmt = conn.prepareStatement(getVehiclesSQL)) {
+                stmt.setInt(1, bookingId);
+                ResultSet rs = stmt.executeQuery();
+                while (rs.next()) {
+                    totalPerDay += rs.getDouble("vehicle_price_per_day");
+                }
+            }
+
+            // 3. Calculate new total amount
+            long days = (newEndDate.getTime() - newStartDate.getTime()) / (1000 * 60 * 60 * 24) + 1;
+            double newTotal = totalPerDay * days;
+
+            // 4. Update booking total amount
+            String updateTotalSQL = "UPDATE booking SET booking_total_amount = ? WHERE bookingId = ?";
+            try (PreparedStatement stmt = conn.prepareStatement(updateTotalSQL)) {
+                stmt.setDouble(1, newTotal);
+                stmt.setInt(2, bookingId);
+                stmt.executeUpdate();
+            }
+
+            // 5. Optional: Update payment table
+            String updatePaymentSQL = "UPDATE payment SET payment_amount = ? WHERE paymentId = (SELECT paymentId FROM user_booking WHERE bookingId = ?)";
+            try (PreparedStatement stmt = conn.prepareStatement(updatePaymentSQL)) {
+                stmt.setDouble(1, newTotal);
+                stmt.setInt(2, bookingId);
+                stmt.executeUpdate();
+            }
+
+            conn.commit();
+        } catch (SQLException e) {
+            if (conn != null) conn.rollback();
+            throw e;
+        } finally {
+            if (conn != null) conn.close();
+        }
+    }
+    public void updateEndedBookings() throws SQLException {
+        Connection conn = null;
+        try {
+            conn = DbConnectionUtil.getConnection();
+            conn.setAutoCommit(false);
+
+            // Step 1: Find all bookings that have ended but status is still 'Booked' or 'Ongoing'
+            String selectSQL = "SELECT bookingId FROM booking WHERE booking_end_date <= CURRENT_DATE AND booking_status IN ('Booked', 'Ongoing')";
+            List<Integer> endedBookingIds = new ArrayList<>();
+            try (PreparedStatement stmt = conn.prepareStatement(selectSQL);
+                 ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    endedBookingIds.add(rs.getInt("bookingId"));
+                }
+            }
+
+            // Step 2: For each ended booking
+            for (int bookingId : endedBookingIds) {
+                // a) Update booking status to 'Booking Ended'
+                String updateStatusSQL = "UPDATE booking SET booking_status = 'Booking Ended' WHERE bookingId = ?";
+                try (PreparedStatement stmt = conn.prepareStatement(updateStatusSQL)) {
+                    stmt.setInt(1, bookingId);
+                    stmt.executeUpdate();
+                }
+
+                // b) Get all vehicleIds linked to this booking
+                String getVehiclesSQL = "SELECT vehicleId FROM booking_vehicle WHERE bookingId = ?";
+                List<Integer> vehicleIds = new ArrayList<>();
+                try (PreparedStatement stmt = conn.prepareStatement(getVehiclesSQL)) {
+                    stmt.setInt(1, bookingId);
+                    ResultSet rs = stmt.executeQuery();
+                    while (rs.next()) {
+                        vehicleIds.add(rs.getInt("vehicleId"));
+                    }
+                }
+
+                // c) Update vehicle quantities (+1 for each)
+                String updateQtySQL = "UPDATE vehicle SET quantity = quantity + 1 WHERE vehicleId = ?";
+                try (PreparedStatement stmt = conn.prepareStatement(updateQtySQL)) {
+                    for (int vehicleId : vehicleIds) {
+                        stmt.setInt(1, vehicleId);
+                        stmt.executeUpdate();
+                    }
+                }
+            }
+
+            conn.commit();
+        } catch (SQLException e) {
+            if (conn != null) conn.rollback();
+            throw e;
+        } finally {
+            if (conn != null) conn.close();
+        }
+    }
+
+
 
 
 

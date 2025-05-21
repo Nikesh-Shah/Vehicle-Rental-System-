@@ -11,68 +11,105 @@ import model.Booking;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.time.LocalDate;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-@WebServlet("/my-bookings")
+@WebServlet("/booking")
 public class MyBookingsServlet extends HttpServlet {
-    private BookingDAO bookingDAO = new BookingDAO();
+
+    private final BookingDAO bookingDAO = new BookingDAO();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        System.out.println("[DEBUG] MyBookingsServlet: doGet() called");
-
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("userId") == null) {
-            System.out.println("[DEBUG] No session or userId; redirecting to login");
             response.sendRedirect(request.getContextPath() + "/login");
             return;
         }
 
-        int userId = (int) session.getAttribute("userId");
-        System.out.println("[DEBUG] Retrieved userId from session: " + userId);
+        String action = request.getParameter("action");
+        int userId = (Integer) session.getAttribute("userId");
 
         try {
-            List<Booking> allBookings = bookingDAO.getBookingsByUserId(userId);
-            System.out.println("[DEBUG] Retrieved " + allBookings.size() + " bookings from DAO");
+            if (action == null || "getByUserId".equals(action)) {
+                List<Booking> bookings = bookingDAO.getBookingsByUserId(userId);
+                Date today = new Date();
+                List<Booking> currentBookings = new ArrayList<>();
+                List<Booking> previousBookings = new ArrayList<>();
 
-            LocalDate today = LocalDate.now();
-            List<Booking> current = new ArrayList<>();
-            List<Booking> previous = new ArrayList<>();
-
-            for (Booking booking : allBookings) {
-                System.out.println("[DEBUG] Checking booking: " + booking);
-
-                // Wrap in java.sql.Date to get toLocalDate()
-                LocalDate endLocal = new java.sql.Date(
-                        booking.getEndDate().getTime()
-                ).toLocalDate();
-
-                System.out.println("[DEBUG]   End date as LocalDate: " + endLocal);
-                if (endLocal.isBefore(today)) {
-                    System.out.println("[DEBUG]   → Past");
-                    previous.add(booking);
-                } else {
-                    System.out.println("[DEBUG]   → Current/Upcoming");
-                    current.add(booking);
+                for (Booking booking : bookings) {
+                    if (booking.getEndDate() != null && booking.getEndDate().before(today)) {
+                        previousBookings.add(booking);
+                    } else {
+                        currentBookings.add(booking);
+                    }
                 }
+
+                request.setAttribute("currentBookings", currentBookings);
+                request.setAttribute("previousBookings", previousBookings);
+            } else {
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid action");
+                return;
+            }
+        } catch (SQLException e) {
+            throw new ServletException("Database error", e);
+        }
+
+        request.getRequestDispatcher("/WEB-INF/view/my-bookings.jsp").forward(request, response);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String action = request.getParameter("action");
+        String bookingIdParam = request.getParameter("bookingId");
+
+        if (bookingIdParam == null || bookingIdParam.isEmpty()) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Booking ID is missing.");
+            return;
+        }
+
+        int bookingId = Integer.parseInt(bookingIdParam);
+
+        try {
+            boolean success = false;
+
+            if ("cancel".equals(action)) {
+                success = bookingDAO.cancelBookingByUser(bookingId);
+            } else if ("delete".equals(action)) {
+                success = bookingDAO.deleteBooking(bookingId);
+            } else if ("update".equals(action)) {
+                String newStart = request.getParameter("startDate");
+                String newEnd = request.getParameter("endDate");
+
+                if (newStart == null || newEnd == null) {
+                    response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing new dates.");
+                    return;
+                }
+
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                Date newStartDate = sdf.parse(newStart);
+                Date newEndDate = sdf.parse(newEnd);
+
+                bookingDAO.updateBookingDatesAndPayment(bookingId, newStartDate, newEndDate);
+                success = true;
+            } else {
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Unknown action: " + action);
+                return;
             }
 
-            System.out.println("[DEBUG] Current bookings: " + current.size());
-            System.out.println("[DEBUG] Previous bookings: " + previous.size());
+            if (success) {
+                response.sendRedirect(request.getContextPath() + "/booking");
+            } else {
+                response.getWriter().write("Failed to process booking action.");
+            }
 
-            request.setAttribute("currentBookings", current);
-            request.setAttribute("previousBookings", previous);
-            request.getRequestDispatcher("/WEB-INF/view/bookings.jsp")
-                    .forward(request, response);
-            System.out.println("[DEBUG] Forward complete");
-
-        } catch (SQLException e) {
-            System.err.println("[ERROR] Unable to load bookings for userId " + userId);
+        } catch (Exception e) {
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Server error: " + e.getMessage());
             e.printStackTrace();
-            throw new ServletException("Database error while fetching bookings", e);
         }
     }
 }

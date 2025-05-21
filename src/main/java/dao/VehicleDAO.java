@@ -347,6 +347,21 @@ public Map<Category, Vehicle> getOneVehicle() throws SQLException {
             return affectedRows > 0;
         }
     }
+    public int getVehicleQuantity(int vehicleId) throws SQLException {
+        String sql = "SELECT quantity FROM vehicle WHERE vehicleId = ?";
+        try (Connection conn = DbConnectionUtil.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, vehicleId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("quantity");
+                } else {
+                    throw new SQLException("Vehicle not found for ID: " + vehicleId);
+                }
+            }
+        }
+    }
+
 
 
 

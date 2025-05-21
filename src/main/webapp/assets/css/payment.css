@@ -18,7 +18,7 @@
     --box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
 }
 
-body {
+section {
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     line-height: 1.6;
     color: var(--gray-800);

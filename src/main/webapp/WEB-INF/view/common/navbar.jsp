@@ -32,7 +32,7 @@
         <c:choose>
           <c:when test="${not empty sessionScope.user}">
             <div class="profile-section">
-              <a href="${pageContext.request.contextPath}/my-bookings" class="booking-btn">
+              <a href="${pageContext.request.contextPath}/booking" class="booking-btn">
                 <i class="fas fa-calendar-alt mr-2"></i>
                 <span>Bookings</span>
               </a>

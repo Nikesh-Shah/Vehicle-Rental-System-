@@ -10,6 +10,9 @@
 <body>
 <%@ include file="/WEB-INF/view/common/navbar.jsp" %>
 
+
+<section style="margin-top: 10px">
+
 <div class="summary">
   <h2>Booking Summary</h2>
   <img src="${vehicle.image}" alt="${vehicle.brand} ${vehicle.model}">
@@ -38,7 +41,10 @@
 
   <button type="submit">Confirm Booking</button>
 </form>
+</section>
 <jsp:include page="/WEB-INF/view/common/footer.jsp" />
 
+
 </body>
+
 </html>
