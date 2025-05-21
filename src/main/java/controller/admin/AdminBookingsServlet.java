@@ -100,7 +100,7 @@ public class AdminBookingsServlet extends HttpServlet {
 
                 case "delete":
                     System.out.printf("[DEBUG] Deleting booking %d\n", bookingId);
-                    boolean deleted = bookingDAO.deleteBooking(bookingId);
+                    boolean deleted = bookingDAO.deleteBookingByAdmin(bookingId);
                     if (!deleted) {
                         request.setAttribute("error", "Failed to delete booking.");
                         request.getRequestDispatcher("/WEB-INF/view/error.jsp")

@@ -52,7 +52,7 @@ public class AdminCreateUserServlet extends HttpServlet {
         System.out.println("  Password: " + password);
         System.out.println("  Confirm Password: " + confirmPassword);
 
-        int role = 1; // default role (e.g., customer)
+        int role = 0; // default role (e.g., customer)
         try {
             role = Integer.parseInt(roleParam);
         } catch (NumberFormatException e) {
@@ -81,7 +81,7 @@ public class AdminCreateUserServlet extends HttpServlet {
             int newUserId = UserDAO.createUser(user);
             System.out.println("[DEBUG] New user created with ID: " + newUserId);
 
-            response.sendRedirect(request.getContextPath() + "/admin/users?createSuccess=true");
+            response.sendRedirect(request.getContextPath() + "/admin-users?createSuccess=true");
             System.out.println("[DEBUG] Redirected to /admin/users with createSuccess=true");
         } catch (SQLException e) {
             System.err.println("[ERROR] SQLException while creating user: " + e.getMessage());

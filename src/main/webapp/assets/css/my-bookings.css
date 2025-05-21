@@ -21,7 +21,8 @@
     --box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
 }
 
-.container-my-bookings{
+/* Container styling instead of body */
+.container-my-bookings {
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     line-height: 1.6;
     color: var(--gray-800);
@@ -30,31 +31,29 @@
     min-height: 100vh;
     margin: 50px 0 0 20px;
     padding: 20px;
-
 }
 
-h1,
-h2 {
+.container-my-bookings h1,
+.container-my-bookings h2 {
     color: var(--primary-color);
     margin-bottom: 1.5rem;
     padding-bottom: 0.5rem;
     border-bottom: 2px solid var(--primary-light);
 }
 
-
-h1 {
+.container-my-bookings h1 {
     font-size: 2rem;
     text-align: center;
     margin-top: 2rem;
 }
 
-h2 {
+.container-my-bookings h2 {
     font-size: 1.5rem;
     margin-top: 2rem;
     position: relative;
 }
 
-h2::before {
+.container-my-bookings h2::before {
     content: "";
     position: absolute;
     bottom: -2px;
@@ -64,7 +63,7 @@ h2::before {
     background: linear-gradient(to right, var(--primary-color), var(--accent-color));
 }
 
-.P {
+.container-my-bookings p {
     color: var(--gray-600);
     font-style: italic;
     padding: 1rem;
@@ -75,7 +74,7 @@ h2::before {
 }
 
 /* Table Styling */
-table {
+.container-my-bookings table {
     width: 100%;
     border-collapse: collapse;
     margin-bottom: 2rem;
@@ -86,12 +85,12 @@ table {
     border: none;
 }
 
-thead {
+.container-my-bookings thead {
     background: linear-gradient(to right, var(--primary-color), #2980b9);
     color: white;
 }
 
-th {
+.container-my-bookings th {
     padding: 1rem;
     text-align: left;
     font-weight: 600;
@@ -100,31 +99,31 @@ th {
     letter-spacing: 0.5px;
 }
 
-td {
+.container-my-bookings td {
     padding: 1rem;
     border-bottom: 1px solid var(--gray-200);
     vertical-align: top;
 }
 
-tr:last-child td {
+.container-my-bookings tr:last-child td {
     border-bottom: none;
 }
 
-tr:nth-child(even) {
+.container-my-bookings tr:nth-child(even) {
     background-color: var(--gray-100);
 }
 
-tr:hover {
+.container-my-bookings tr:hover {
     background-color: var(--primary-light);
 }
 
 /* Form Styling */
-form {
+.container-my-bookings form {
     margin-bottom: 0.5rem;
     display: inline-block;
 }
 
-input[type="submit"] {
+.container-my-bookings input[type="submit"] {
     padding: 0.5rem 1rem;
     border: none;
     border-radius: var(--border-radius);
@@ -133,71 +132,131 @@ input[type="submit"] {
     transition: all 0.3s ease;
 }
 
-input[type="submit"][value="Cancel"] {
+.container-my-bookings input[type="submit"][value="Cancel"] {
     background-color: var(--warning-color);
     color: var(--dark-color);
 }
 
-input[type="submit"][value="Delete"] {
+.container-my-bookings input[type="submit"][value="Delete"] {
     background-color: var(--danger-color);
     color: white;
 }
 
-input[type="submit"][value="Update"] {
+.container-my-bookings input[type="submit"][value="Update"] {
     background-color: var(--primary-color);
     color: white;
 }
 
-input[type="submit"]:hover {
+.container-my-bookings input[type="submit"]:hover {
     opacity: 0.9;
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-input[type="date"] {
+.container-my-bookings input[type="date"] {
     padding: 0.5rem;
     border: 1px solid var(--gray-300);
     border-radius: var(--border-radius);
     margin: 0 0.5rem;
 }
 
-label {
+.container-my-bookings label {
     font-size: 0.9rem;
     color: var(--gray-700);
     margin-right: 0.5rem;
 }
 
 /* Update Form Styling */
-td form {
+.container-my-bookings td form {
     margin-bottom: 0.5rem;
     padding: 0.5rem 0;
 }
 
+/* Date Inputs Container */
+.container-my-bookings .date-inputs {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 0.75rem;
+}
+
+.container-my-bookings .date-inputs label {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 0.5rem;
+}
+
+.container-my-bookings .date-inputs input[type="date"] {
+    width: 100%;
+    margin: 0.25rem 0 0 0;
+}
+
+/* Update Form Styling */
+.container-my-bookings .update-form {
+    display: block;
+    width: 100%;
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px dashed var(--gray-300);
+}
+
+/* Action Buttons */
+.container-my-bookings .action-btn {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.container-my-bookings .action-btn:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.container-my-bookings .delete-btn {
+    background-color: var(--danger-color);
+    color: white;
+}
+
+.container-my-bookings .update-btn {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.container-my-bookings button.action-btn:first-of-type {
+    background-color: var(--warning-color);
+    color: var(--dark-color);
+}
+
 /* Responsive Styles */
 @media (max-width: 768px) {
-    table,
-    thead,
-    tbody,
-    th,
-    td,
-    tr {
+    .container-my-bookings table,
+    .container-my-bookings thead,
+    .container-my-bookings tbody,
+    .container-my-bookings th,
+    .container-my-bookings td,
+    .container-my-bookings tr {
         display: block;
     }
 
-    thead tr {
+    .container-my-bookings thead tr {
         position: absolute;
         top: -9999px;
         left: -9999px;
     }
 
-    tr {
+    .container-my-bookings tr {
         margin-bottom: 1rem;
         border: 1px solid var(--gray-300);
         border-radius: var(--border-radius);
         background-color: white;
     }
 
-    td {
+    .container-my-bookings td {
         border: none;
         border-bottom: 1px solid var(--gray-200);
         position: relative;
@@ -205,7 +264,7 @@ td form {
         text-align: right;
     }
 
-    td:before {
+    .container-my-bookings td:before {
         position: absolute;
         top: 1rem;
         left: 1rem;
@@ -217,19 +276,167 @@ td form {
         content: attr(data-label);
     }
 
-    td:nth-of-type(1):before {
+    .container-my-bookings td:nth-of-type(1):before {
         content: "Booking ID";
     }
-    td:nth-of-type(2):before {
+    .container-my-bookings td:nth-of-type(2):before {
         content: "Start Date";
     }
-    td:nth-of-type(3):before {
+    .container-my-bookings td:nth-of-type(3):before {
         content: "End Date";
     }
-    td:nth-of-type(4):before {
+    .container-my-bookings td:nth-of-type(4):before {
         content: "Status";
     }
-    td:nth-of-type(5):before {
+    .container-my-bookings td:nth-of-type(5):before {
         content: "Actions";
+    }
+
+    .container-my-bookings .date-inputs {
+        flex-direction: row;
+        gap: 0.75rem;
+    }
+
+    .container-my-bookings .date-inputs label {
+        flex: 1;
+    }
+}
+
+/* For very small screens */
+@media (max-width: 480px) {
+    .container-my-bookings td[data-label="Actions"] {
+        padding-left: 1rem;
+        text-align: left;
+    }
+
+    .container-my-bookings td[data-label="Actions"]:before {
+        display: none;
+    }
+}
+
+/* Modal Styles - these need to be outside the container scope */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal {
+    background-color: white;
+    border-radius: var(--border-radius);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    padding: 1.5rem;
+    width: 90%;
+    max-width: 500px;
+    animation: modalFadeIn 0.3s ease-out;
+}
+
+.modal-header {
+    margin-bottom: 1rem;
+}
+
+.modal-title {
+    font-size: 1.25rem;
+    color: var(--gray-800);
+    margin: 0;
+}
+
+.modal-body {
+    margin-bottom: 1.5rem;
+    color: var(--gray-700);
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+}
+
+.modal-btn {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.modal-btn-confirm {
+    background-color: var(--danger-color);
+    color: white;
+}
+
+.modal-btn-confirm:hover {
+    background-color: #c82333;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(220, 53, 69, 0.2);
+}
+
+.modal-btn-cancel {
+    background-color: var(--gray-300);
+    color: var(--gray-700);
+}
+
+.modal-btn-cancel:hover {
+    background-color: var(--gray-400);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Success Message */
+.success-message {
+    display: none;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: var(--success-color);
+    color: white;
+    padding: 1rem 1.5rem;
+    border-radius: var(--border-radius);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 1001;
+    animation: slideInRight 0.5s ease-out;
+}
+
+.success-message.show {
+    display: block;
+}
+
+/* Animations */
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(100px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
     }
 }

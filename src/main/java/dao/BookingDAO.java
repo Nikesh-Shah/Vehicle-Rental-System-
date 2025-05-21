@@ -135,51 +135,51 @@ public class BookingDAO {
         }
     }
 
-//
-//    public boolean deleteBooking(int bookingId) throws SQLException {
-//        Connection conn = null;
-//        try {
-//            conn = DbConnectionUtil.getConnection();
-//            conn.setAutoCommit(false); // Start transaction
-//            System.out.println("[DEBUG] Connection established successfully");
-//
-//            // 1. Delete from booking_vehicle first
-//            System.out.println("[DEBUG] Deleting from booking_vehicle with ID: " + bookingId);
-//            String deleteVehicleSQL = "DELETE FROM booking_vehicle WHERE bookingId = ?";
-//            try (PreparedStatement stmt = conn.prepareStatement(deleteVehicleSQL)) {
-//                stmt.setInt(1, bookingId);
-//                int rows = stmt.executeUpdate();
-//                System.out.println("[DEBUG] Rows deleted from booking_vehicle: " + rows);
-//            }
-//
-//            // 2. Delete from user_booking (if exists)
-//            System.out.println("[DEBUG] Deleting from user_booking with ID: " + bookingId);
-//            String deleteUserBookingSQL = "DELETE FROM user_booking WHERE bookingId = ?";
-//            try (PreparedStatement stmt = conn.prepareStatement(deleteUserBookingSQL)) {
-//                stmt.setInt(1, bookingId);
-//                int rows = stmt.executeUpdate();
-//                System.out.println("[DEBUG] Rows deleted from user_booking: " + rows);
-//            }
-//
-//
-//            // 4. Finally delete from booking
-//            System.out.println("[DEBUG] Deleting from booking with ID: " + bookingId);
-//            String deleteBookingSQL = "DELETE FROM booking WHERE bookingId = ?";
-//            try (PreparedStatement stmt = conn.prepareStatement(deleteBookingSQL)) {
-//                stmt.setInt(1, bookingId);
-//                int affectedRows = stmt.executeUpdate();
-//                System.out.println("[DEBUG] Rows deleted from booking: " + affectedRows);
-//                conn.commit(); // Commit transaction
-//                return affectedRows > 0;
-//            }
-//        } catch (SQLException e) {
-//            if (conn != null) conn.rollback();
-//            System.out.println("[ERROR] SQL Exception during deletion: " + e.getMessage());
-//            throw e;
-//        } finally {
-//            if (conn != null) conn.close();
-//        }
-//    }
+
+    public boolean deleteBookingByAdmin(int bookingId) throws SQLException {
+        Connection conn = null;
+        try {
+            conn = DbConnectionUtil.getConnection();
+            conn.setAutoCommit(false); // Start transaction
+            System.out.println("[DEBUG] Connection established successfully");
+
+            // 1. Delete from booking_vehicle first
+            System.out.println("[DEBUG] Deleting from booking_vehicle with ID: " + bookingId);
+            String deleteVehicleSQL = "DELETE FROM booking_vehicle WHERE bookingId = ?";
+            try (PreparedStatement stmt = conn.prepareStatement(deleteVehicleSQL)) {
+                stmt.setInt(1, bookingId);
+                int rows = stmt.executeUpdate();
+                System.out.println("[DEBUG] Rows deleted from booking_vehicle: " + rows);
+            }
+
+            // 2. Delete from user_booking (if exists)
+            System.out.println("[DEBUG] Deleting from user_booking with ID: " + bookingId);
+            String deleteUserBookingSQL = "DELETE FROM user_booking WHERE bookingId = ?";
+            try (PreparedStatement stmt = conn.prepareStatement(deleteUserBookingSQL)) {
+                stmt.setInt(1, bookingId);
+                int rows = stmt.executeUpdate();
+                System.out.println("[DEBUG] Rows deleted from user_booking: " + rows);
+            }
+
+
+            // 4. Finally delete from booking
+            System.out.println("[DEBUG] Deleting from booking with ID: " + bookingId);
+            String deleteBookingSQL = "DELETE FROM booking WHERE bookingId = ?";
+            try (PreparedStatement stmt = conn.prepareStatement(deleteBookingSQL)) {
+                stmt.setInt(1, bookingId);
+                int affectedRows = stmt.executeUpdate();
+                System.out.println("[DEBUG] Rows deleted from booking: " + affectedRows);
+                conn.commit(); // Commit transaction
+                return affectedRows > 0;
+            }
+        } catch (SQLException e) {
+            if (conn != null) conn.rollback();
+            System.out.println("[ERROR] SQL Exception during deletion: " + e.getMessage());
+            throw e;
+        } finally {
+            if (conn != null) conn.close();
+        }
+    }
 public boolean deleteBooking(int bookingId) throws SQLException {
     Connection conn = null;
     try {
