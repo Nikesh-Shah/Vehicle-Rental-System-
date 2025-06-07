@@ -58,5 +58,35 @@ The **Vehicle Rental System** facilitates online vehicle booking for users while
 | Server     | Apache Tomcat                   |
 | Tools      | Eclipse IDE, JDBC or JPA        |
 
+## 📸 Screenshots
 
+### 🔐 Login Page
+![Login Page](screenshots/login.png)
+
+### 📋 Admin Dashboard
+![Dashboard](screenshots/dashboard.png)
+
+### 🕓 Booking History
+![Booking History](screenshots/booking-history.png)
+
+## 🧪 How to Run This Project
+
+To run the Vehicle Rental System on your local machine, follow the steps below:
+
+### ✅ Prerequisites
+
+- Java JDK 8 or higher
+- Eclipse IDE (Enterprise Edition recommended)
+- Apache Tomcat 9 or compatible
+- MySQL Server
+- Web browser (e.g., Chrome, Firefox)
+
+---
+
+### ⚙️ Step-by-Step Instructions
+
+1. **Clone or Download the Project**
+
+   ```bash
+   git clone https://https://github.com/Nikesh-Shah/Vehicle-Rental-System.git
 
