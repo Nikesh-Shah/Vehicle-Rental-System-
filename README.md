@@ -61,13 +61,13 @@ The **Vehicle Rental System** facilitates online vehicle booking for users while
 ## 📸 Screenshots
 
 ### 🔐 Login Page
-![Login Page](screenshots/home.png)
+![Landing Page](screenshots/home.png)
 
 ### 📋 Admin Dashboard
-![Dashboard](screenshots/vehicle.png)
+![Vehicle list](screenshots/vehicle.png)
 
 ### 🕓 Booking History
-![Booking History](screenshots/admin.png)
+![Admin Dashboard](screenshots/Admin.png)
 
 ## 🧪 How to Run This Project
 
