@@ -29,7 +29,6 @@ public class DbConnectionUtil {
 
             System.out.println("[DEBUG] DB URL: " + url);
             System.out.println("[DEBUG] DB User: " + user);
-            // ⚠️ Never print password, even in debug.
 
         } catch (Exception e) {
             System.err.println("[ERROR] Failed to load DB properties or initialize driver:");
