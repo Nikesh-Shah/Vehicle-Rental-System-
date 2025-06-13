@@ -56,7 +56,7 @@ The **Vehicle Rental System** facilitates online vehicle booking for users while
 | Database   | MySQL                           |
 | Architecture | MVC (Model-View-Controller)  |
 | Server     | Apache Tomcat                   |
-| Tools      | Eclipse IDE, JDBC or JPA        |
+| Tools      | Intelij IDE, JDBC or JPA        |
 
 ## 📸 Screenshots
 
